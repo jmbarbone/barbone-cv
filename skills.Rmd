@@ -1,0 +1,19 @@
+# Skills
+
+\begin{cvskills}
+  \cvskill
+    {R}
+    {package development, data analysis, statistical programming, data visualization, \newline ETL/Data integration, tidyverse (dplyr, ggplot2, purrr, tidyr, etc), Rmarkdown}
+
+  \cvskill
+    {Other programming experience}
+    {Python, SQL, Git}
+
+  \cvskill
+    {Clinical Trials}
+    {clinical data management programming, eCOA, data review}
+    
+  \cvskill
+    {Psychology}
+    {behavioral statistics, research methods, cognitive psychology, learning psychology}
+\end{cvskills}

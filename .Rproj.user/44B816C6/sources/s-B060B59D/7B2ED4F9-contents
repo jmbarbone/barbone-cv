@@ -1,0 +1,13 @@
+# Posters and Presentations
+
+<!-- ```{r posters and presentations} -->
+<!-- vitae::bibliography_entries("bib/posters_presentations.bib") -->
+<!-- ``` -->
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+::: {#refs_posters_presentations}
+:::
+\endgroup

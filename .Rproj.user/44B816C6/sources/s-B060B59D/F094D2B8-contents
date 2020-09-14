@@ -1,0 +1,8 @@
+# Tutoring
+
+```{r tutoring}
+readr::read_csv("data/tutoring.csv", col_types = "ccccc") %>% 
+  tidyr::fill(-why) %>%
+  vitae::detailed_entries(what, when, with, where)
+```
+

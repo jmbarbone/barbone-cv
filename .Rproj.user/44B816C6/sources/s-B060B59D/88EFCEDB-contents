@@ -1,0 +1,110 @@
+---
+graphics: yes
+name: "Jordan Mark"
+surname: "Barbone, M.A."
+# Default head color won't show
+headcolor: 414141
+position: "Principal Data Analyst, R Developer"
+address: "West Chester, PA"
+phone: "+1 (610) 675-8922"
+www: jmbarbone.github.io
+email: "jmbarbone@gmail.com"
+# twitter: jmbarbone
+github: jmbarbone
+linkedin: jmbarbone
+aboutme: "Strong R programmer with experience in statistical programming and report automation in clinical trials"
+date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
+csl: "csl/apa7-cv.csl"
+nocite: "@*"
+knit: bookdown::render_book
+bibliography_publications: "bib/publications.bib"
+bibliography_thesis: "bib/thesis.bib"
+bibliography_posters_presentations: "bib/posters_presentations.bib"
+---
+
+```{r setup, include=FALSE, cache = FALSE}
+options(tinytex.verbose = TRUE)
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(tidyverse)
+library(bookdown)
+```
+
+```{r FUNS}
+col_to_rowname <- function(x, col = 1L) {
+  if (is.character(col)) {
+      col <- which(colnames(x) == col)
+  }
+
+  if (inherits(x, "tbl_df")) {
+    x <- as.data.frame(x)
+  }
+
+  rownames(x) <- x[[col]]
+  x <- x[-col]
+  x
+}
+
+# RefManageR::as.BibEntry() assumes a different style
+ adjust_author_name <- function(a) {
+  splits <- strsplit(a, " and ")[[1]]
+  switches <- sapply(
+    splits,
+    function(x) {
+      x <- gsub("(^.*)[,\\s](.*$)", "\\2 \\1", x)
+      x <- gsub("\\s+", " ", x)
+      trimws(x)
+    })
+  paste(switches, collapse = " and ")
+}
+
+adjust_author_names <- function(names) {
+  sapply(names, adjust_author_name)
+}
+```
+
+
+```{r get and write bibs}
+# All references saved
+bib_file <- jordan::file_path(Sys.getenv("R_USER"),
+                              "GitHub",
+                              "bib-references",
+                              "references.bib",
+                              check = TRUE)
+
+bib <- jordan::read_bib(bib_file, skip = 3L)
+
+bib_df <- bib %>%
+  as_tibble() %>%
+  filter(str_detect(author, "Barbone")) %>%
+  arrange(desc(year), author) %>% 
+  rename(bibtype = field) %>%
+  mutate(author = adjust_author_names(author),
+         booktitle = if_else(bibtype == "inproceedings",
+                             note,
+                             booktitle),
+         # Remove these so that month will print
+         pages = if_else(bibtype == "inproceedings",
+                         NA_character_,
+                         pages),
+         volume = if_else(bibtype == "inproceedings",
+                          NA_character_,
+                          volume)) %>%
+  col_to_rowname()
+
+bib_df %>%
+  filter(bibtype == "article") %>%
+  RefManageR::as.BibEntry(.) %>%
+  RefManageR::WriteBib(file = "bib/publications.bib")
+
+bib_df %>%
+  filter(bibtype == "mastersthesis") %>%
+  RefManageR::as.BibEntry(.) %>%
+  RefManageR::WriteBib(file = "bib/thesis.bib")
+
+bib_df %>%
+  filter(bibtype == "inproceedings") %>%
+  RefManageR::as.BibEntry(.) %>%
+  RefManageR::WriteBib(file = "bib/posters_presentations.bib")
+```

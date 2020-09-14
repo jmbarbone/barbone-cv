@@ -1,0 +1,8 @@
+# Extracurricular activities
+
+```{r extracurriculars}
+readr::read_csv("data/extracurriculars.csv", col_types = "ccccc") %>% 
+  tidyr::fill(-why) %>%
+  vitae::detailed_entries(what, when, with, where)
+```
+

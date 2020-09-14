@@ -1,0 +1,8 @@
+# Experience
+
+```{r experience}
+readr::read_csv("data/experience.csv", col_types = "ccccc") %>% 
+  tidyr::fill(-why) %>%
+  vitae::detailed_entries(what, when, with, where, why)
+```
+

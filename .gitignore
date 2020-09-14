@@ -1,0 +1,6 @@
+\.httr-oauth
+\.Rprofile
+\.Renviron
+*\.Rproj
+\.Rproj.user\*
+*\.aux
