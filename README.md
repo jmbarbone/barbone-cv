@@ -11,9 +11,3 @@ The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR
 * Switched the `what` and `with` columns in bibliography entries to highlight the position over the company and degree over institute, etc
 * Applied a renaming function for author names
 * Adjusted the lua bolding script to account for my middle initial
-
-Files are build appropriately with:
-
-```r
-bookdown::render_book("index.rmd", output_dir = "cv-outputs")
-```
