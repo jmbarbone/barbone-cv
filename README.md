@@ -11,3 +11,4 @@ The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR
 * Switched the `what` and `with` columns in bibliography entries to highlight the position over the company and degree over institute, etc
 * Applied a renaming function for author names
 * Adjusted the lua bolding script to account for my middle initial
+* Small modification to the apa-6 cv `et-al-min` to not shorten author of current references

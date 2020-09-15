@@ -14,12 +14,14 @@ github: jmbarbone
 linkedin: jmbarbone
 aboutme: "Strong R programmer with experience in statistical programming and report automation in clinical trials"
 date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
-csl: "csl/apa7-cv.csl"
+csl: "csl/apa6-cv.csl"
 nocite: "@*"
 knit: bookdown::render_book
 bibliography_publications: "bib/publications.bib"
 bibliography_thesis: "bib/thesis.bib"
-bibliography_posters_presentations: "bib/posters_presentations.bib"
+bibliography_posters_signant: "bib/posters_signant.bib"
+bibliography_posters_wcupa: "bib/posters_wcupa.bib"
+bibliography_posters_madrigal: "bib/posters_madrigal.bib"
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
@@ -40,8 +42,19 @@ col_to_rowname <- function(x, col = 1L) {
   if (inherits(x, "tbl_df")) {
     x <- as.data.frame(x)
   }
-
-  rownames(x) <- x[[col]]
+  
+  y <- x[[1]]
+  lens <- tapply(y, y, length)
+  bad <- lens > 1L
+  
+  if (any(bad)) {
+    stop("Multiple entriess found for column, cannot convert to rownames: ",
+         paste(names(lens)[bad], collapse = "\n"),
+         call. = FALSE
+    )
+  }
+  
+  rownames(x) <- y
   x <- x[-col]
   x
 }
@@ -78,7 +91,6 @@ bib <- jordan::read_bib(bib_file, skip = 3L)
 bib_df <- bib %>%
   as_tibble() %>%
   filter(str_detect(author, "Barbone")) %>%
-  arrange(desc(year), author) %>% 
   rename(bibtype = field) %>%
   mutate(author = adjust_author_names(author),
          booktitle = if_else(bibtype == "inproceedings",
@@ -93,6 +105,18 @@ bib_df <- bib %>%
                           volume)) %>%
   col_to_rowname()
 
+bad <- is.na(bib_df$keywords)
+keywords <- strsplit(bib_df$keywords, ", ")
+outs <- sapply(keywords, function(x) {
+  !any(x %in% c("Signant Health", "Madrigal", "wcupa"))
+})
+bad <- bad | outs
+if (any(bad)) {
+  stop("These references are missing keywords: ",
+       paste(rownames(bib_df)[bad], collapse = " & "),
+       call. = FALSE)
+}
+
 bib_df %>%
   filter(bibtype == "article") %>%
   RefManageR::as.BibEntry(.) %>%
@@ -103,8 +127,21 @@ bib_df %>%
   RefManageR::as.BibEntry(.) %>%
   RefManageR::WriteBib(file = "bib/thesis.bib")
 
-bib_df %>%
-  filter(bibtype == "inproceedings") %>%
+posters <- bib_df %>%
+  filter(bibtype == "inproceedings")
+
+posters %>%
+  filter(str_detect(keywords, "Signant Health")) %>% 
   RefManageR::as.BibEntry(.) %>%
-  RefManageR::WriteBib(file = "bib/posters_presentations.bib")
+  RefManageR::WriteBib(file = "bib/posters_signant.bib")
+
+posters %>%
+  filter(str_detect(keywords, "Madrigal")) %>% 
+  RefManageR::as.BibEntry(.) %>%
+  RefManageR::WriteBib(file = "bib/posters_madrigal.bib")
+
+posters %>%
+  filter(str_detect(keywords, "wcupa")) %>% 
+  RefManageR::as.BibEntry(.) %>%
+  RefManageR::WriteBib(file = "bib/posters_wcupa.bib")
 ```

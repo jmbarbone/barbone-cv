@@ -1,11 +1,33 @@
-# Posters and Presentations
+# Posters
 
 <!-- Possibly separate by topic? -->
+
+## Madrigal - Liver disease
 
 \begingroup
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
 
-::: {#refs_posters_presentations}
+::: {#refs_posters_madrigal}
+:::
+\endgroup
+
+## Signant Health (Bracket) - eCOA data quality
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+::: {#refs_posters_signant}
+:::
+\endgroup
+
+## WCUPA - Asthma and music cognitive
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+::: {#refs_posters_wcupa}
 :::
 \endgroup
