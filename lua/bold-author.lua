@@ -1,4 +1,4 @@
-function Block (el)
+function bold_author (el)
   if el.t == "Para" or el.t == "Plain" then
     for k,_ in ipairs(el.content) do
 
