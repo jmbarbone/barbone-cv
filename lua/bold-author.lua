@@ -1,21 +1,23 @@
-function bold_author (el)
+function Block(el)
   if el.t == "Para" or el.t == "Plain" then
-    for k,_ in ipairs(el.content) do
+    for i, j in ipairs(el.content) do
 
-      if el.content[k].t == "Str"
-      and el.content[k].text == "Barbone,"
-      and el.content[k+1].t == "Space"
-      and el.content[k+2].t == "Str"
-      and el.content[k+2].text:find("^J.") then -- assuming no other Barbone, J
-        local _,e = el.content[k+2].text:find("^J.")
-        local rest = el.content[k+2].text:sub(e+1)  -- empty if e+1>length
-        el.content[k] = pandoc.Strong { pandoc.Str("Barbone, J. M.") }
-        el.content[k+2] = pandoc.Str("")
-        el.content[k+3] = pandoc.Str("")
-        el.content[k+4] = pandoc.Str("")
-        -- el.content[k+3] = pandoc.Str(rest)
-        -- table.remove(el.content, k+2)  -- safe? another way would be to set element k+2 to Str("")
-        -- no real need to skip ipairs items here
+      if el.content[i].t == "Str"
+      and el.content[i].text == "Barbone,"
+      and el.content[i+1].t == "Space"
+      and el.content[i+2].t == "Str"
+      and el.content[i+2].text:find("^J.") then -- assuming no other Barbone, J.
+        local j, k = el.content[i+2].text:find("^J.")
+        local rest = el.content[i+2].text:sub(k+1)  -- empty if e+1>length
+        el.content[i] = pandoc.Strong { pandoc.Str("Barbone, ") }
+        el.content[i+1] = pandoc.Strong{ pandoc.Str("J. ") }
+        el.content[i+2] = pandoc.Strong{ pandoc.Str("") }
+        el.content[i+3] = pandoc.Strong{ pandoc.Str("M.") }
+        if el.content[i+4].text:find(",") then
+          el.content[i+4] = pandoc.Str(", ")
+        else
+          el.content[i+4] = pandoc.Str("")
+        end
       end
     end
   end
