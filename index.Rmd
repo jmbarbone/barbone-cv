@@ -19,7 +19,7 @@ nocite: "@*"
 knit: bookdown::render_book
 bibliography_publications: "bib/publications.bib"
 bibliography_thesis: "bib/thesis.bib"
-bibliography_posters_signant: "bib/posters_signant.bib"
+bibliography_posters_signant: "bib/posters_signant.bib" 
 bibliography_posters_wcupa: "bib/posters_wcupa.bib"
 bibliography_posters_madrigal: "bib/posters_madrigal.bib"
 ---
@@ -105,12 +105,12 @@ bib_df <- bib %>%
                           volume)) %>%
   col_to_rowname()
 
-bad <- is.na(bib_df$keywords)
+nas <- is.na(bib_df$keywords)
 keywords <- strsplit(bib_df$keywords, ", ")
 outs <- sapply(keywords, function(x) {
   !any(x %in% c("Signant Health", "Madrigal", "wcupa"))
 })
-bad <- bad | outs
+bad <- nas | outs
 if (any(bad)) {
   stop("These references are missing keywords: ",
        paste(rownames(bib_df)[bad], collapse = " & "),
@@ -119,29 +119,29 @@ if (any(bad)) {
 
 bib_df %>%
   filter(bibtype == "article") %>%
-  RefManageR::as.BibEntry(.) %>%
+  RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/publications.bib")
 
 bib_df %>%
   filter(bibtype == "mastersthesis") %>%
-  RefManageR::as.BibEntry(.) %>%
+  RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/thesis.bib")
 
 posters <- bib_df %>%
   filter(bibtype == "inproceedings")
 
 posters %>%
-  filter(str_detect(keywords, "Signant Health")) %>% 
-  RefManageR::as.BibEntry(.) %>%
+  filter(str_detect(keywords, "Signant Health")) %>%
+  RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/posters_signant.bib")
 
 posters %>%
-  filter(str_detect(keywords, "Madrigal")) %>% 
-  RefManageR::as.BibEntry(.) %>%
+  filter(str_detect(keywords, "Madrigal")) %>%
+  RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/posters_madrigal.bib")
 
 posters %>%
-  filter(str_detect(keywords, "wcupa")) %>% 
-  RefManageR::as.BibEntry(.) %>%
+  filter(str_detect(keywords, "wcupa")) %>%
+  RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/posters_wcupa.bib")
 ```
