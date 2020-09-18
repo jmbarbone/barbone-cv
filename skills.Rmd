@@ -3,7 +3,7 @@
 \begin{cvskills}
   \cvskill
     {R}
-    {package development, data analysis, statistical programming, data visualization, \newline ETL/Data integration, tidyverse (dplyr, ggplot2, purrr, tidyr, etc), Rmarkdown}
+    {package development, data analysis, statistical programming, data visualization, \newline ETL/Data integration, tidyverse (dplyr, ggplot2, purrr, tidyr, devtools, etc), Rmarkdown}
 
   \cvskill
     {Other programming experience}
