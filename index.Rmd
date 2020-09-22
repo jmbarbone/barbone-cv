@@ -36,9 +36,9 @@ library(bookdown)
 ```{r FUNS}
 col_to_rowname <- function(x, col = 1L) {
   if (is.character(col)) {
-      col <- which(colnames(x) == col)
+    col <- which(colnames(x) == col)
   }
-
+  
   if (inherits(x, "tbl_df")) {
     x <- as.data.frame(x)
   }
@@ -60,7 +60,7 @@ col_to_rowname <- function(x, col = 1L) {
 }
 
 # RefManageR::as.BibEntry() assumes a different style
- adjust_author_name <- function(a) {
+adjust_author_name <- function(a) {
   splits <- strsplit(a, " and ")[[1]]
   switches <- sapply(
     splits,
@@ -96,14 +96,15 @@ bib_df <- bib %>%
          booktitle = if_else(bibtype == "inproceedings",
                              note,
                              booktitle),
-         # Remove these so that month will print
-         pages = if_else(bibtype == "inproceedings",
-                         NA_character_,
-                         pages),
-         volume = if_else(bibtype == "inproceedings",
-                          NA_character_,
-                          volume)) %>%
+         month = match(month, month.abb)) %>%
   col_to_rowname()
+
+# Remove columns so month will show and be ordered correctly?
+cols <- c("pages", "journal", "publisher", "number", "volume")
+inp <- bib_df$bibtype == "inproceedings"
+for (i in cols) {
+  bib_df[[i]][inp] <- NA_character_
+}
 
 nas <- is.na(bib_df$keywords)
 keywords <- strsplit(bib_df$keywords, ", ")

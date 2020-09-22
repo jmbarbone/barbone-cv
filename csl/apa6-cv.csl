@@ -805,14 +805,18 @@
               </date>
             </else-if>
             <else-if type="paper-conference">
-              <choose>
-                <if variable="container-title" match="none">
+              <!-- Capture 'speech' stored as 'paper-conference' -->
+              <!-- <choose> -->
+                <!-- <if variable="collection-editor editor editorial-director issue page volume" match="none">
                   <date variable="issued">
                     <date-part prefix=", " name="month"/>
                     <date-part prefix=" " name="day"/>
                   </date>
-                </if>
-              </choose>
+                </if> -->
+                <date variable="issued">
+                  <date-part prefix=", " name="month"/>
+                </date>
+              <!-- </choose> -->
             </else-if>
             <!-- Only year: article-journal chapter entry entry-dictionary entry-encyclopedia dataset figure graphic motion_picture manuscript map musical_score paper-conference [published] patent report review review-book song thesis -->
           </choose>
@@ -836,14 +840,22 @@
     <choose>
       <if type="article article-magazine article-newspaper broadcast interview pamphlet personal_communication post post-weblog speech treaty webpage" match="any">
         <date variable="issued">
-          <date-part name="year"/>
-          <date-part name="month"/>
-          <date-part name="day"/>
+          <date-part name="year" form="long"/>
+          <date-part name="month" form="numeric-leading-zeros"/>
+          <date-part name="day" form="numeric-leading-zeros"/>
         </date>
       </if>
-      <else>
+      <!-- paper-conference only sorted on year and month? -->
+      <else-if type="paper-conference">
         <date variable="issued">
-          <date-part name="year"/>
+          <date-part name="year" form="long"/>
+          <date-part name="month" form="numeric-leading-zeros"/>
+        </date>
+      </else-if>
+      <else>
+        <!-- Default to just year -->
+        <date variable="issued">
+          <date-part name="year" form="long"/>
         </date>
       </else>
     </choose>
@@ -859,6 +871,12 @@
       </else-if>
       <else-if type="article article-magazine article-newspaper broadcast interview pamphlet personal_communication post post-weblog treaty webpage" match="any">
         <date variable="original-date" form="text"/>
+      </else-if>
+      <else-if type="paper-conference">
+        <date variable="original-date">
+          <date-part name="year"/>
+          <date-part prefix = ", " name="month"/>
+        </date>
       </else-if>
       <else>
         <date variable="original-date">
