@@ -1,0 +1,11 @@
+# Programming courses
+
+```{r certs, result="markdown"}
+
+read_csv("data/certs.csv", col_types = "ccc") %>%
+  vitae::detailed_entries(
+    what = link,
+    with = course,
+    where = entity
+  )
+```

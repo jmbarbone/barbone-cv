@@ -11,4 +11,5 @@ rmd_files:
   - "posters-presentations.Rmd"
   - "extracurriculars.Rmd"
   - "awards.Rmd"
+  - "courses.Rmd"
 delete_merged_file: true

@@ -2,15 +2,15 @@
 
 \begin{cvskills}
   \cvskill
-    {R}
+    {R - Advanced}
     {package development, data analysis, statistical programming, data visualization, \newline ETL/Data integration, tidyverse (dplyr, ggplot2, purrr, tidyr, devtools, etc), Rmarkdown}
 
   \cvskill
     {Other programming experience}
-    {Python, SQL, Git}
+    {Intermediate: Python \newline Basic: SQL, Git, SAS, cmd}
 
   \cvskill
-    {Clinical Trials}
+    {Clinical trials}
     {clinical data management programming, eCOA, data review}
     
   \cvskill
