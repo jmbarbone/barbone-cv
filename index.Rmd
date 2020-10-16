@@ -12,7 +12,7 @@ email: "jmbarbone@gmail.com"
 # twitter: jmbarbone
 github: jmbarbone
 linkedin: jmbarbone
-aboutme: "Strong R programmer with experience in statistical programming and report automation in clinical trials"
+aboutme: "Experienced R programmer with experience in statistical programming, monitoring, and report automation in clinical trials"
 date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
 csl: "csl/apa6-cv.csl"
 nocite: "@*"
