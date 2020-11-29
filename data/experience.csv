@@ -1,7 +1,7 @@
 what,when,with,where,why
 "Madrigal Pharmaceuticals, LLC",Dec 2019 - Present,Principal Data Analyst,"Conshohocken, PA","Develops analyses, solutions, scripts, and packages in R; developing custom functions, analytic packages for creation of daily metrics and reports; unit testing, writing documentation; maintain source code control"
 ,,,,Aggregates and organizes data sources; compiles source data from multiple vendor data bases and reports; reconciles differences between data bases
-,,,,"Analyzes efficacy, saftey, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and PRO"
+,,,,"Analyzes efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and PRO"
 ,,,,"Uses, reviews, and reports on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)"
 ,,,,Trains and onboards data analyst
 Signant Health (Formerly Bracket and CRF Health),Jan 2019 - Nov 2019,Clinical Data Scientist,"Wayne, PA","Interacted with and analyzes CNS, psychiatry, and neurology clinical trial data quality and outcomes information for clinical insights"
