@@ -4,7 +4,7 @@ name: "Jordan Mark"
 surname: "Barbone, M.A."
 # Default head color won't show
 headcolor: 414141
-position: "Principal Data Analyst, R Developer"
+position: "Data Scientist, R Developer"
 address: "West Chester, PA"
 phone: "+1 (610) 675-8922"
 www: jmbarbone.github.io
@@ -12,7 +12,7 @@ email: "jmbarbone@gmail.com"
 # twitter: jmbarbone
 github: jmbarbone
 linkedin: jmbarbone
-aboutme: "Experienced R programmer with experience in statistical programming, monitoring, and report automation in clinical trials"
+aboutme: "R programmer with experience in statistical programming, monitoring, and report automation in cognitive and CNS clinical trials"
 date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
 csl: "csl/apa6-cv.csl"
 nocite: "@*"
@@ -25,7 +25,10 @@ bibliography_posters_madrigal: "bib/posters_madrigal.bib"
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
-options(tinytex.verbose = TRUE)
+options(
+  tinytex.verbose = TRUE,
+  tidyverse.quiet = TRUE
+)
 library(knitr)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(vitae)
@@ -80,17 +83,22 @@ adjust_author_names <- function(names) {
 
 ```{r get and write bibs}
 # All references saved
-bib_file <- jordan::file_path(Sys.getenv("R_USER"),
-                              "GitHub",
-                              "bib-references",
-                              "references.bib",
-                              check = TRUE)
+bib_file <- mark::file_path(
+  Sys.getenv("R_USER"),
+  "GitHub",
+  "bib-references",
+  "references.bib",
+  check = TRUE
+)
 
-bib <- jordan::read_bib(bib_file, skip = 3L)
+bib <- mark::read_bib(bib_file, skip = 3L)
 
 bib_df <- bib %>%
   as_tibble() %>%
-  filter(str_detect(author, "Barbone")) %>%
+  filter(
+    str_detect(author, "Barbone"),
+    str_detect(keywords, "_DRAFT_", negate = TRUE)
+  ) %>%
   rename(bibtype = field) %>%
   mutate(author = adjust_author_names(author),
          booktitle = if_else(bibtype == "inproceedings",
