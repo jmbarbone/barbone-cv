@@ -15,3 +15,4 @@ The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR
   * to not shorten author of current authors
   * to include month into poster presentation references
   * to correctly sort poster presentations by descending date (numeric year, numeric month)
+* Small modification of the `vitae::awesome_cv` template to show total number of pages

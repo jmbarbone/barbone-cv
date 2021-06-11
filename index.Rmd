@@ -6,9 +6,9 @@ surname: "Barbone, M.A."
 headcolor: 414141
 position: "Data Scientist, R Developer"
 address: "West Chester, PA"
-phone: "+1 (610) 675-8922"
+phone: "+1 610 675 8922"
 www: jmbarbone.github.io
-email: "jmbarbone@gmail.com"
+email: "jmbarbone@gmail.com; jbarbone@cogstate.com"
 # twitter: jmbarbone
 github: jmbarbone
 linkedin: jmbarbone
