@@ -1,10 +1,23 @@
 what,when,with,where,why
-Cogstate, Jun 2021 - Present,Data Scientist, "New Haven, CT (Remote)", ,
-"Madrigal Pharmaceuticals, LLC",Dec 2019 - Jun 2021,Principal Data Analyst,"Conshohocken, PA","Develops analyses, solutions, scripts, and packages in R; developing custom functions, analytic packages for creation of daily metrics and reports; unit testing, writing documentation; maintain source code control"
-,,,,Aggregates and organizes data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiles source data from multiple vendor data bases and reports; reconciles differences between databases
-,,,,"Analyzes efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and PRO"
-,,,,"Uses, reviews, and reports on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)"
-,,,,Trains and onboards data analyst
+Cogstate, Jun 2021 - Present,Data Scientist, "New Haven, CT (Remote)", "Tasked with building, developing, deploying and maintaining databases, data models, reporting systems, data automation systems, dashboards and performance metrics, supporting key business needs."
+,,,,"Build, develop, deploy data models, reporting systems, data automation systems, dashboards and performance metrics"
+,,,,Maintain reporting systems and dashboards
+,,,,Support the creation of data visualization tools and Statistical Analysis Plans.
+,,,,"Collaborate with business development science, scientific services, project management, scales management, statistics, and data management teams internally, and external collaborators, to support data related processes and questions."
+,,,,"Support research, including scientific publications."
+,,,,Maintain data management and scientific operations
+,,,,"Monitoring of study data in Cogstate's data management"
+,,,,Information in preparation for interactions with auditors
+,,,,"Identify and lead one or more of Cogstate's continuous process improvement initiatives by seeking to understand client needs and engaging Cogstate staff across the company"
+,,,,"Interact with sponsors to resolve scientific queries and participate in study planning."
+,,,,"Interact with project management, scales management, statistics, and data management teams internally to support scientific processes and questions."
+,,,,"Write clinical study reports, analytic reports, and business requirement documents."
+,,,,"Drive research, including scientific publications, trial outcome measures, rater training, and trial methodology."
+"Madrigal Pharmaceuticals, LLC",Dec 2019 - Jun 2021,Principal Data Analyst,"Conshohocken, PA","Developed, analysed scripts and packages in R; developed custom functions, analytic packages for creation of daily metrics and reports; unit testing, documentation; maintained source code control"
+,,,,Aggregated and organized data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiled source data from multiple vendor data bases and reports; reconciled differences between databases
+,,,,"Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and PRO"
+,,,,"Used, reviewed, and reported on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)"
+,,,,Trained and onboarded data analyst
 Signant Health (Formerly Bracket and CRF Health),Jan 2019 - Nov 2019,Clinical Data Scientist,"Wayne, PA","Interacted with and analyzes CNS, psychiatry, and neurology clinical trial data quality and outcomes information for clinical insights"
 ,,,,Developed and implemented new data products and deliverables for blinded, statistical data monitoring and review; maintained and enhanced current data products; advised new analytic and machine learning initiatives; identified data sources and aggregation processes; defined and updated processes for deliverables; point of contact for analytic deliverables; presented information using data visualization techniques.
 ,,,,"Reviewed and developed analyses with SME for detection of errors for study endpoints; collaborated with review of analytic findings"
