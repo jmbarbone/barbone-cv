@@ -5,3 +5,4 @@ vitae::awesomecv:
   pandoc_args:
     - --lua-filter="lua/multiple-bibliographies.lua"
     - --lua-filter="lua/bold-author.lua"
+  page_total: true
