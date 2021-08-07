@@ -25,14 +25,16 @@ bibliography_posters_madrigal: "bib/posters_madrigal.bib"
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
 options(
   tinytex.verbose = TRUE,
   tidyverse.quiet = TRUE
 )
+
 library(knitr)
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(vitae)
 library(tidyverse)
+library(vitae)
 library(bookdown)
 ```
 
