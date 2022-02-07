@@ -100,11 +100,15 @@ bib_df <- bib %>%
     str_detect(keywords, "_DRAFT_", negate = TRUE)
   ) %>%
   rename(bibtype = field) %>%
-  mutate(author = adjust_author_names(author),
-         booktitle = if_else(bibtype == "inproceedings",
-                             note,
-                             booktitle),
-         month = match(month, month.abb)) %>%
+  mutate(
+    author = adjust_author_names(author),
+    booktitle = if_else(
+      bibtype == "inproceedings",
+      note,
+      booktitle
+      ),
+    month = match(month, month.abb)
+  ) %>%
   col_to_rowname()
 
 # Remove columns so month will show and be ordered correctly?
