@@ -36,6 +36,7 @@ library(knitr)
 library(tidyverse)
 library(vitae)
 library(bookdown)
+library(mark)
 ```
 
 ```{r FUNS}
@@ -116,12 +117,12 @@ for (i in cols) {
   bib_df[[i]][inp] <- NA_character_
 }
 
-nas <- is.na(bib_df$keywords)
 keywords <- strsplit(bib_df$keywords, ", ")
-outs <- sapply(keywords, function(x) {
-  !any(x %in% c("Signant Health", "Madrigal", "wcupa"))
+outs <- sapply(keywords, function(i) {
+  all(i %out% c("Signant Health", "Madrigal", "wcupa"))
 })
-bad <- nas | outs
+bad <- is.na(bib_df$keywords) | outs
+
 if (any(bad)) {
   stop("These references are missing keywords: ",
        paste(rownames(bib_df)[bad], collapse = " & "),
