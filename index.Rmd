@@ -42,13 +42,10 @@ library(mark)
 ```{r FUNS}
 col_to_rowname <- function(x, col = 1L) {
   if (is.character(col)) {
-    col <- which(colnames(x) == col)
+    col <- match(col, colnames(x))
   }
   
-  if (inherits(x, "tbl_df")) {
-    x <- as.data.frame(x)
-  }
-  
+  x <- as.data.frame(x)
   y <- x[[1]]
   lens <- tapply(y, y, length)
   bad <- lens > 1L
