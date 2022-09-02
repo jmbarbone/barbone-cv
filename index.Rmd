@@ -22,6 +22,7 @@ bibliography_thesis: "bib/thesis.bib"
 bibliography_posters_signant: "bib/posters_signant.bib" 
 bibliography_posters_wcupa: "bib/posters_wcupa.bib"
 bibliography_posters_madrigal: "bib/posters_madrigal.bib"
+bibliography_posters_cog: "bib/posters_cog.bib"
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
@@ -91,8 +92,21 @@ bib_file <- mark::file_path(
   check = TRUE
 )
 
-bib <- mark::read_bib(bib_file, skip = 3L)
+read_bib_utf8 <- function(x) {
+  temp <- file()
+  on.exit(close(temp))
+  x <- readLines(x, encoding = "UTF-8")
+  Encoding(x) <- "UTF-8"
+  x <- iconv(x, "UTF-8", "UTF-8", sub = "???")
+  writeLines(x, temp)
+  mark::read_bib(temp)
+}
 
+bib <- read_bib_utf8(bib_file)
+
+# bib <- mark::read_bib(bib_file)
+
+# bib_df <- bib %>%
 bib_df <- bib %>%
   as_tibble() %>%
   filter(
@@ -120,7 +134,7 @@ for (i in cols) {
 
 keywords <- strsplit(bib_df$keywords, ", ")
 outs <- sapply(keywords, function(i) {
-  all(i %out% c("Signant Health", "Madrigal", "wcupa"))
+  all(i %out% c("Signant Health", "Madrigal", "wcupa", "cogstate"))
 })
 bad <- is.na(bib_df$keywords) | outs
 
@@ -157,4 +171,9 @@ posters %>%
   filter(str_detect(keywords, "wcupa")) %>%
   RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/posters_wcupa.bib")
+
+posters %>%
+  filter(str_detect(keywords, "cogstate")) %>%
+  RefManageR::as.BibEntry() %>%
+  RefManageR::WriteBib(file = "bib/posters_cog.bib")
 ```

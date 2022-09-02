@@ -2,6 +2,16 @@
 
 <!-- Possibly separate by topic? -->
 
+## Cogstate - Cognitive outcomes
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+::: {#refs_posters_cog}
+:::
+\endgroup
+
 ## Madrigal - Liver disease
 
 \begingroup
