@@ -2,19 +2,17 @@
 graphics: yes
 name: "Jordan Mark"
 surname: "Barbone, M.A."
-# Default head color won't show
 headcolor: 414141
 position: "Data Scientist, R Developer"
 address: "West Chester, PA"
 phone: "+1 610 675 8922"
 www: jmbarbone.github.io
 email: "jmbarbone@gmail.com; jbarbone@cogstate.com"
-# twitter: jmbarbone
 github: jmbarbone
 linkedin: jmbarbone
 aboutme: "R programmer with experience in statistical programming, monitoring, and report automation in cognitive and CNS clinical trials"
 date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
-csl: "csl/apa6-cv.csl"
+csl: "csl/apa7-cv.csl"
 nocite: "@*"
 knit: bookdown::render_book
 bibliography_publications: "bib/publications.bib"
@@ -22,6 +20,9 @@ bibliography_thesis: "bib/thesis.bib"
 bibliography_posters_signant: "bib/posters_signant.bib" 
 bibliography_posters_wcupa: "bib/posters_wcupa.bib"
 bibliography_posters_madrigal: "bib/posters_madrigal.bib"
+bibliography_posters_cogstate: "bib/posters_cogstate.bib"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE, cache = FALSE}
@@ -83,17 +84,17 @@ adjust_author_names <- function(names) {
 
 ```{r get and write bibs}
 # All references saved
-bib_file <- mark::file_path(
-  Sys.getenv("R_USER"),
-  "GitHub",
-  "bib-references",
-  "references.bib",
-  check = TRUE
-)
+bib_file <- "../bib-references/references.bib"
+bib_file <- normalizePath(bib_file, mustWork = FALSE)
+
+if (!file.exists(bib_file)) {
+  bib_file <- "https://raw.githubusercontent.com/jmbarbone/bib-references/master/references.bib"
+}
 
 bib <- mark::read_bib(bib_file, skip = 3L)
 
-bib_df <- bib %>%
+bib_df <-
+  bib %>%
   as_tibble() %>%
   filter(
     str_detect(author, "Barbone"),
@@ -109,6 +110,7 @@ bib_df <- bib %>%
       ),
     month = match(month, month.abb)
   ) %>%
+  arrange(desc(year), desc(month)) |> 
   col_to_rowname()
 
 # Remove columns so month will show and be ordered correctly?
@@ -120,7 +122,7 @@ for (i in cols) {
 
 keywords <- strsplit(bib_df$keywords, ", ")
 outs <- sapply(keywords, function(i) {
-  all(i %out% c("Signant Health", "Madrigal", "wcupa"))
+  all(i %out% c("Signant Health", "Madrigal", "wcupa", "cogstate"))
 })
 bad <- is.na(bib_df$keywords) | outs
 
@@ -140,8 +142,14 @@ bib_df %>%
   RefManageR::as.BibEntry() %>%
   RefManageR::WriteBib(file = "bib/thesis.bib")
 
-posters <- bib_df %>%
+posters <- 
+  bib_df %>%
   filter(bibtype == "inproceedings")
+
+posters %>%
+  filter(str_detect(keywords, "cogstate")) %>%
+  RefManageR::as.BibEntry() %>%
+  RefManageR::WriteBib(file = "bib/posters_cogstate.bib")
 
 posters %>%
   filter(str_detect(keywords, "Signant Health")) %>%

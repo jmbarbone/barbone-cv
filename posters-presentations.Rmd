@@ -1,6 +1,16 @@
-# Posters
+# Posters and presentations
 
 <!-- Possibly separate by topic? -->
+
+## Cogstate - Digital cognition
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+::: {#refs_posters_cogstate}
+:::
+\endgroup
 
 ## Madrigal - Liver disease
 
