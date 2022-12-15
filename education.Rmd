@@ -1,7 +1,16 @@
 # Education
 
 ```{r education}
-readr::read_csv("data/education.csv", col_types = "ccccc") %>% 
+readr::read_csv(
+  "data/education.csv", 
+  col_types = readr::cols(
+    what = readr::col_character(),
+    when = readr::col_character(),
+    with = readr::col_character(),
+    where = readr::col_character(),
+    why = readr::col_character()
+  )
+) %>% 
   tidyr::fill(-why) %>% 
   vitae::detailed_entries(what, when, with, where, why)
 ```
