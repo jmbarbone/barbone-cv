@@ -25,7 +25,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE, cache = FALSE}
+```{r setup}
+#| include: false
+#| cache: false
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 options(
@@ -41,38 +43,13 @@ library(mark)
 ```
 
 ```{r FUNS}
-col_to_rowname <- function(x, col = 1L) {
-  if (is.character(col)) {
-    col <- match(col, colnames(x))
-  }
-  
-  x <- as.data.frame(x)
-  y <- x[[1]]
-  lens <- tapply(y, y, length)
-  bad <- lens > 1L
-  
-  if (any(bad)) {
-    stop("Multiple entriess found for column, cannot convert to rownames: ",
-         paste(names(lens)[bad], collapse = "\n"),
-         call. = FALSE
-    )
-  }
-  
-  rownames(x) <- y
-  x <- x[-col]
-  x
-}
-
-# RefManageR::as.BibEntry() assumes a different style
 adjust_author_name <- function(a) {
   splits <- strsplit(a, " and ")[[1]]
-  switches <- sapply(
-    splits,
-    function(x) {
-      x <- gsub("(^.*)[,\\s](.*$)", "\\2 \\1", x)
-      x <- gsub("\\s+", " ", x)
-      trimws(x)
-    })
+  switches <- sapply(splits, function(x) {
+    x <- gsub("(^.*)[,\\s](.*$)", "\\2 \\1", x)
+    x <- gsub("\\s+", " ", x)
+    trimws(x)
+  })
   paste(switches, collapse = " and ")
 }
 
@@ -82,7 +59,7 @@ adjust_author_names <- function(names) {
 ```
 
 
-```{r get and write bibs}
+```{r get-bibs}
 # All references saved
 bib_file <- "../bib-references/references.bib"
 bib_file <- normalizePath(bib_file, mustWork = FALSE)
@@ -94,28 +71,29 @@ if (!file.exists(bib_file)) {
 bib <- mark::read_bib(bib_file, skip = 3L)
 
 bib_df <-
-  bib %>%
-  as_tibble() %>%
+  bib |>
+  as_tibble() |>
   filter(
     str_detect(author, "Barbone"),
     str_detect(keywords, "_DRAFT_", negate = TRUE)
-  ) %>%
-  rename(bibtype = field) %>%
+  ) |>
+  rename(bibtype = field) |>
   mutate(
     author = adjust_author_names(author),
     booktitle = if_else(
       bibtype == "inproceedings",
       note,
       booktitle
-      ),
+    ),
     month = match(month, month.abb)
-  ) %>%
+  ) |>
   arrange(desc(year), desc(month)) |> 
-  col_to_rowname()
+  mark::to_row_names()
 
 # Remove columns so month will show and be ordered correctly?
 cols <- c("pages", "journal", "publisher", "number", "volume")
 inp <- bib_df$bibtype == "inproceedings"
+
 for (i in cols) {
   bib_df[[i]][inp] <- NA_character_
 }
@@ -127,42 +105,43 @@ outs <- sapply(keywords, function(i) {
 bad <- is.na(bib_df$keywords) | outs
 
 if (any(bad)) {
-  stop("These references are missing keywords: ",
-       paste(rownames(bib_df)[bad], collapse = " & "),
-       call. = FALSE)
+  stop(
+    "These references are missing keywords: ",
+    paste(rownames(bib_df)[bad], collapse = " & "),
+  )
 }
 
-bib_df %>%
-  filter(bibtype == "article") %>%
-  RefManageR::as.BibEntry() %>%
+bib_df |>
+  filter(bibtype == "article") |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/publications.bib")
 
-bib_df %>%
-  filter(bibtype == "mastersthesis") %>%
-  RefManageR::as.BibEntry() %>%
+bib_df |>
+  filter(bibtype == "mastersthesis") |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/thesis.bib")
 
 posters <- 
-  bib_df %>%
+  bib_df |>
   filter(bibtype == "inproceedings")
 
-posters %>%
-  filter(str_detect(keywords, "cogstate")) %>%
-  RefManageR::as.BibEntry() %>%
+posters |>
+  filter(str_detect(keywords, "cogstate")) |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/posters_cogstate.bib")
 
-posters %>%
-  filter(str_detect(keywords, "Signant Health")) %>%
-  RefManageR::as.BibEntry() %>%
+posters |>
+  filter(str_detect(keywords, "Signant Health")) |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/posters_signant.bib")
 
-posters %>%
-  filter(str_detect(keywords, "Madrigal")) %>%
-  RefManageR::as.BibEntry() %>%
+posters |>
+  filter(str_detect(keywords, "Madrigal")) |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/posters_madrigal.bib")
 
-posters %>%
-  filter(str_detect(keywords, "wcupa")) %>%
-  RefManageR::as.BibEntry() %>%
+posters |>
+  filter(str_detect(keywords, "wcupa")) |>
+  RefManageR::as.BibEntry() |>
   RefManageR::WriteBib(file = "bib/posters_wcupa.bib")
 ```
