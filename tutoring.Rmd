@@ -1,17 +1,6 @@
 # Tutoring
 
 ```{r tutoring}
-readr::read_csv(
-  "data/tutoring.csv",
-  col_types = readr::cols(
-    what = readr::col_character(),
-    when = readr::col_character(),
-    with = readr::col_character(),
-    where = readr::col_character(),
-    why = readr::col_character()
-  )
-) %>% 
-  tidyr::fill(-why) %>%
+read_yaml("data/tutoring.yaml") |>
   vitae::detailed_entries(what, when, with, where)
 ```
-

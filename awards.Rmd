@@ -1,8 +1,6 @@
 # Awards
 
 ```{r awards}
-readr::read_csv("data/awards.csv", col_types = "ccccc") %>% 
-  tidyr::fill(-why) %>%
+read_yaml("data/awards.yaml") |>
   vitae::detailed_entries(what, when, with, where, why)
 ```
-
