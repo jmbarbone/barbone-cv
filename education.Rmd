@@ -1,6 +1,7 @@
 # Education
 
-```{r education}
+```{r}
+#| label: education
 read_yaml("data/education.yaml") |>
   separate_longer_delim(why, "\n") |> 
   vitae::detailed_entries(what, when, with, where, why)

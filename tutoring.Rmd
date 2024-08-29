@@ -1,6 +1,7 @@
 # Tutoring
 
-```{r tutoring}
+```{r}
+#| label: tutoring
 read_yaml("data/tutoring.yaml") |>
   vitae::detailed_entries(what, when, with, where)
 ```

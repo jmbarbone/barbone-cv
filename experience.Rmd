@@ -1,6 +1,7 @@
 # Experience
 
-```{r experience}
+```{r}
+#| label: experience
 read_yaml("data/experience.yaml") |>
   tidyr::separate_longer_delim(why, "\n") |> 
   vitae::detailed_entries(what, when, with, where, why)
