@@ -14,7 +14,6 @@ Run the following to produce the curriculum-vitae
 bookdown::render_book(
   input = "index.Rmd",
   output_format = "vitae::awesomecv",
-  output_dir = "curriculum-vitae",
   config_file = "_bookdown.yml"
 )
 ```
