@@ -6,6 +6,19 @@ I keep a running list of Bibtext references in a separate [GitHub repository](gi
 This lets me maintain a single master bib text file with all references I'll ever need and manage through [JabRef](https://www.jabref.org/).
 The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR) which required me to make some changes to the author names as I prefer `Surname1, Given1 Middle1 and Surname2, Given2` format rather than `Given1 Middle1 Surname1 and Given2 Surname2`
 
+## Instructions
+
+Run the following to produce the curriculum-vitae
+
+```r
+bookdown::render_book(
+  input = "index.Rmd",
+  output_format = "vitae::awesomecv",
+  output_dir = "curriculum-vitae",
+  config_file = "_bookdown.yml"
+)
+```
+
 ## Other minor changes
 
 * Switched the `what` and `with` columns in bibliography entries to highlight the position over the company and degree over institute, etc
