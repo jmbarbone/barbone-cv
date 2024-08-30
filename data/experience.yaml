@@ -10,6 +10,8 @@ experience:
       Works with project management, scales management, statistics, data management, and data engineering teams internally to support scientific processes and questions
       Creates and writes analytic reports for clinical study data and research
       Drives research, including scientific publications, trial outcome measures, rater training, and trial methodology
+      Performs data curation and aggregation
+
   - what: Madrigal Pharmaceuticals
     when: Dec 2019 - Jun 2021
     with: Principal Data Analyst
@@ -20,6 +22,7 @@ experience:
       Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and PRO
       Used, reviewed, and reported on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
       Trained and onboarded data analyst
+
   - what: Signant Health (Formerly Bracket and CRF Health)
     when: Jan 2019 - Nov 2019
     with: Clinical Data Scientist
@@ -30,6 +33,7 @@ experience:
       Reviewed and developed analyses with SME for detection of errors for study endpoints; collaborated with review of analytic findings
       Trained and supervised of Data Scientists; developed and provided training for new and current processes, programming, and technologies/software; lead, organized team meetings and status updates; wrote and reviewed new process documentation.
       Assisted Program Managers and Project Delivery Managers for process implementation for data products and deliverables for blinded, statistical data monitoring and review; provided consultation for programming and development for Clinical Data Management; liaised between Data Services and Clinical Science teams; provided analytic and research support for Clinical Science
+
   - what: Bracket Global
     when: Jan 2018 - Dec 2018
     with: Clinical Data Specialist
@@ -38,6 +42,7 @@ experience:
       Interacted with and analyzes CNS, psychiatry, neurology clinical trial data quality and outcomes information for clinical insights; collaborated with other Bracket stakeholders and teams to execute and provide ongoing analysis related to study deliverables or internal needs
       Developed training material development and QC; performed data review, eCOA user acceptance testing; study staff contact, sponsor contact, contact with outside experts, report writing.
       Maintained, classified clinical information/materials; reviewed scale administration/scoring; provided clinical feedback, remediation for raters
+
   - what: Bracket Global
     when: May 2016 - Dec 2017
     with: Clinical Associate
@@ -46,12 +51,14 @@ experience:
       Participated in applicable aspects of clinical content development and delivery, including training material development and QC, data review, eCOA user acceptance testing, study staff contact, sponsor contact, contact with outside experts, and report writing
       Maintained, classified clinical information/materials for CNS, psychiatry, neurology clinical trials
       Provided data review for Bracket's Endpoint Reliability programs; clinical analysis on study endpoint data for administration and scoring calibration to standard training principles; and provided remediation as needed to recalibrate to study standards.
+
   - what: Bracket Global
     when: Aug 2015 - May 2016
     with: Clinical Assistant
     where: Wayne, PA
     why: |
       Developed object specific video material, clinical content for training and qualification programs for study staff in clinical trials; addressed and reviewed data quality issues; clinical scheduling; ensured compliance with quality assurance, participate in reporting, analysis activities and research activities (e.g., collection and dissemination of literature and/or data); prepared reports of clinical activities.
+
   - what: Learning Assistance & Resource Center
     when: Aug 2014 - May 2015
     with: Writing Tutor
