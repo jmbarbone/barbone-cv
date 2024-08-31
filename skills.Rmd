@@ -7,12 +7,12 @@
 
   \cvskill
     {Other programming experience}
-    {Intermediate: Python \newline Basic: SQL, git, bash}
+    {Intermediate: Python (pyspark, pandas) \newline Basic: SQL, git, bash}
 
   \cvskill
     {Clinical trials}
     {clinical data management programming, centralized monitoring, eCOA, data review, \newline Rater training and qualification}
-    
+
   \cvskill
     {Psychology}
     {behavioral statistics, research methods, cognitive psychology, learning psychology}
