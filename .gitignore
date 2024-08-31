@@ -6,3 +6,4 @@
 .Rproj.user
 .httr-oauth
 cover-letters/
+*_ignore*
