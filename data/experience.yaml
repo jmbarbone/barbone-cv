@@ -3,7 +3,8 @@ experience:
     when: Jun 2021 - Present
     with: Data Scientist
     where: New Haven, CT (Remote)
-    why: |
+    # job description
+    how: |
       Collaborates with Data Engineering to define data structures and requirements for Azure Databricks infrastructure and reporting.
       Develops data transformations and utilities using PySpark for backend processing
       Supports clinical trial data monitoring, rater training, and cognitive testing applications
@@ -16,8 +17,8 @@ experience:
       Develops solutions for customer-specific data needs and monitors cognitive data performance
       Contributes to process, technology, and infrastructure development for scientific services
       Maintains in-depth knowledge of Cogstate's data systems.
-    how: |
-      Indepedently development of internal R packages to advance programming, visualization, normative data management, central monitoring, and data access
+    why: |
+      Indepedently developmented internal R packages to advance programming, visualization, normative data management, central monitoring, and data access
       Refactored Data Engineering code into a Python package for data transformations within Azure Databricks
       Refactored legacy code to seamlessly integrate PySpark functionalities and enforce best coding practices
       Architected and implemented an efficient process for managing and updating normative data, collaborating closely with science and product management teams
