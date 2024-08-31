@@ -4,13 +4,29 @@ experience:
     with: Data Scientist
     where: New Haven, CT (Remote)
     why: |
-      Builds, develops, deploys, and maintains databases, data models, reporting systems, data automation systems, dashboards and performance metrics
-      Supports the creation of data visualization, Statistical Analysis Plans, research, scientific publications
-      Collaborates with business development science, scientific services, project management, scales management, data management, and data enginerring teams internally, and external collaborators, to support data related processes and questions
-      Works with project management, scales management, statistics, data management, and data engineering teams internally to support scientific processes and questions
-      Creates and writes analytic reports for clinical study data and research
-      Drives research, including scientific publications, trial outcome measures, rater training, and trial methodology
-      Performs data curation and aggregation
+      Collaborates with Data Engineering to define data structures and requirements for Azure Databricks infrastructure and reporting.
+      Develops data transformations and utilities using PySpark for backend processing
+      Supports clinical trial data monitoring, rater training, and cognitive testing applications
+      Maintains databases, data models, reporting systems, dashboards, and performance metrics
+      Works with internal and external teams to address data-related processes and scientific questions
+      Creates and writes analytic reports for clinical studies and research
+      Drives research and publications, focusing on trial outcomes, rater training, and methodology
+      Manages data curation, aggregation, and reporting systems
+      Analyzes cognitive outcome measures and tests, supporting scientific analysis and reporting
+      Develops solutions for customer-specific data needs and monitors cognitive data performance
+      Contributes to process, technology, and infrastructure development for scientific services
+      Maintains in-depth knowledge of Cogstate's data systems.
+    how: |
+      Indepedently development of internal R packages to advance programming, visualization, normative data management, central monitoring, and data access
+      Refactored Data Engineering code into a Python package for data transformations within Azure Databricks
+      Refactored legacy code to seamlessly integrate PySpark functionalities and enforce best coding practices
+      Architected and implemented an efficient process for managing and updating normative data, collaborating closely with science and product management teams
+      Authored comprehensive standards and protocols for Jira workflows and Git management, ensuring consistency and efficiency
+      Designed and managed robust daily and weekly reporting systems for the rigorous monitoring of a high-profile international Alzheimer's Disease trial
+      Analyzed and interpreted requirements from Science and Data Management to drive strategic advancements within our Data Lakehouse
+      Directed and delivered analyses for custom data queries related to both ongoing and concluded clinical trials, providing actionable insights
+      Automated data extraction, reformatting, and storage processes for academic research studies, greatly enhancing accessibility for end-users
+      Contributed to the creation of impactful poster materials for industry conferences and presentations, showcasing research, developments, and services
 
   - what: Madrigal Pharmaceuticals
     when: Dec 2019 - Jun 2021
