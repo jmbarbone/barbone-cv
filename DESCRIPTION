@@ -16,4 +16,12 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests:
-    spelling
+    spelling (>= 2.3.0)
+Imports:
+    bookdown (>= 0.40),
+    knitr (>= 1.48),
+    mark (>= 0.8.0),
+    purrr (>= 1.0.2),
+    RefManageR (>= 1.4.0),
+    vitae (>= 0.6.0),
+    yaml (>= 2.3.10)
