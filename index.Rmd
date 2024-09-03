@@ -48,7 +48,7 @@ library(mark)
 adjust_author_name <- function(a) {
   splits <- strsplit(a, " and ")[[1]]
   switches <- sapply(splits, function(x) {
-    x <- gsub("(^.*)[,\\s](.*$)", "\\2 \\1", x)
+    x <- gsub("(^.*)[,](.*$)", "\\2 \\1", x)
     x <- gsub("\\s+", " ", x)
     trimws(x)
   })
