@@ -18,14 +18,14 @@ experience:
       Contributes to process, technology, and infrastructure development for scientific services
       Maintains in-depth knowledge of Cogstate's data systems.
     why: |
-      Indepedently developmented internal R packages to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
+      Independently developed internal R packages to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
       Refactored Data Engineering code into a Python package for data transformations within Azure Databricks
       Refactored legacy code to seamlessly integrate PySpark functionalities and enforce best coding practices
-      Architected and implemented an efficient process for managing and updating and tracking normative data, collaborating closely with Science and Product Management teams
+      Designed and implemented an efficient process for managing and updating and tracking normative data, collaborating closely with Science and Product Management teams
       Authored comprehensive standards and protocols for Jira workflows and Git management, ensuring consistency and efficiency
-      Designed and managed a robust daily and weekly reporting system for the monitoring of a high-profile international Alzheimer's Disease trial
+      Developed and managed a robust daily and weekly reporting system for the monitoring of a high-profile international Alzheimer's Disease trial
       Analyzed and interpreted requirements from Science and Data Management to drive strategic advancements within our Data Lakehouse
-      Developed, reported, and presnted analyses for custom data queries related to both ongoing and concluded clinical, providing actionable insights for rater training and central monitoring
+      Developed, reported, and presented analyses for custom data queries related to both ongoing and concluded clinical, providing actionable insights for rater training and central monitoring
       Automated data extraction, reformatting, and storage processes for academic research studies, greatly enhancing accessibility for end-users
       Contributed to the creation of poster materials for industry conferences and presentations, showcasing research, developments, and services
 
@@ -34,7 +34,7 @@ experience:
     with: Principal Data Analyst
     where: Conshohocken, PA
     why: |
-      Developed, analysed scripts and packages in R; developed custom functions, analytic packages for creation of daily metrics and reports; unit testing, documentation; maintained source code control
+      Developed, analyzed scripts and packages in R; developed custom functions, analytic packages for creation of daily metrics and reports; unit testing, documentation; maintained source code control
       Aggregated and organized data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiled source data from multiple vendor data bases and reports; reconciled differences between databases
       Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and patient reported outcomes
       Used, reviewed, and reported on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
