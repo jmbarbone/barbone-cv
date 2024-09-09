@@ -1,0 +1,13 @@
+book_filename: "Barbone-Resume"
+rmd_files:
+  - "index-resume.Rmd"
+  # - "skills.Rmd"
+  - "experience.Rmd"
+  - "education.Rmd"
+output_dir: "docs/resume"
+output_extensions: "docs/resume"
+# theme: casual
+theme: classic
+# theme: oldstyle
+# theme: banking
+# theme: fancy

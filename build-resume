@@ -1,0 +1,11 @@
+#!/usr/bin/env -S Rscript
+
+source("R/utils.R")
+
+with_cleanup("docs/resume", {
+  bookdown::render_book(
+    input = "index-resume.Rmd",
+    output_format = "vitae::moderncv",
+    config_file = "_resume.yaml"
+  )
+})

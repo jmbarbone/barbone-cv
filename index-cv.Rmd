@@ -41,6 +41,8 @@ library(tidyverse)
 library(vitae)
 library(bookdown)
 library(mark)
+
+BUILD <- "cv"
 ```
 
 ```{r}

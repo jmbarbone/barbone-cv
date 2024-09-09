@@ -1,0 +1,11 @@
+#!/usr/bin/env -S Rscript
+
+source("R/utils.R")
+
+with_cleanup("docs/cv", {
+  bookdown::render_book(
+    input = "index-cv.Rmd",
+    output_format = "vitae::awesomecv",
+    config_file = "_cv.yaml"
+  )
+})

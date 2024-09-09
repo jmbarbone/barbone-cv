@@ -1,6 +1,6 @@
 book_filename: "Barbone-CV"
 rmd_files:
-  - "index.Rmd"
+  - "index-cv.Rmd"
   - "skills.Rmd"
   - "experience.Rmd"
   - "education.Rmd"
@@ -10,4 +10,3 @@ rmd_files:
   # - "extracurriculars.Rmd"
   # - "awards.Rmd"
   # - "courses.Rmd"
-delete_merged_file: true
