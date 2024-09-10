@@ -23,12 +23,12 @@ switch(
   },
   resume = {
     experience |>
-      filter(row_number() <= 4, .by = what) |>
+      # filter(row_number() <= 5, .by = what) |>
       vitae::detailed_entries(
-        what = with,
-        when = when,
-        with = what,
-        where = where,
+        what = what,
+        when = where,
+        with = with,
+        where = when,
         why = why
       )
   }

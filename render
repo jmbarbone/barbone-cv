@@ -41,6 +41,14 @@ for (output in args$outputs) {
 
     },
     cv = {
+
+      if (args$update) {
+        cat("Updating awecomecv.csl\n")
+        "https://raw.githubusercontent.com/posquit0/Awesome-CV/master/awesome-cv.cls" |>
+          readLines() |>
+          writeLines("cv/awesomecv.csl")
+      }
+
       with_cleanup("cv", {
         bookdown::render_book(
           input = "cv/index.Rmd",

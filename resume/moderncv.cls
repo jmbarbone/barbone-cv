@@ -1,5 +1,5 @@
 %% start of file `moderncv.cls'.
-%% Copyright 2006-2015 Xavier Danaux (xdanaux@gmail.com).
+%% Copyright 2006-2015 Xavier Danaux (xdanaux@gmail.com), 2020-2024 moderncv maintainers (github.com/moderncv).
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License version 1.3c,
@@ -10,7 +10,7 @@
 %                identification
 %-------------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{moderncv}[2015/07/28 v2.0.0 modern curriculum vitae and letter document class]
+\ProvidesClass{moderncv}[2024-07-18 v2.4.1 modern curriculum vitae and letter document class]
 
 
 %-------------------------------------------------------------------------------
@@ -83,8 +83,8 @@
 % color
 \RequirePackage[table]{xcolor}
 
-% font loading
-\RequirePackage{ifxetex,ifluatex}
+% tex compiler checking for symbol loading
+\RequirePackage{iftex}
 \newif\ifxetexorluatex
 \ifxetex
   \xetexorluatextrue
@@ -95,20 +95,7 @@
     \xetexorluatexfalse
   \fi
 \fi
-% automatic loading of latin modern fonts
-%\ifxetexorluatex
-%  \RequirePackage{fontspec}
-%  \defaultfontfeatures{Ligatures=TeX}
-%  \RequirePackage{unicode-math}
-%  \setmainfont{Latin Modern}
-%  \setsansfont{Latin Modern Sans}
-%  \setmathfont{Latin Modern Math}
-%\else
-  \RequirePackage[T1]{fontenc}
-  \IfFileExists{lmodern.sty}%
-    {\RequirePackage{lmodern}}%
-    {}
-%\fi
+
 
 % hyper links (hyperref is loaded at the end of the preamble to pass options required by loaded packages such as CJK)
 \newcommand*\pdfpagemode{UseNone}% do not show thumbnails or bookmarks on opening (on supporting browsers); set \pdfpagemode to "UseOutlines" to show bookmarks
@@ -116,10 +103,10 @@
 \urlstyle{tt}
 \AtEndPreamble{
   \pagenumbering{arabic}% has to be issued before loading hyperref, as to set \thepage and hence to avoid hyperref issuing a warning and setting pdfpagelabels=false
-  \RequirePackage[unicode]{hyperref}% unicode is required for unicode pdf metadata
+  \PassOptionsToPackage{unicode}{hyperref}
+  \RequirePackage{hyperref}
   \hypersetup{
     breaklinks,
-    baseurl       = http://,
     pdfborder     = 0 0 0,
     pdfpagemode   = \pdfpagemode,
     pdfstartpage  = 1,
@@ -128,9 +115,15 @@
     bookmarksopen = true,
     bookmarksdepth= 2,% to show sections and subsections
     pdfauthor     = {\@firstname{}~\@lastname{}},
-    pdftitle      = {\@firstname{}~\@lastname{}\notblank{\@title}{ -- \@title}{}},
-    pdfsubject    = {Resum\'{e} of \@firstname{}~\@lastname{}},
-    pdfkeywords   = {\@firstname{}~\@lastname{}, curriculum vit\ae{}, resum\'{e}}}}
+    pdftitle      =
+    {\@firstname{}~\@lastname{}\expandafter\notblank\expandafter{\@title}{ -- \@title}{}},  %\notblank does not expand argument automatically
+    pdfsubject    = {R\'{e}sum\'{e} of \@firstname{}~\@lastname{}},
+    pdfkeywords   = {\@firstname{}~\@lastname{}, curriculum vit\ae{}, r\'{e}sum\'{e}}}}
+
+% pdftex not using pdfmanagement-testphase requires T1 font encoding in order to handle links containing special characters somewhat properly
+\ifpdftex
+  \IfPDFManagementActiveTF{}{\RequirePackage[T1]{fontenc}}
+\fi
 
 % graphics
 \RequirePackage{graphicx}
@@ -152,9 +145,9 @@
       \@ifundefined{r@lastpage}{}{%
         \ifthenelse{\pageref{lastpage}>1}{%
           \newlength{\pagenumberwidth}%
-          \settowidth{\pagenumberwidth}{\color{color2}\addressfont\itshape\strut\thepage/\pageref{lastpage}}%
+          \settowidth{\pagenumberwidth}{\color{color2}\pagenumberfont\strut\thepage/\pageref{lastpage}}%
           \fancypagestyle{plain}{%
-            \fancyfoot[r]{\parbox[b]{\pagenumberwidth}{\color{color2}\pagenumberfont\strut\thepage/\pageref{lastpage}}}}% the parbox is required to ensure alignment with a possible center footer (e.g., as in the casual style)
+            \fancyfoot[r]{\parbox[b]{\pagenumberwidth}{\color{color2}\pagenumberfont\strut\thepage/\protect\NoHyper\pageref{lastpage}\protect\endNoHyper}}}% the parbox is required to ensure alignment with a possible center footer (e.g., as in the casual style)
           \pagestyle{plain}}{}}\fi}%
   \AtEndDocument{\label{lastpage}}}
 \pagestyle{plain}
@@ -191,7 +184,6 @@
 % compatibility package with older versions of moderncv
 \RequirePackageWithOptions{moderncvcompatibility}
 
-%\RequirePackage{l3regex}
 \RequirePackage{expl3}
 
 %-------------------------------------------------------------------------------
@@ -237,17 +229,18 @@
 % where the <city> and <country> arguments can be omitted or provided empty
 \NewDocumentCommand{\address}{mG{}G{}}{\def\@addressstreet{#1}\def\@addresscity{#2}\def\@addresscountry{#3}}
 
+% defines one's birthday (optional)
+% usage: \born{date, place}
+\newcommand*{\born}[1]{\def\@born{#1}}
+
 % defines one's email (optional)
 % usage: \email{<email adress>}
 \newcommand*{\email}[1]{\def\@email{#1}}
 
 % defines one's home page (optional)
-% usage: \homepage{<url>}
-\newcommand*{\homepage}[1]{\def\@homepage{#1}}
-
-% define's one's pronouns (optional)
-% usage: \pronouns{<pronouns>}
-\newcommand*{\pronouns}[1]{\def\@pronouns{#1}}
+% usage: \homepage[<optional protocol>]{<url>}
+% where <optional protocol> should be either "https" (default) or "http"
+\NewDocumentCommand{\homepage}{O{https}m}{\def\@homepageprotocol{#1}\def\@homepage{#2}}
 
 % adds a fixed/mobile/fax number to one's personal information (optional)
 % usage: \phone[<optional type>]{<number>}
@@ -260,27 +253,79 @@
     }
 
 
+% http://latex.org/forum/viewtopic.php?t=12239
+\def\SplitMyMacro#1/#2{#2}
+
+
 % adds a social link to one's personal information (optional)
 % usage: \social[<optional type>][<optional url>]{<account name>}
-% where <optional type> should be either "linkedin", "xing", "twitter", "github", "gitlab" or "skype"
+% where <optional type> should be either:
+% - "linkedin"
+% - "xing"
+% - "twitter"
+% - "mastodon"
+% - "github"
+% - "gitlab"
+% - "stackoverflow"
+% - "bitbucket"
+% - "skype"
+% - "orcid"
+% - "researchgate"
+% - "researcherid"
+% - "telegram"
+% - "whatsapp"
+% - "signal"
+% - "matrix"
+% - "googlescholar"
+% - "codeberg"
+% - "discord"
+% - "twitch"
+% - "youtube"
+% - "tiktok"
+% - "instagram"
+% - "soundcloud"
+% - "steam
+% - "xbox"
+% - "playstation"
+% - "battlenet"
+% - "arxiv"
+% - "inspire"
 \collectionnew{socials}
 \NewDocumentCommand{\social}{O{}O{}m}{%
   \ifthenelse{\equal{#2}{}}%
     {%
-      \ifthenelse{\equal{#1}{linkedin}}{\collectionadd[linkedin]{socials}{\protect\httpslink[#3]{www.linkedin.com/in/#3}}} {}%
-      \ifthenelse{\equal{#1}{xing}}    {\collectionadd[xing]{socials}    {\protect\httpslink[#3]{www.xing.com/profile/#3}}}{}%
-      \ifthenelse{\equal{#1}{twitter}} {\collectionadd[twitter]{socials} {\protect\httpslink[#3]{www.twitter.com/#3}}}     {}%
-      \ifthenelse{\equal{#1}{github}}  {\collectionadd[github]{socials}  {\protect\httpslink[#3]{www.github.com/#3}}}      {}%
-      \ifthenelse{\equal{#1}{gitlab}}  {\collectionadd[gitlab]{socials}  {\protect\httpslink[#3]{www.gitlab.com/#3}}}      {}%
-      \ifthenelse{\equal{#1}{skype}}   {\collectionadd[skype]{socials}   {#3}}                                             {}%
-      \ifthenelse{\equal{#1}{stackoverflow}}  {\collectionadd[stackoverflow]{socials} {\protect\httpslink[\SplitMyMacro#3]{stackoverflow.com/users/#3}}}      {}%
-      \ifthenelse{\equal{#1}{bitbucket}}{\collectionadd[bitbucket]{socials}{\protect\httpslink[#3]{www.bitbucket.org/#3}}}   {}%
-      \ifthenelse{\equal{#1}{orcid}}   {\collectionadd[orcid]{socials}   {\protect\httpslink[#3]{orcid.org/#3}}}   {}%
-      \ifthenelse{\equal{#1}{researchgate}}   {\collectionadd[researchgate]{socials}   {\protect\httpslink[#3]{www.researchgate.net/profile/#3}}}   {}%
-      \ifthenelse{\equal{#1}{googlescholar}}   {\collectionadd[googlescholar]{socials}   {\protect\httpslink[#3]{scholar.google.com/citations?user=#3}}}   {}%
-      \ifthenelse{\equal{#1}{researcherid}}   {\collectionadd[researcherid]{socials}   {\protect\httpslink[#3]{www.researcherid.com/rid/#3}}}   {}%
-    }
-    {\collectionadd[#1]{socials}{\protect\httplink[#3]{#2}}}}
+      \ifthenelse{\equal{#1}{linkedin}}     {\collectionadd[linkedin]{socials}     {\protect\httpslink[#3]{www.linkedin.com/in/#3}}}               {}%
+      \ifthenelse{\equal{#1}{xing}}         {\collectionadd[xing]{socials}         {\protect\httpslink[#3]{www.xing.com/profile/#3}}}              {}%
+      \ifthenelse{\equal{#1}{twitter}}      {\collectionadd[twitter]{socials}      {\protect\httpslink[#3]{twitter.com/#3}}}                       {}%
+      \ifthenelse{\equal{#1}{mastodon}}     {\collectionadd[mastodon]{socials}     {\protect\httpslink[#3]{#3}}}                                   {}%
+      \ifthenelse{\equal{#1}{github}}       {\collectionadd[github]{socials}       {\protect\httpslink[#3]{github.com/#3}}}                        {}%
+      \ifthenelse{\equal{#1}{gitlab}}       {\collectionadd[gitlab]{socials}       {\protect\httpslink[#3]{gitlab.com/#3}}}                        {}%
+      \ifthenelse{\equal{#1}{stackoverflow}}{\collectionadd[stackoverflow]{socials}{\protect\httpslink[#3]{stackoverflow.com/users/#3}}}           {}%
+      \ifthenelse{\equal{#1}{bitbucket}}    {\collectionadd[bitbucket]{socials}    {\protect\httpslink[#3]{bitbucket.org/#3}}}                     {}%
+      \ifthenelse{\equal{#1}{skype}}        {\collectionadd[skype]{socials}        {#3}}                                                           {}%
+      \ifthenelse{\equal{#1}{orcid}}        {\collectionadd[orcid]{socials}        {\protect\httpslink[#3]{orcid.org/#3}}}                         {}%
+      \ifthenelse{\equal{#1}{researchgate}} {\collectionadd[researchgate]{socials} {\protect\httpslink[#3]{www.researchgate.net/profile/#3}}}      {}%
+      \ifthenelse{\equal{#1}{researcherid}} {\collectionadd[researcherid]{socials} {\protect\httpslink[#3]{www.researcherid.com/rid/#3}}}          {}%
+      \ifthenelse{\equal{#1}{telegram}}     {\collectionadd[telegram]{socials}     {\protect\httpslink[#3]{t.me/#3}}}                              {}%
+      \ifthenelse{\equal{#1}{whatsapp}}     {\collectionadd[whatsapp]{socials}     {\protect\httpslink[#3]{wa.me/#3}}}                             {}%
+      \ifthenelse{\equal{#1}{signal}}       {\collectionadd[signal]{socials}       {#3}}                                                           {}%
+      \ifthenelse{\equal{#1}{matrix}}       {\collectionadd[matrix]{socials}       {\httpslink[#3]{matrix.to/\#/#3}}}                              {}%
+      \ifthenelse{\equal{#1}{googlescholar}}{\collectionadd[googlescholar]{socials}{\protect\httpslink[#3]{scholar.google.com/citations?user=#3}}} {}%
+      \ifthenelse{\equal{#1}{codeberg}}     {\collectionadd[codeberg]{socials}     {\protect\httpslink[#3]{codeberg.org/#3}}}                      {}%
+      \ifthenelse{\equal{#1}{discord}}      {\collectionadd[discord]{socials}      {#3}}                                                           {}%
+      \ifthenelse{\equal{#1}{twitch}}       {\collectionadd[twitch]{socials}       {\protect\httpslink[#3]{twitch.tv/#3}}}                         {}%
+      \ifthenelse{\equal{#1}{youtube}}      {\collectionadd[youtube]{socials}      {\protect\httpslink[#3]{youtube.com/#3}}}                       {}%
+      \ifthenelse{\equal{#1}{tiktok}}       {\collectionadd[tiktok]{socials}       {\protect\httpslink[#3]{tiktok.com/@#3}}}                       {}%
+      \ifthenelse{\equal{#1}{instagram}}    {\collectionadd[instagram]{socials}    {\protect\httpslink[#3]{instagram.com/#3}}}                     {}%
+      \ifthenelse{\equal{#1}{soundcloud}}   {\collectionadd[soundcloud]{socials}   {\protect\httpslink[#3]{soundcloud.com/#3}}}                    {}%
+      \ifthenelse{\equal{#1}{steam}}        {\collectionadd[steam]{socials}        {\protect\httpslink[#3]{steamcommunity.com/id/#3}}}             {}%
+      \ifthenelse{\equal{#1}{xbox}}         {\collectionadd[xbox]{socials}         {\protect\httpslink[#3]{account.xbox.com/profile?gamertag=#3}}} {}%
+      \ifthenelse{\equal{#1}{playstation}}  {\collectionadd[playstation]{socials}  {#3}} {}%
+      \ifthenelse{\equal{#1}{battlenet}}    {\collectionadd[battlenet]{socials}    {#3}} {}%
+      \ifthenelse{\equal{#1}{arxiv}}        {\collectionadd[arxiv]{socials}        {\protect\httpslink[#3]{arxiv.org/a/#3}}}                       {}%
+      \ifthenelse{\equal{#1}{inspire}}      {\collectionadd[inspire]{socials}        {\protect\httpslink[#3]{inspirehep.net/authoris/#3}}}           {}%
+      }
+    {\collectionadd[#1]{socials}{\protect\httpslink[#3]{#2}}}}%
 
 % defines additional personal information (optional)
 % usage: \extrainfo{<text>}
@@ -308,32 +353,44 @@
 \renewcommand{\theenumiv}          {\@Alph\c@enumiv}
 
 % other symbols
-\newcommand*{\listitemsymbol}      {\labelitemi~}
-\newcommand*{\addresssymbol}       {}
-\newcommand*{\pronounssymbol}      {{\small\faComment}~}
-\newcommand*{\mobilephonesymbol}   {}
-\newcommand*{\fixedphonesymbol}    {}
-\newcommand*{\faxphonesymbol}      {}
-\newcommand*{\emailsymbol}         {}
-\newcommand*{\homepagesymbol}      {}
-\newcommand*{\linkedinsocialsymbol}{}
-\newcommand*{\xingsocialsymbol}    {}
-\newcommand*{\twittersocialsymbol} {}
-\newcommand*{\githubsocialsymbol}  {}
-\newcommand*{\gitlabsocialsymbol}  {}
-\newcommand*{\skypesocialsymbol}   {}
-\newcommand*{\bitbucketsocialsymbol} {}
-\newcommand*{\stackoverflowsocialsymbol} {}
-\newcommand*{\orcidsocialsymbol}   {}
-\newcommand*{\researchgatesocialsymbol}{}
-\newcommand*{\researcheridsocialsymbol}{}
-\newcommand*{\researchidsocialsymbol}{}
-\newcommand*{\googlescholarsocialsymbol}{\faGoogle~}
-\newcommand*{\telegramsocialsymbol}{}
-\newcommand*{\whatsappsocialsymbol}{}
-\newcommand*{\signalsocialsymbol}{}
-\newcommand*{\matrixsocialsymbol}{}
-\newcommand*{\bornsymbol}{}
+\newcommand*{\listitemsymbol}           {\labelitemi~}
+\newcommand*{\addresssymbol}            {}
+\newcommand*{\bornsymbol}               {}
+\newcommand*{\mobilephonesymbol}        {}
+\newcommand*{\fixedphonesymbol}         {}
+\newcommand*{\faxphonesymbol}           {}
+\newcommand*{\emailsymbol}              {}
+\newcommand*{\homepagesymbol}           {}
+\newcommand*{\linkedinsocialsymbol}     {}
+\newcommand*{\xingsocialsymbol}         {}
+\newcommand*{\twittersocialsymbol}      {}
+\newcommand*{\mastodonsocialsymbol}     {}
+\newcommand*{\githubsocialsymbol}       {}
+\newcommand*{\gitlabsocialsymbol}       {}
+\newcommand*{\stackoverflowsocialsymbol}{}
+\newcommand*{\bitbucketsocialsymbol}    {}
+\newcommand*{\skypesocialsymbol}        {}
+\newcommand*{\orcidsocialsymbol}        {}
+\newcommand*{\researchgatesocialsymbol} {}
+\newcommand*{\researcheridsocialsymbol} {}
+\newcommand*{\googlescholarsocialsymbol}{}
+\newcommand*{\telegramsocialsymbol}     {}
+\newcommand*{\whatsappsocialsymbol}     {}
+\newcommand*{\matrixsocialsymbol}       {}
+\newcommand*{\signalsocialsymbol}       {}
+\newcommand*{\codebergsocialsymbol}     {}
+\newcommand*{\discordsocialsymbol}      {}
+\newcommand*{\twitchsocialsymbol}       {}
+\newcommand*{\youtubesocialsymbol}      {}
+\newcommand*{\tiktoksocialsymbol}       {}
+\newcommand*{\instagramsocialsymbol}    {}
+\newcommand*{\soundcloudsocialsymbol}   {}
+\newcommand*{\steamsocialsymbol}        {}
+\newcommand*{\xboxsocialsymbol}         {}
+\newcommand*{\playstationsocialsymbol}  {}
+\newcommand*{\battlenetsocialsymbol}    {}
+\newcommand*{\arxivsocialsymbol}        {}
+\newcommand*{\inspiresocialsymbol}      {}
 
 % other
 %------
@@ -450,6 +507,8 @@
 
 % styles
 \newcommand*{\namestyle}[1]{{\namefont#1}}
+\NewDocumentCommand{\firstnamestyle}{+m}{{\namefont#1}}
+\NewDocumentCommand{\lastnamestyle}{+m}{{\namefont#1}}
 \newcommand*{\titlestyle}[1]{{\titlefont#1}}
 \newcommand*{\addressstyle}[1]{{\addressfont#1}}
 \newcommand*{\quotestyle}[1]{{\quotefont#1}}
@@ -501,12 +560,16 @@
 % usage: \cvdoubleitem[spacing]{header1}{text1}{header2}{text2}
 \newcommand*{\cvdoubleitem}[5][.25em]{}
 
+% makes a resume line 3 headers and their corresponding text
+% usage: \cvtripleitem[spacing]{header1}{text1}{header2}{text2}{header3}{text3}
+\newcommand*{\cvtripleitem}[7][.1em]{}
+
 % makes a resume line with a list item
-% usage: \cvlistitem[label]{item}
+% usage: \cvlistitem[spacing]{item}
 \newcommand*{\cvlistitem}[2][\listitemsymbol]{}
 
 % makes a resume line with 2 list items
-% usage: \cvlistdoubleitem[label]{item1}{item2}
+% usage: \cvlistdoubleitem[spacing]{item1}{item2}
 \newcommand*{\cvlistdoubleitem}[3][\listitemsymbol]{}
 
 % makes a typical resume job / education entry
@@ -519,34 +582,39 @@
 
 % makes a generic hyperlink
 % usage: \link[optional text]{link}
-\newcommand*{\link}[2][]{%
-  \ifthenelse{\equal{#1}{}}%
-    {\href{#2}{#2}}%
-    {\href{#2}{#1}}}
+% uses pdfmanagement-testphase when available, which provides url encoding of special characters
+\NewDocumentCommand{\link}{O{}m}{%
+  \IfPDFManagementActiveTF{%
+    \ifthenelse{\equal{#1}{}}%
+      {\hrefurl[urlencode]{#2}{#2}}%
+      {\hrefurl[urlencode]{#2}{#1}}}{%
+    \ifthenelse{\equal{#1}{}}%
+      {\href{#2}{#2}}%
+      {\href{#2}{#1}}}}
 
 % makes a http hyperlink
 % usage: \httplink[optional text]{link}
-\newcommand*{\httplink}[2][]{%
-  \ifthenelse{\equal{#1}{}}%
-    {\href{http://#2}{#2}}%
-    {\href{http://#2}{#1}}}
+% uses pdfmanagement-testphase when available, which provides url encoding of special characters
+\NewDocumentCommand{\httplink}{O{}m}{%
+  \IfPDFManagementActiveTF{%
+    \ifthenelse{\equal{#1}{}}%
+      {\hrefurl[urlencode]{http://#2}{#2}}%
+      {\hrefurl[urlencode]{http://#2}{#1}}}{%
+    \ifthenelse{\equal{#1}{}}%
+      {\href{http://#2}{#2}}%
+      {\href{http://#2}{#1}}}}
 
-% makes a https hyperlink with escaped underscore in link name
+% makes an https hyperlink
 % usage: \httpslink[optional text]{link}
-\newcommand*{\httpslink}[2][]{%
-  \ifthenelse{\equal{#1}{}}%
-    {\href{https://#2}{\expandafter\escapeunderscore\expandafter{#2}}}
-    {\href{https://#2}{\expandafter\escapeunderscore\expandafter{#1}}}
-}
-
-\ExplSyntaxOn
-\tl_new:N \l_escapeunderscore_tl
-\cs_new:Npn \escapeunderscore #1 {
-    \tl_set:Nn \l_escapeunderscore_tl {#1}
-    \regex_replace_all:nnN {\_} {_} \l_escapeunderscore_tl
-    \tl_use:N \l_escapeunderscore_tl
-}
-\ExplSyntaxOff
+% uses pdfmanagement-testphase when available, which provides url encoding of special characters
+\NewDocumentCommand{\httpslink}{O{}m}{%
+  \IfPDFManagementActiveTF{%
+    \ifthenelse{\equal{#1}{}}%
+      {\hrefurl[urlencode]{https://#2}{#2}}%
+      {\hrefurl[urlencode]{https://#2}{#1}}}{%
+    \ifthenelse{\equal{#1}{}}%
+      {\href{https://#2}{#2}}%
+      {\href{https://#2}{#1}}}}
 
 % makes an email hyperlink
 % usage: \emaillink[optional text]{link}
@@ -730,8 +798,10 @@
 % elements
 \newcommand*{\recipient}[2]{\def\@recipientname{#1}\def\@recipientaddress{#2}}
 \renewcommand*{\date}[1]{\def\@date{#1}}\date{\today}
+\newcommand*{\subject}[1]{\def\@subject{#1}}
 \newcommand*{\opening}[1]{\def\@opening{#1}}
 \newcommand*{\closing}[1]{\def\@closing{#1}}
+\newcommand*{\signature}[2]{\def\@signature{\includegraphics[scale=#1]{#2}}}
 \newcommand*{\enclosure}[2][]{%
   % if an optional argument is provided, use it to redefine \enclname
   \ifthenelse{\equal{#1}{}}{}{\renewcommand*{\enclname}{#1}}%
