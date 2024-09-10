@@ -2,7 +2,16 @@
 with_cleanup <- function(dir, code) {
   wd <- getwd()
   old <- fs::dir_ls()
-  try(force(code))
+  res <- try(force(code))
+  on.exit({
+    if (inherits(res, "try-error")) {
+      cond <- attr(res, "condition")
+      stop(res$message, call. = res$call)
+    }
+
+    res
+  })
+
   withr::with_dir(wd, {
     new <- setdiff(fs::dir_ls(), old)
     # ignore the CV and Resume files
