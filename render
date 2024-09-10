@@ -10,6 +10,11 @@ ca$add_argument(
   default = c("resume", "cv"),
   info = "Outputs to render"
 )
+ca$add_argument(
+  "-u", "--update",
+  action = "flag",
+  info = "Update csl"
+)
 
 args <- ca$parse()
 
@@ -17,6 +22,13 @@ for (output in args$outputs) {
   switch(
     output,
     resume = {
+      if (args$update) {
+        cat("Updating moderncv.cls\n")
+        "https://raw.githubusercontent.com/moderncv/moderncv/master/moderncv.cls" |>
+          readLines() |>
+          writeLines("resume/moderncv.cls")
+      }
+
       with_cleanup("resume", {
         bookdown::render_book(
           input = "resume/index.Rmd",
