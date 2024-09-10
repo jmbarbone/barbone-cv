@@ -1,26 +1,16 @@
 
 with_cleanup <- function(dir, code) {
-  wd <- getwd()
-  old <- fs::dir_ls()
-  res <- try(force(code))
+  old <- fs::dir_ls(dir, recurse = TRUE)
   on.exit({
-    if (inherits(res, "try-error")) {
-      cond <- attr(res, "condition")
-      stop(res$message, call. = res$call)
+    new <- fs::dir_ls(dir, recurse = TRUE)
+    # ignore the CV and Resume files
+    new <- grep("Barbone-(CV|Resume)\\.pdf$", new, invert = TRUE, value = TRUE)
+    if (length(new)) {
+      cat("Deleting new files", paste("\n-", new, collapse = ", "), "\n")
+      fs::file_delete(new)
     }
 
-    res
   })
 
-  withr::with_dir(wd, {
-    new <- setdiff(fs::dir_ls(), old)
-    # ignore the CV and Resume files
-    new <- new[grep("$Barbone-(CV|Resume)\\.pdf$", basename(new), invert = TRUE)]
-    cat("Moving new files", paste("\n-", new, collapse = ", "), "\n")
-    fs::dir_create(dir)
-    fs::file_move(new, fs::path(dir, new))
-
-    known <- basename(fs::dir_ls(dir))
-    fs::file_delete(known[fs::file_exists(known)])
-  })
+  force(code)
 }
