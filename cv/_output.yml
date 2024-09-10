@@ -1,0 +1,8 @@
+vitae::awesomecv:
+  fig_caption: yes
+  keep_tex: no
+  keep_md: no
+  pandoc_args:
+    - --lua-filter="../lua/multiple-bibliographies.lua"
+    - --lua-filter="../lua/bold-author.lua"
+  page_total: true

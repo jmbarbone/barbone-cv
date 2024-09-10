@@ -1,0 +1,36 @@
+# Experience
+
+```{r}
+#| label: experience
+experience <-
+  here::here("data/experience.yaml") |>
+  read_yaml() |>
+  mutate(why = sub("\n$", "", why)) |>
+  head(if (BUILD == "resume") 4 else Inf) |>
+  separate_longer_delim(why, "\n")
+
+switch(
+  BUILD,
+  cv = {
+    experience |>
+      vitae::detailed_entries(
+        what = what,
+        when = where,
+        with = with,
+        where = when,
+        why = why
+      )
+  },
+  resume = {
+    experience |>
+      filter(row_number() <= 4, .by = what) |>
+      vitae::detailed_entries(
+        what = with,
+        when = when,
+        with = what,
+        where = where,
+        why = why
+      )
+  }
+)
+```

@@ -1,0 +1,8 @@
+# Awards
+
+```{r}
+#| label: awards
+here::here("data/awards.yaml") |>
+  read_yaml() |>
+  vitae::detailed_entries(what, when, with, where, why)
+```

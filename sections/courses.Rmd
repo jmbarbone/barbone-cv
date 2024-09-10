@@ -1,0 +1,12 @@
+# Programming courses
+
+```{r}
+#| label: certs
+here::here("data/certs.yaml")
+  read_yaml() |>
+  vitae::detailed_entries(
+    what = link,
+    with = course,
+    where = entity
+  )
+```

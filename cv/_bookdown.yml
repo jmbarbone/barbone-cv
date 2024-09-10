@@ -1,0 +1,13 @@
+book_filename: "cv/Barbone-CV"
+rmd_files:
+  - "cv/index.Rmd"
+  - "sections/skills.Rmd"
+  - "sections/experience.Rmd"
+  - "sections/education.Rmd"
+  # - "sections/tutoring.Rmd"
+  - "sections/publications.Rmd"
+  - "sections/posters-presentations.Rmd"
+  # - "sections/extracurriculars.Rmd"
+  # - "sections/awards.Rmd"
+  # - "sections/courses.Rmd"
+delete_merged_file: true

@@ -1,7 +1,0 @@
-# Extracurricular activities
-
-```{r}
-#| label: extracurriculars
-read_yaml("data/extracurriculars.yaml") |>
-  vitae::detailed_entries(what, when, with, where)
-```
