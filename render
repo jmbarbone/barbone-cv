@@ -2,7 +2,7 @@
 
 source("R/utils.R")
 
-library(scribe, lib = Sys.getenv("R_LIBS_USER"))
+library(scribe, lib = Sys.getenv("R_LIBS_SCRIBE"))
 
 ca <- command_args()
 ca$add_argument(
