@@ -13,7 +13,7 @@ ca$add_argument(
 ca$add_argument(
   "-u", "--update",
   action = "flag",
-  info = "Update csl"
+  info = "Update cls"
 )
 
 args <- ca$parse()
@@ -43,10 +43,10 @@ for (output in args$outputs) {
     cv = {
 
       if (args$update) {
-        cat("Updating awecomecv.csl\n")
+        cat("Updating awecomecv.cls\n")
         "https://raw.githubusercontent.com/posquit0/Awesome-CV/master/awesome-cv.cls" |>
           readLines() |>
-          writeLines("cv/awesomecv.csl")
+          writeLines("cv/awesomecv.cls")
       }
 
       with_cleanup("cv", {
