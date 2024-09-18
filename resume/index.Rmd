@@ -31,22 +31,6 @@ options(
   tidyverse.quiet = TRUE
 )
 
-library(knitr)
-library(tidyverse)
-library(vitae)
-library(bookdown)
-library(mark)
-
+devtools::load_all()
 BUILD <- "resume"
-```
-
-```{r}
-#| label: funs
-read_yaml <- function(x) {
-    x |>
-    yaml::read_yaml() |>
-    purrr::pluck(1) |>
-    purrr::map(tibble::as_tibble) |>
-    purrr::list_rbind()
-}
 ```
