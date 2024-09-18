@@ -2,7 +2,25 @@
 
 ```{r}
 #| label: awards
+#| eval: false
 here::here("data/awards.yaml") |>
   read_yaml() |>
-  vitae::detailed_entries(what, when, with, where, why)
+  vitae::detailed_entries(
+    what = what,
+    when = when,
+    # with = what,
+    where = with,
+    why = why,
+  )
+```
+
+```{r}
+#| label: awards-brief
+here::here("data/awards.yaml") |>
+  read_yaml() |>
+  vitae::detailed_entries(
+    what = with,
+    when = when,
+    with = what,
+  )
 ```
