@@ -1,8 +1,7 @@
 #!/usr/bin/env -S Rscript
 
-source("R/utils.R")
-
 library(scribe, lib = Sys.getenv("R_LIBS_SCRIBE"))
+devtools::load_all()
 
 ca <- command_args()
 ca$add_argument(
@@ -41,7 +40,6 @@ for (output in args$outputs) {
 
     },
     cv = {
-
       if (args$update) {
         cat("Updating awecomecv.cls\n")
         "https://raw.githubusercontent.com/posquit0/Awesome-CV/master/awesome-cv.cls" |>
