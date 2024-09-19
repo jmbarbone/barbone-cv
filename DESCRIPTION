@@ -20,11 +20,12 @@ Suggests:
     pandoc (>= 0.2.0)
 Imports:
     bookdown (>= 0.40),
-    knitr (>= 1.48),
+    knitr,
     mark (>= 0.8.0),
     purrr (>= 1.0.2),
     RefManageR (>= 1.4.0),
     vitae,
     yaml (>= 2.3.10)
-remotes:
-    github::mitchelloharawild/vitae@v0.5.3
+Remotes:
+    github::mitchelloharawild/vitae@v0.6.0,
+    github::yihui/knitr@v1.48

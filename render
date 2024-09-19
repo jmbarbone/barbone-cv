@@ -3,16 +3,13 @@
 library(scribe, lib = Sys.getenv("R_LIBS_SCRIBE"))
 devtools::load_all()
 
+pandoc::pandoc_activate()
+
 ca <- command_args()
 ca$add_argument(
   "outputs",
   default = c("resume", "cv"),
   info = "Outputs to render"
-)
-ca$add_argument(
-  "-u", "--update",
-  action = "flag",
-  info = "Update cls"
 )
 
 args <- ca$parse()
@@ -21,13 +18,6 @@ for (output in args$outputs) {
   switch(
     output,
     resume = {
-      if (args$update) {
-        cat("Updating moderncv.cls\n")
-        "https://raw.githubusercontent.com/moderncv/moderncv/master/moderncv.cls" |>
-          readLines() |>
-          writeLines("resume/moderncv.cls")
-      }
-
       with_cleanup("resume", {
         bookdown::render_book(
           input = "resume/index.Rmd",
@@ -40,13 +30,6 @@ for (output in args$outputs) {
 
     },
     cv = {
-      if (args$update) {
-        cat("Updating awecomecv.cls\n")
-        "https://raw.githubusercontent.com/posquit0/Awesome-CV/master/awesome-cv.cls" |>
-          readLines() |>
-          writeLines("cv/awesomecv.cls")
-      }
-
       with_cleanup("cv", {
         bookdown::render_book(
           input = "cv/index.Rmd",
@@ -59,3 +42,5 @@ for (output in args$outputs) {
     }
   )
 }
+
+sessioninfo::session_info(to_file = TRUE)
