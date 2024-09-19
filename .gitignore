@@ -7,3 +7,5 @@
 .httr-oauth
 cover-letters/
 *_ignore*
+
+/.quarto/

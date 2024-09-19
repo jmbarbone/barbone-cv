@@ -1,7 +1,9 @@
 # Programming courses
 
-```{r certs, result="markdown"}
-read_yaml("data/certs.yaml") |>
+```{r}
+#| label: courses
+here::here("data/courses.yaml") |> 
+  read_yaml() |>
   vitae::detailed_entries(
     what = link,
     with = course,

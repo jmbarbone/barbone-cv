@@ -18,15 +18,16 @@ experience:
       Contributes to process, technology, and infrastructure development for scientific services
       Maintains in-depth knowledge of Cogstate's data systems.
     why: |
-      Independently developed internal R packages to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
-      Refactored Data Engineering code into a Python package for data transformations within Azure Databricks
-      Refactored legacy code to seamlessly integrate PySpark functionalities and enforce best coding practices
+      Independently developed internal **R packages** to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
+      Designed and development **R shiny** applications for displaying central monitoring activity and performing interactive analyses
+      Refactored Data Engineering **PySpark** code into a **python** package for data transformations within **Azure Databricks** and **DeltaTable** management
+      Refactored legacy **SQL** code to seamlessly integrate **PySpark** functionalities and enforce best coding practices
       Designed and implemented an efficient process for managing and updating and tracking normative data, collaborating closely with Science and Product Management teams
-      Authored comprehensive standards and protocols for Jira workflows and Git management, ensuring consistency and efficiency
-      Developed and managed a robust daily and weekly reporting system for the monitoring of a high-profile international Alzheimer's Disease trial
+      Authored comprehensive standards and protocols for **Jira** workflows and **git** management, ensuring consistency and efficiency
+      Developed and managed a robust daily and weekly reporting system with **R tidyverse** scripts for the monitoring of a high-profile international Alzheimer's Disease trial
       Analyzed and interpreted requirements from Science and Data Management to drive strategic advancements within our Data Lakehouse
-      Developed, reported, and presented analyses for custom data queries related to both ongoing and concluded clinical, providing actionable insights for rater training and central monitoring
-      Automated data extraction, reformatting, and storage processes for academic research studies, greatly enhancing accessibility for end-users
+      Developed, reported, and presented analyses with **R tidyverse** scripts for custom data queries related to both ongoing and concluded clinical, providing actionable insights for rater training and central monitoring
+      Developed a **python** data extraction, reformatting, and storage processes for academic research studies, greatly enhancing accessibility for end-users
       Contributed to the creation of poster materials for industry conferences and presentations, showcasing research, developments, and services
 
   - what: Madrigal Pharmaceuticals
@@ -34,13 +35,13 @@ experience:
     with: Principal Data Analyst
     where: Conshohocken, PA
     why: |
-      Developed, analyzed scripts and packages in R; developed custom functions, analytic packages for creation of daily metrics and reports; unit testing, documentation; maintained source code control
-      Aggregated and organized data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiled source data from multiple vendor data bases and reports; reconciled differences between databases
-      Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and patient reported outcomes
-      Used, reviewed, and reported on statistical testing such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
+      Developed internal **R packages** with **tidyverse** features for the creation of daily metric and reports
+      Aggregated and organized data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiled source data from multiple vendor data bases and reports; reconciled differences between databases using **R tidyverse** suite
+      Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and patient reported outcomes with **R**
+      Reviewed and reported on statistical testing in **R** such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
       Trained and onboarded data analyst
 
-  - what: Signant Health (Formerly Bracket and CRF Health)
+  - what: Signant Health (formerly Bracket and CRF Health)
     when: Jan 2019 - Nov 2019
     with: Clinical Data Scientist
     where: Wayne, PA
@@ -51,7 +52,7 @@ experience:
       Trained and supervised of Data Scientists; developed and provided training for new and current processes, programming, and technologies/software; lead, organized team meetings and status updates; wrote and reviewed new process documentation.
       Assisted Program Managers and Project Delivery Managers for process implementation for data products and deliverables for blinded, statistical data monitoring and review; provided consultation for programming and development for Clinical Data Management; liaised between Data Services and Clinical Science teams; provided analytic and research support for Clinical Science
 
-  - what: Bracket
+  - what: Signant Health (Bracket)
     when: Jan 2018 - Dec 2018
     with: Clinical Data Specialist
     where: Wayne, PA
@@ -60,7 +61,7 @@ experience:
       Developed training material development and QC; performed data review, eCOA user acceptance testing; study staff contact, sponsor contact, contact with outside experts, report writing.
       Maintained, classified clinical information/materials; reviewed scale administration/scoring; provided clinical feedback, remediation for raters
 
-  - what: Bracket
+  - what: Signant Health (Bracket)
     when: May 2016 - Dec 2017
     with: Clinical Associate
     where: Wayne, PA
@@ -69,18 +70,18 @@ experience:
       Maintained, classified clinical information/materials for CNS, psychiatry, neurology clinical trials
       Provided data review for Bracket's Endpoint Reliability programs; clinical analysis on study endpoint data for administration and scoring calibration to standard training principles; and provided remediation as needed to recalibrate to study standards.
 
-  - what: Bracket
+  - what: Signant Health (Bracket)
     when: Aug 2015 - May 2016
     with: Clinical Assistant
     where: Wayne, PA
     why: |
       Developed object specific video material, clinical content for training and qualification programs for study staff in clinical trials; addressed and reviewed data quality issues; clinical scheduling; ensured compliance with quality assurance, participate in reporting, analysis activities and research activities (e.g., collection and dissemination of literature and/or data); prepared reports of clinical activities.
 
-  - what: Learning Assistance & Resource Center, West Chester University of Pennsyvlania
+  - what: Learning Assistance \& Resource Center
     # 224 Lawrence Center, West Chester, PA 19383
     when: Aug 2014 - May 2015
     with: Writing Tutor
-    where: West Chester, PA
+    where: West Chester University of Pennsyvlania, West Chester, PA
     why: |
       Tutored in 1-2 person sessions to develop skills necessary for effective writing, as well promoted independent and active learning.
       Monitored efficiency of the Academic Development Program and growth of students through maintaining daily session activity logs, utilizing Bloom's Taxonomy, biweekly student reports, and semester evaluations.

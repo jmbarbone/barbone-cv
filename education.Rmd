@@ -1,9 +1,0 @@
-# Education
-
-```{r}
-#| label: education
-read_yaml("data/education.yaml") |>
-  mutate(why = sub("\n$", "", why)) |> 
-  separate_longer_delim(why, "\n") |> 
-  vitae::detailed_entries(what, when, with, where, why)
-```

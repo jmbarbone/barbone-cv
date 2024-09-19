@@ -16,12 +16,16 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests:
-    spelling (>= 2.3.0)
+    spelling (>= 2.3.0),
+    pandoc (>= 0.2.0)
 Imports:
     bookdown (>= 0.40),
-    knitr (>= 1.48),
+    knitr,
     mark (>= 0.8.0),
     purrr (>= 1.0.2),
     RefManageR (>= 1.4.0),
-    vitae (>= 0.6.0),
+    vitae,
     yaml (>= 2.3.10)
+Remotes:
+    github::mitchelloharawild/vitae@v0.6.0,
+    github::yihui/knitr@v1.48

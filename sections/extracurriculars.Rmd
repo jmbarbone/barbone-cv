@@ -2,6 +2,7 @@
 
 ```{r}
 #| label: extracurriculars
-read_yaml("data/extracurriculars.yaml") |>
+here::here("data/extracurriculars.yaml") |>
+  read_yaml() |>
   vitae::detailed_entries(what, when, with, where)
 ```
