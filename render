@@ -3,7 +3,7 @@
 library(scribe, lib = Sys.getenv("R_LIBS_SCRIBE"))
 devtools::load_all()
 
-pandoc::pandoc_activate()
+pandoc::pandoc_activate("3.4")
 
 ca <- command_args()
 ca$add_argument(
