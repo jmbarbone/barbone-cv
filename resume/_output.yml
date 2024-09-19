@@ -1,5 +1,5 @@
 vitae::moderncv:
   fig_caption: yes
-  keep_tex: yes
-  keep_md: yes
+  keep_tex: no
+  keep_md: no
   theme: banking

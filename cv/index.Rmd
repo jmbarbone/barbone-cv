@@ -12,7 +12,11 @@ github: jmbarbone
 linkedin: jmbarbone
 aboutme: |
   R programmer with experience in statistical programming, monitoring, and report automation in cognitive and CNS clinical trials
-date: 'Last updated `r format(Sys.Date(), "%B %Y")`'
+  \newline
+  \newline
+  For an updated version see \href{https://github.com/jmbarbone/barbone-cv}{\texttt{jmbarbone/barbone-cv}}
+date: |
+  Last updated `r format(Sys.Date(), "%B %Y")`
 csl: "../csl/apa-cv.csl"
 nocite: "@*"
 bibliography_publications: "../bib/publications.bib"

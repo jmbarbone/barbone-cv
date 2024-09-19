@@ -28,6 +28,6 @@ bookdown::render_book(
   - to include month into poster presentation references
   - to correctly sort poster presentations by descending date (numeric year, numeric month)
 - ~~Small modification of the `vitae::awesome_cv` template to show total number of pages~~ (resolved by [vitae #172](https://github.com/mitchelloharawild/vitae/issues/172))
-- Applied markdown bolding to LaTexT (e.g., `"Experience item with **bold** statement"` to `"Experience item with \\textbf{bold} statement"`)
+- Applied markdown bolding to LaTeX (e.g., `"Experience item with **bold** statement"` to `"Experience item with \\textbf{bold} statement"`)
 - Organized to produce both a CV and Resume by using [`{scribe}`](https://www.github.com/jmbarbone/scribe) and a rendering function [#1]
 - Improved setup with minimal packaging and an extra `setup` script to install a specific version of pandoc and activate that for rendering

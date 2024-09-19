@@ -45,37 +45,57 @@ experience:
     when: Jan 2019 - Nov 2019
     with: Clinical Data Scientist
     where: Wayne, PA
-    why: |
+    how: |
       Interacted with and analyzes CNS, psychiatry, and neurology clinical trial data quality and outcomes information for clinical insights
       Developed and implemented new data products and deliverables for blinded, statistical data monitoring and review; maintained and enhanced current data products; advised new analytic and machine learning initiatives; identified data sources and aggregation processes; defined and updated processes for deliverables; point of contact for analytic deliverables; presented information using data visualization techniques
       Reviewed and developed analyses with SME for detection of errors for study endpoints; collaborated with review of analytic findings
       Trained and supervised of Data Scientists; developed and provided training for new and current processes, programming, and technologies/software; lead, organized team meetings and status updates; wrote and reviewed new process documentation.
       Assisted Program Managers and Project Delivery Managers for process implementation for data products and deliverables for blinded, statistical data monitoring and review; provided consultation for programming and development for Clinical Data Management; liaised between Data Services and Clinical Science teams; provided analytic and research support for Clinical Science
+    why: |
+      Developed analytic **R** scripts using **tidyverse** features for clinical trial operational and data management monitoring.  
+      Created **R** scripts for processing clinical trial outcome data for risk-based statistical quality monitoring  
+      Provided analytic support for internal and external research projects, including conference poster preparation
 
   - what: Signant Health (Bracket)
     when: Jan 2018 - Dec 2018
     with: Clinical Data Specialist
     where: Wayne, PA
-    why: |
+    how: |
       Interacted with and analyzes CNS, psychiatry, neurology clinical trial data quality and outcomes information for clinical insights; collaborated with other Bracket stakeholders and teams to execute and provide ongoing analysis related to study deliverables or internal needs
       Developed training material development and QC; performed data review, eCOA user acceptance testing; study staff contact, sponsor contact, contact with outside experts, report writing.
       Maintained, classified clinical information/materials; reviewed scale administration/scoring; provided clinical feedback, remediation for raters
+    why: |
+      Analyzed central monitoring data for clinical trials using **R** scripts
+      Provided analytic support for internal and external research projects, including conference poster preparation
+      Reviewed audio data from ADAS-Cog, MMSE, and ADCS-ADL administrations; provided feedback on standard administration and scoring, and submitted score change reviews for clinical trial sites
+
 
   - what: Signant Health (Bracket)
     when: May 2016 - Dec 2017
     with: Clinical Associate
     where: Wayne, PA
-    why: |
+    how: |
       Participated in applicable aspects of clinical content development and delivery, including training material development and QC, data review, eCOA user acceptance testing, study staff contact, sponsor contact, contact with outside experts, and report writing
       Maintained, classified clinical information/materials for CNS, psychiatry, neurology clinical trials
       Provided data review for Bracket's Endpoint Reliability programs; clinical analysis on study endpoint data for administration and scoring calibration to standard training principles; and provided remediation as needed to recalibrate to study standards.
+    why: |
+      Reviewed clinical trial raters' qualifications and recommended standardized training programs. 
+      Developed a training manual in **Microsoft Word** for the standardized administration of ADAS-Cog and MMSE within clinical trials, along with additional training presentations in **Microsoft PowerPoint**, ensuring alignment with company standards  
+      Reviewed audio data from ADAS-Cog, MMSE, and ADCS-ADL administrations; provided feedback on standard administration and scoring, and submitted score change reviews for clinical trial sites  
+      Developed new **Excel** trackers for central review tracking for individual central reviewers; compiled reports and presented information for central reviewer management
+
 
   - what: Signant Health (Bracket)
     when: Aug 2015 - May 2016
     with: Clinical Assistant
     where: Wayne, PA
-    why: |
+    how: |
       Developed object specific video material, clinical content for training and qualification programs for study staff in clinical trials; addressed and reviewed data quality issues; clinical scheduling; ensured compliance with quality assurance, participate in reporting, analysis activities and research activities (e.g., collection and dissemination of literature and/or data); prepared reports of clinical activities.
+    why: |
+      Reviewed clinical trial raters' qualifications and recommended standardized training programs  
+      Scheduled re-training appointments for clinical trial raters in collaboration with central quality reviewers  
+      Created and maintained study trackers and teleconference schedules in **Excel**  
+
 
   - what: Learning Assistance \& Resource Center
     # 224 Lawrence Center, West Chester, PA 19383
@@ -83,5 +103,5 @@ experience:
     with: Writing Tutor
     where: West Chester University of Pennsyvlania, West Chester, PA
     why: |
-      Tutored in 1-2 person sessions to develop skills necessary for effective writing, as well promoted independent and active learning.
-      Monitored efficiency of the Academic Development Program and growth of students through maintaining daily session activity logs, utilizing Bloom's Taxonomy, biweekly student reports, and semester evaluations.
+      **Tutored** students in one-on-one or small group sessions to enhance writing skills and promote independent, active learning
+      Monitored the effectiveness of the Academic Development Program and tracked student progress by maintaining daily activity logs, using **Bloom's Taxonomy**, and preparing biweekly student reports and semester evaluations

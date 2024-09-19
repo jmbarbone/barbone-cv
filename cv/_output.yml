@@ -6,5 +6,5 @@ vitae::awesomecv:
     - --lua-filter="../lua/multiple-bibliographies.lua"
     - --lua-filter="../lua/bold-author.lua"
   latex_engine: xelatex
-  page_total: false
-  show_footer: false
+  page_total: true
+  show_footer: true

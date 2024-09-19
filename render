@@ -43,4 +43,7 @@ for (output in args$outputs) {
   )
 }
 
-sessioninfo::session_info(to_file = TRUE)
+withr::with_options(
+  list(cli.width = 80),
+  sessioninfo::session_info(to_file = TRUE)
+)
