@@ -12,3 +12,4 @@ rmd_files:
   - "sections/awards.Rmd"
   - "sections/courses.Rmd"
 delete_merged_file: true
+latex_engine: xelatex
