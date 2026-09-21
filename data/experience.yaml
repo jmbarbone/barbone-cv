@@ -1,6 +1,28 @@
 experience:
   - what: Cogstate
-    when: Jun 2021 - Present
+    when: Sep 2026 - Present
+    with: Principal, Data Platform
+    where: New Haven, CT (Remote)
+    why: |
+      Created and implemented development standards for Data Engineers and Data Scientists
+      Provided supervision and training for Data Scientists, Data Engineers, and Data Visualization resources
+      Architected and implemented a CI/CD process for **Databricks** testing through **GitHub** actions and **Databricks** alerts
+
+  - what: Cogstate
+    when: Oct 2024 - Sep 2026
+    with: Senior Data Scientist
+    where: New Haven, CT (Remote)
+    why: |
+      Refactored legacy data ingestion processes into **Databricks** centered, **pyspark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
+      Developed configuration schemas and validation process centered around **git** to allow broader team input into processes while maintaining data quality
+      Developed logging and alerting systems in **Databricks** and **SQL** alerts for potential data quality issues to streamline responses to outside team members
+      Maintained and improved Statistical Monitoring program in **R** for outcome anomaly detection for Clinical Trials
+      Developed **SQL** queries for Tableau dashboards
+      Refactored Statistical Monitoring program in **R** reducing runtimes by ~50% and improving development scaling and unit test coverage
+      Provided supervision and input for Data Scientist, Data Engineer, and Data Visualization resources
+  
+  - what: Cogstate
+    when: Jun 2021 - Oct 2024
     with: Data Scientist
     where: New Haven, CT (Remote)
     # job description
@@ -101,7 +123,7 @@ experience:
     # 224 Lawrence Center, West Chester, PA 19383
     when: Aug 2014 - May 2015
     with: Writing Tutor
-    where: West Chester University of Pennsyvlania, West Chester, PA
+    where: West Chester University of Pennsylvania, West Chester, PA
     why: |
       **Tutored** students in one-on-one or small group sessions to enhance writing skills and promote independent, active learning
       Monitored the effectiveness of the Academic Development Program and tracked student progress by maintaining daily activity logs, using **Bloom's Taxonomy**, and preparing biweekly student reports and semester evaluations
