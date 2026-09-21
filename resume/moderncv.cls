@@ -1,5 +1,5 @@
 %% start of file `moderncv.cls'.
-%% Copyright 2006-2015 Xavier Danaux (xdanaux@gmail.com), 2020-2024 moderncv maintainers (github.com/moderncv).
+%% Copyright 2006-2015 Xavier Danaux (xdanaux@gmail.com), 2020-2026 moderncv maintainers (github.com/moderncv).
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License version 1.3c,
@@ -10,7 +10,7 @@
 %                identification
 %-------------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{moderncv}[2024-07-18 v2.4.1 modern curriculum vitae and letter document class]
+\ProvidesClass{moderncv}[2026-06-24 v2.6.1 modern curriculum vitae and letter document class]
 
 
 %-------------------------------------------------------------------------------
@@ -154,7 +154,7 @@
 
 % reduced list spacing
 % package providing hooks into lists
-%   originally developped by Jakob Schiotz (see http://dcwww.camd.dtu.dk/~schiotz/comp/LatexTips/tweaklist.sty)
+%   originally developed by Jakob Schiotz (see http://dcwww.camd.dtu.dk/~schiotz/comp/LatexTips/tweaklist.sty)
 %   modified and distributed with moderncv(not available otherwise on ctan)
 \RequirePackage{tweaklist}
 \renewcommand*{\itemhook}{%
@@ -234,7 +234,7 @@
 \newcommand*{\born}[1]{\def\@born{#1}}
 
 % defines one's email (optional)
-% usage: \email{<email adress>}
+% usage: \email{<email address>}
 \newcommand*{\email}[1]{\def\@email{#1}}
 
 % defines one's home page (optional)
@@ -290,6 +290,8 @@
 % - "battlenet"
 % - "arxiv"
 % - "inspire"
+% - "simplex"
+% - "threema"
 \collectionnew{socials}
 \NewDocumentCommand{\social}{O{}O{}m}{%
   \ifthenelse{\equal{#2}{}}%
@@ -323,7 +325,10 @@
       \ifthenelse{\equal{#1}{playstation}}  {\collectionadd[playstation]{socials}  {#3}} {}%
       \ifthenelse{\equal{#1}{battlenet}}    {\collectionadd[battlenet]{socials}    {#3}} {}%
       \ifthenelse{\equal{#1}{arxiv}}        {\collectionadd[arxiv]{socials}        {\protect\httpslink[#3]{arxiv.org/a/#3}}}                       {}%
-      \ifthenelse{\equal{#1}{inspire}}      {\collectionadd[inspire]{socials}        {\protect\httpslink[#3]{inspirehep.net/authoris/#3}}}           {}%
+      \ifthenelse{\equal{#1}{inspire}}      {\collectionadd[inspire]{socials}      {\protect\httpslink[#3]{inspirehep.net/authors/#3}}}           {}%
+      \ifthenelse{\equal{#1}{simplex}}      {\collectionadd[simplex]{socials}      {\protect\httpslink[#3]{simplex.chat/#3}}}                      {}%
+      \ifthenelse{\equal{#1}{threema}}      {\collectionadd[threema]{socials}      {\protect\httpslink[#3]{threema.id/#3}}}                        {}%
+      \ifthenelse{\equal{#1}{medium}}      {\collectionadd[medium]{socials}      {\protect\httpslink[#3]{medium.com/#3}}}                      {}%
       }
     {\collectionadd[#1]{socials}{\protect\httpslink[#3]{#2}}}}%
 
@@ -391,6 +396,12 @@
 \newcommand*{\battlenetsocialsymbol}    {}
 \newcommand*{\arxivsocialsymbol}        {}
 \newcommand*{\inspiresocialsymbol}      {}
+\newcommand*{\simplexsocialsymbol}      {}
+\newcommand*{\threemasocialsymbol}      {}
+\newcommand*{\mediumsocialsymbol}       {}
+
+
+
 
 % other
 %------
@@ -573,7 +584,7 @@
 \newcommand*{\cvlistdoubleitem}[3][\listitemsymbol]{}
 
 % makes a typical resume job / education entry
-% usage: \cventry[spacing]{years}{degree/job title}{institution/employer}{localization}{optionnal: grade/...}{optional: comment/job description}
+% usage: \cventry[spacing]{years}{degree/job title}{institution/employer}{localization}{optional: grade/...}{optional: comment/job description}
 \newcommand*{\cventry}[7][.25em]{}
 
 % makes a resume entry with a proficiency comment
@@ -649,7 +660,7 @@
 \newcounter{cvcolumnscounter}% counter for the number of columns
 \newcounter{cvcolumnsautowidthcounter}% counter for the number of columns with no column width provided, and which will then be equally distributed
 \newcounter{tmpiteratorcounter}% counter for any temporary purpose (e.g., iterating loops)
-\newlength{\cvcolumnsdummywidth}\setlength{\cvcolumnsdummywidth}{1000pt}% dummy width for total width, in order to enable arithmetics (TeX has no float variables, only integer counters or lengths)
+\newlength{\cvcolumnsdummywidth}\setlength{\cvcolumnsdummywidth}{1000pt}% dummy width for total width, in order to enable arithmetic (TeX has no float variables, only integer counters or lengths)
 \newlength{\cvcolumnswidth}% total width available for head / content
 \newlength{\cvcolumnsautowidth}% total width of columns with no explicit width provided
 \newlength{\cvcolumnautowidth}% width of one of the columns with no explicit width provided (based on equal distribution of remaining space)
@@ -802,6 +813,7 @@
 \newcommand*{\opening}[1]{\def\@opening{#1}}
 \newcommand*{\closing}[1]{\def\@closing{#1}}
 \newcommand*{\signature}[2]{\def\@signature{\includegraphics[scale=#1]{#2}}}
+\newcommand*{\postscript}[1]{\def\@postscript{#1}}
 \newcommand*{\enclosure}[2][]{%
   % if an optional argument is provided, use it to redefine \enclname
   \ifthenelse{\equal{#1}{}}{}{\renewcommand*{\enclname}{#1}}%
