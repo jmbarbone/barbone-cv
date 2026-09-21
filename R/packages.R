@@ -1,11 +1,9 @@
 update_cv_library <- function() {
-packages <- c(
-    "mark",
-    "fuj",
-    "scribe",
-    "echo",
-    "openxlsx2",
-    NULL
+  packages <- subset(
+    tools::CRAN_package_db(),
+    grepl("jmbarbone@gmail.com", `Authors@R`, fixed = TRUE),
+    "Package",
+    drop = TRUE
   )
   
   lib <- Sys.getenv("R_LIB_CV", "~/R/cv-library")

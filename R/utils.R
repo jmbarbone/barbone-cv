@@ -63,7 +63,7 @@ md_to_latex <- function(x) {
 do_md_to_latex <- function(x, find, replace, ..remove = FALSE) {
   n <- nchar(find)
   pattern <- paste0("\\", strsplit(find, "")[[1L]], collapse = "")
-  pattern <- paste0(pattern, "[[:alnum:][:space:]]+", pattern)
+  pattern <- paste0(pattern, "[[:alnum:][:space:]']+", pattern)
   m <- gregexpr(pattern, x, ignore.case = TRUE)
   do_replace <- if (..remove) {
     \(x) substring(x, n + 1L, nchar(x) - n)

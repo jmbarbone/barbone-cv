@@ -27,7 +27,6 @@ for (output in args$outputs) {
       })
 
       fs::file_move("resume/Barbone-Resume.pdf", "Barbone-Resume.pdf")
-
     },
     cv = {
       with_cleanup("cv", {

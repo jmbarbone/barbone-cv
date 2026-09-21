@@ -3,9 +3,9 @@ graphics: yes
 name: "Jordan Mark"
 surname: "Barbone, M.A."
 headcolor: 414141
-position: "Data Scientist, R Developer"
+position: "Data Developer | R Hobbyist"
 address: "West Chester, PA"
-phone: "+1 610 675 8922"
+phone: "+1 202 656 2528"
 www: jmbarbone.github.io
 email: "jmbarbone@gmail.com; jbarbone@cogstate.com"
 github: jmbarbone
