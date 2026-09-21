@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+sudo apt update && sudo apt update -y
+sudo apt install texlive-full -y
+
+mkdir -p ~/R/cv-library
+
+R --no-save <<EOF
+pak::pak("pandoc")
+pandoc::pandoc_install("3.4", force = TRUE)
+
+pak::pak()
+
+devtools::load_all()
+update_cv_library()
+EOF
+
+curl -Z \
+  https://raw.githubusercontent.com/pandoc/lua-filters/master/multiple-bibliographies/multiple-bibliographies.lua \
+  -o lua/multiple-bibliographies.lua \
+  "https://raw.githubusercontent.com/moderncv/moderncv/master/moderncv.cls" \
+  -o resume/moderncv.cls \
+  https://raw.githubusercontent.com/mitchelloharawild/vitae/refs/heads/master/inst/rmarkdown/templates/awesomecv/skeleton/awesome-cv.cls \
+  -o cv/awesome-cv.cls \
+  https://raw.githubusercontent.com/citation-style-language/styles/master/apa-cv.csl \
+  -o csl/apa-cv.csl

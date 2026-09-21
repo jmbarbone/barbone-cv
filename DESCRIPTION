@@ -1,0 +1,31 @@
+Package: barboneCV
+Title: Barbone CV
+Version: 0.0.0.9000
+Authors@R:
+    person(
+        "Jordan Mark",
+        "Barbone",
+        email = "jmbarbone@gmail.com",
+        role = c("aut", "cph", "cre"),
+        comment = c(ORCID = "0000-0001-9788-3628")
+    )
+Description: My curriculum vitae.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests:
+    spelling (>= 2.3.0),
+    pandoc (>= 0.2.0)
+Imports:
+    bookdown (>= 0.40),
+    knitr,
+    mark (>= 0.8.0),
+    purrr (>= 1.0.2),
+    RefManageR (>= 1.4.0),
+    vitae,
+    yaml (>= 2.3.10)
+Remotes:
+    github::mitchelloharawild/vitae@v0.6.0,
+    github::yihui/knitr@v1.48

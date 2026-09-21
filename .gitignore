@@ -1,9 +1,11 @@
 \.httr-oauth
 \.Rprofile
 \.Renviron
-*\.Rproj
 \.Rproj.user/*
 *\.aux
 .Rproj.user
 .httr-oauth
 cover-letters/
+*_ignore*
+
+/.quarto/

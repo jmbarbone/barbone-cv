@@ -1,0 +1,49 @@
+#!/usr/bin/env -S Rscript
+
+library(scribe, lib = Sys.getenv("R_LIBS_SCRIBE"))
+devtools::load_all()
+
+pandoc::pandoc_activate("3.4")
+
+ca <- command_args()
+ca$add_argument(
+  "outputs",
+  default = c("resume", "cv"),
+  info = "Outputs to render"
+)
+
+args <- ca$parse()
+
+for (output in args$outputs) {
+  switch(
+    output,
+    resume = {
+      with_cleanup("resume", {
+        bookdown::render_book(
+          input = "resume/index.Rmd",
+          output_format = "vitae::moderncv",
+          config_file = "resume/_bookdown.yaml"
+        )
+      })
+
+      fs::file_move("resume/Barbone-Resume.pdf", "Barbone-Resume.pdf")
+
+    },
+    cv = {
+      with_cleanup("cv", {
+        bookdown::render_book(
+          input = "cv/index.Rmd",
+          output_format = "vitae::awesomecv",
+          config_file = "cv/_bookdown.yaml"
+        )
+      })
+
+      fs::file_move("cv/Barbone-CV.pdf", "Barbone-CV.pdf")
+    }
+  )
+}
+
+withr::with_options(
+  list(cli.width = 80),
+  sessioninfo::session_info(to_file = TRUE)
+)

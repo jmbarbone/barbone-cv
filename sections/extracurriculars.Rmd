@@ -1,0 +1,8 @@
+# Extracurricular activities
+
+```{r}
+#| label: extracurriculars
+here::here("data/extracurriculars.yaml") |>
+  read_yaml() |>
+  vitae::detailed_entries(what, when, with, where)
+```

@@ -6,13 +6,28 @@ I keep a running list of Bibtext references in a separate [GitHub repository](gi
 This lets me maintain a single master bib text file with all references I'll ever need and manage through [JabRef](https://www.jabref.org/).
 The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR) which required me to make some changes to the author names as I prefer `Surname1, Given1 Middle1 and Surname2, Given2` format rather than `Given1 Middle1 Surname1 and Given2 Surname2`
 
+## Instructions
+
+Run the following to produce the curriculum-vitae
+
+```r
+bookdown::render_book(
+  input = "index.Rmd",
+  output_format = "vitae::awesomecv",
+  config_file = "_bookdown.yml"
+)
+```
+
 ## Other minor changes
 
-* Switched the `what` and `with` columns in bibliography entries to highlight the position over the company and degree over institute, etc
-* Applied a renaming function for author names
-* Adjusted the `lua` bolding script to account for my middle initial and maintain the appropriate comma
-* Small modification to the apa-6 cv `et-al-min`
-  * to not shorten author of current authors
-  * to include month into poster presentation references
-  * to correctly sort poster presentations by descending date (numeric year, numeric month)
-* ~~Small modification of the `vitae::awesome_cv` template to show total number of pages~~ (resolved by [vitae #172](https://github.com/mitchelloharawild/vitae/issues/172))
+- Switched the `what` and `with` columns in bibliography entries to highlight the position over the company and degree over institute, etc
+- Applied a renaming function for author names
+- Adjusted the `lua` bolding script to account for my middle initial and maintain the appropriate comma
+- Small modification to the apa-6 cv `et-al-min`
+  - to not shorten author of current authors
+  - to include month into poster presentation references
+  - to correctly sort poster presentations by descending date (numeric year, numeric month)
+- ~~Small modification of the `vitae::awesome_cv` template to show total number of pages~~ (resolved by [vitae #172](https://github.com/mitchelloharawild/vitae/issues/172))
+- Applied markdown bolding to LaTeX (e.g., `"Experience item with **bold** statement"` to `"Experience item with \\textbf{bold} statement"`)
+- Organized to produce both a CV and Resume by using [`{scribe}`](https://www.github.com/jmbarbone/scribe) and a rendering function [#1]
+- Improved setup with minimal packaging and an extra `setup` script to install a specific version of pandoc and activate that for rendering
