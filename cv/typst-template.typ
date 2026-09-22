@@ -2,28 +2,26 @@
 
 #let article(toc_title: none, toc_depth: none, doc) = doc
 
-#let primary_colour = rgb("#3730a3")
-#let hyperlink_text_colour = rgb("#1d4ed8")
+#let colors = (
+  primary: rgb("#575d7a"), // comet
+  secondary: rgb("#3c4058"), // comet-dark
+  hyperlink: rgb("#2a87a0"), // ocean-mid
+)
 
 #set page(
   paper: "us-letter",
-  margin: 1in,
+  margin: 0.5in,
+  // fill: rgb("#f3f4f6"),
 )
 
-#let head(
-  body,
-  size: 10pt,
-  weight: 300,
-  fill: luma(45%),
-) = {
-  text(
-    font: "Roboto",
-    size: size,
-    lang: "en",
-    weight: weight,
-    fill: fill,
-  )[#body]
-}
+#set highlight(
+  fill: rgb("#d2b48c"), // desert
+)
+
+// text: regular text
+// stub: secondary, e.g., company name
+// bold: primary, e.g., role
+// semi: secondary, e.g., location, dates
 
 #set text(
   font: "Roboto",
@@ -32,20 +30,35 @@
   weight: 300,
 )
 
+#let semi(body) = {
+  text(size: 9pt, weight: 300, fill: colors.secondary)[#body]
+}
+
+#let stub(body) = {
+  text(size: 10pt, weight: 300, fill: colors.secondary)[#body]
+}
+
+#let bold(body, size: 10pt) = {
+  text(size: size, weight: 600, fill: colors.primary)[#body]
+}
+
+#show link: it => text(
+  font: "Roboto",
+  size: 9pt,
+  lang: "en",
+  weight: 300,
+  fill: colors.hyperlink,
+)[#underline[#it]]
+
+#show heading: it => block(sticky: true, it)
+
+#let dest(dest, body) = link(dest)[#body]
+
 #set par(justify: false, leading: 0.50em)
 #set list(tight: true, marker: [•])
 
 // there's a v0.6.2 but I don't feel like writing something to keep this updated
 #import "@preview/fontawesome:0.5.0": fa-icon
-
-#show link: set text(fill: hyperlink_text_colour)
-
-#show heading: it => block(sticky: false, it)
-
-#let styled_link(dest, body) = link(
-  dest,
-  text(fill: hyperlink_text_colour)[#underline[#body]],
-)
 
 #let section_icon(title) = {
   if title == "Experience" {
@@ -67,47 +80,40 @@
 
 #let contact_link(icon_name, label, dest) = [
   #link(dest)[
-    #text(fill: hyperlink_text_colour)[#fa-icon(icon_name)]
+    #text(fill: colors.hyperlink)[#fa-icon(icon_name)]
     #h(0.22em)
-    #text(fill: hyperlink_text_colour)[#label]
+    #text(fill: colors.hyperlink)[#label]
   ]
 ]
 
 #let section(title, body, sticky: false) = [
   #block(sticky: sticky)[
     #v(0.48em)
-    #head(weight: 700, fill: primary_colour)[
+    #bold[
       #section_icon(title)
       #h(0.26em)
       #upper(title)
     ]
     #v(0.06em)
-    #line(length: 100%, stroke: 0.55pt + primary_colour)
+    #line(length: 100%, stroke: 0.55pt + colors.primary)
     #v(0.18em)
   ]
   #body
-  // #block[#body]
-]
-
-#let subsection(title, body) = [
-  #block(sticky: false)[
-    #head(weight: 600)[#title]
-    #v(0.08em)
-  ]
-  #block[
-    #body
-    #v(0.14em)
-  ]
 ]
 
 #let ref_group(title, body) = [
   #block(
     inset: (left: 0.62em),
-    stroke: (left: 1.05pt + primary_colour),
-    sticky: false,
+    stroke: none,
+    sticky: true,
   )[
-    #head()[#title]
+    #stub[#title]
     #v(0.10em)
+  ]
+  #block(
+    inset: (left: 0.62em),
+    stroke: (left: 0.7pt + luma(45%)),
+  )[
     #body
     #v(0.22em)
   ]
@@ -118,13 +124,14 @@
     #table(
       columns: (1fr, auto),
       column-gutter: 0.8em,
-      row-gutter: 0.2em,
+      row-gutter: 0.4em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#head(size: 9pt)[#org]], [#text(fill: luma(45%))[#fa-icon("calendar-days") #h(0.2em) #dates]],
-      [#head(weight: 700, fill: primary_colour)[#role]],
-      [#text(fill: primary_colour)[#fa-icon("location-dot") #h(0.2em) #location]],
+      [#stub[#org]], 
+      [#stub[#fa-icon("location-dot") #h(0.2em) #location]],
+      [#bold[#role]],
+      [#semi[#fa-icon("calendar-days") #h(0.2em) #dates]],
     )
     #v(0.1em)
     #body
@@ -135,7 +142,7 @@
 #let company_group(org, location, body) = [
   #block(
     inset: (left: 0.62em),
-    stroke: (left: 1.05pt + primary_colour),
+    stroke: none,
     sticky: false,
     breakable: true,
   )[
@@ -146,11 +153,14 @@
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#head()[#org]],
-      [#text(fill: luma(45%))[#fa-icon("location-dot") #h(0.2em) #location]],
+      [#stub[#org]],
+      [#stub[#fa-icon("location-dot") #h(0.2em) #location]],
     )
     #v(0.1em)
-    #body
+    #block(
+      stroke: (left: 0.7pt + luma(45%)),
+      inset: (left: 0.62em),
+    )[#body]
     #v(0.3em)
   ]
 ]
@@ -166,8 +176,8 @@
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#head(weight: 700, fill: primary_colour)[#role]],
-      [#text(fill: primary_colour)[#fa-icon("calendar-days") #h(0.2em) #dates]],
+      [#bold[#role]],
+      [#text[#fa-icon("calendar-days") #h(0.2em) #dates]],
     )
   ]
   #block[
@@ -177,22 +187,32 @@
   ]
 ]
 
-#let header(given, surname, location, phone, email, web, github, linkedin) = [
+#let header(
+  given,
+  surname,
+  location,
+  phone,
+  email,
+  web,
+  github,
+  linkedin,
+) = [
   #text[
-    #head(size: 16.5pt)[#given]
-    #head(size: 16.5pt, weight: 700, fill: primary_colour)[#h(0.2em) #surname]
+    #text(size: 16.5pt, weight: 200)[#given]
+    #h(0.2em)
+    #text(size: 16.5pt, fill: colors.primary, weight: 900)[#surname]
   ]
   #v(0.10em)
   #set text(size: 9pt)
-  #text(fill: hyperlink_text_colour)[#fa-icon("house")]
+  #text(fill: colors.hyperlink)[#fa-icon("house")]
   #h(0.20em)
   #location
   #h(0.20em)
-  #text(fill: hyperlink_text_colour)[#fa-icon("phone")]
+  #text(fill: colors.hyperlink)[#fa-icon("phone")]
   #h(0.20em)
-  #phone
+  #link("tel:" + phone)[#phone]
   #h(0.20em)
-  #text(fill: hyperlink_text_colour)[#fa-icon("envelope")]
+  #text(fill: colors.hyperlink)[#fa-icon("envelope")]
   #h(0.20em)
   #link("mailto:" + email)[#email]
   #linebreak()

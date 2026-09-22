@@ -25,6 +25,7 @@ params:
 ---
 
 ```{r}
+#| labels: functions
 typst_string <- function(x) {
   jsonlite::toJSON(as.character(x %||% ""), auto_unbox = TRUE)
 }
@@ -209,11 +210,57 @@ bold_me <- function(x) {
 ```
 
 ```{r}
+#| label: data
 meta <- yaml::read_yaml(params$metadata_file)
 header <- yaml::read_yaml(params$header_file)$header
 experience <- yaml::read_yaml(params$experience_file)$experience
 education <- yaml::read_yaml(params$education_file)$education
 awards <- yaml::read_yaml(params$awards_file)$awards
+
+parse_month_year <- function(x) {
+  x <- trimws(as.character(x %||% ""))
+  if (!nzchar(x)) {
+    return(as.Date("1900-01-01"))
+  }
+
+  x_low <- tolower(x)
+  if (x_low %in% c("present", "current")) {
+    return(as.Date("9999-12-31"))
+  }
+
+  parts <- strsplit(x, "\\s+")[[1]]
+  if (length(parts) < 2) {
+    return(as.Date("1900-01-01"))
+  }
+
+  month_num <- match(parts[1], month.abb)
+  year_num <- suppressWarnings(as.integer(parts[2]))
+
+  if (is.na(month_num) || is.na(year_num)) {
+    return(as.Date("1900-01-01"))
+  }
+
+  as.Date(sprintf("%04d-%02d-01", year_num, month_num))
+}
+
+extract_end_date <- function(when) {
+  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
+  end_part <- if (length(bounds) >= 2) bounds[2] else bounds[1]
+  parse_month_year(end_part)
+}
+
+extract_start_date <- function(when) {
+  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
+  start_part <- bounds[1]
+  parse_month_year(start_part)
+}
+
+if (length(experience) > 0) {
+  end_dates <- vapply(experience, function(x) extract_end_date(x$when), as.Date("1970-01-01"))
+  start_dates <- vapply(experience, function(x) extract_start_date(x$when), as.Date("1970-01-01"))
+  ord <- order(end_dates, start_dates, decreasing = TRUE)
+  experience <- experience[ord]
+}
 
 paper_publications_bib <- params$bib_publications
 paper_thesis_bib <- params$bib_thesis
@@ -237,6 +284,7 @@ packages <- format_refs_apa(package_bib_files)
 ```
 
 ```{r}
+#| label: prep output
 out <- c(
   "// Auto-generated from YAML sources. Do not edit manually.",
   "#import \"typst-template.typ\": *",
@@ -337,6 +385,7 @@ out <- c(
 ```
 
 ```{r}
+#| label: output
 #| results: asis
 cat("```{=typst}\n", paste(out, collapse = "\n"), "\n```\n", sep = "")
 ```
