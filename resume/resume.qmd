@@ -1,0 +1,322 @@
+---
+format:
+  typst:
+    keep-typ: true
+    output-file: Barbone-Compact-Resume.pdf
+    template-partials:
+      - typst-template.typ
+execute:
+  echo: false 
+params:
+  metadata_file: "../_metadata.yaml"
+  header_file: "../data/compact_cv_header.yaml"
+  experience_file: "../data/experience.yaml"
+  education_file: "../data/education.yaml"
+  bib_packages: "../bib/packages.bib"
+---
+
+```{r}
+#| labels: functions
+typst_string <- function(x) {
+  jsonlite::toJSON(as.character(x %||% ""), auto_unbox = TRUE)
+}
+
+linkify_urls <- function(x) {
+  x <- as.character(x %||% "")
+
+  # DOI URLs -> concise DOI labels
+  x <- gsub(
+    "(?<!\\()\\bhttps?://(?:dx\\.)?doi\\.org/(?:doi/)?([A-Za-z0-9._;()/:+-]+)",
+    "[doi:\\1](https://doi.org/\\1)",
+    x,
+    perl = TRUE
+  )
+
+  # Other bare URLs -> standard markdown links
+  gsub(
+    "(?<!\\()\\b(https?://[A-Za-z0-9./?=&_%#:+~-]*[A-Za-z0-9/_#])",
+    "[\\1](\\1)",
+    x,
+    perl = TRUE
+  )
+}
+
+pandoc_md_to_typst <- function(x) {
+  x <- linkify_urls(as.character(x %||% ""))
+  in_file <- tempfile(fileext = ".md")
+  out_file <- tempfile(fileext = ".typ")
+
+  writeLines(x, in_file)
+  rmarkdown::pandoc_convert(
+    input = in_file,
+    to = "typst",
+    output = out_file,
+    options = c("--wrap=none")
+  )
+
+  paste(readLines(out_file, warn = FALSE), collapse = "\n")
+}
+
+bullet_items <- function(text, max_bullets = 5) {
+  if (is.null(text)) {
+    return(character())
+  }
+
+  lines <- strsplit(as.character(text), "\\n", fixed = FALSE)[[1]]
+  lines <- trimws(lines)
+  lines <- lines[nzchar(lines)]
+  head(lines, max_bullets)
+}
+
+bullet_items_condensed <- function(highlight, why, max_bullets = 3) {
+  if (!is.null(highlight) && nzchar(trimws(as.character(highlight)))) {
+    return(bullet_items(highlight, max_bullets = max_bullets))
+  }
+
+  lines <- bullet_items(why, max_bullets = 100)
+  if (length(lines) == 0) {
+    return(character())
+  }
+
+  supervision_pattern <- paste(
+    c("supervis", "supervision", "train", "mentoring", "managed?\\s+team", "onboard"),
+    collapse = "|"
+  )
+
+  keep <- !grepl(supervision_pattern, tolower(lines), perl = TRUE)
+  filtered <- lines[keep]
+
+  if (length(filtered) == 0) {
+    filtered <- lines
+  }
+
+  head(filtered, max_bullets)
+}
+
+to_typst_content <- function(x) {
+  paste0("[", pandoc_md_to_typst(x), "]")
+}
+
+emit_group_items <- function(title, items) {
+  items <- as.character(items)
+  items <- items[nzchar(trimws(items))]
+
+  out <- c(
+    "  (",
+    paste0("    title: ", to_typst_content(title), ","),
+    "    body: ["
+  )
+
+  for (it in items) {
+    out <- c(out, paste0("      - ", pandoc_md_to_typst(it)))
+  }
+
+  c(out, "    ],", "  ),")
+}
+
+emit_named_groups <- function(groups) {
+  out <- c("(")
+
+  for (g in groups) {
+    out <- c(out, emit_group_items(g$title, g$items))
+  }
+
+  out <- c(out, ")")
+  paste(out, collapse = "\n")
+}
+
+experience_item <- function(item) {
+  bullets <- bullet_items_condensed(item$highlight, item$why, max_bullets = 3)
+
+  out <- c(
+    "  (",
+    paste0("    org: ", to_typst_content(item$what), ","),
+    paste0("    location: ", to_typst_content(item$where), ","),
+    paste0("    role: ", to_typst_content(item$with), ","),
+    paste0("    dates: ", to_typst_content(item$when), ","),
+    "    bullets: ("
+  )
+
+  for (b in bullets) {
+    out <- c(out, paste0("      ", to_typst_content(b), ","))
+  }
+
+  c(out, "    ),", "  ),")
+}
+
+education_item <- function(item) {
+  c(
+    "  (",
+    paste0("    org: ", to_typst_content(item$what), ","),
+    paste0("    credential: ", to_typst_content(item$with), ","),
+    paste0("    location: ", to_typst_content(item$where), ","),
+    paste0("    dates: ", to_typst_content(item$when), ","),
+    "  ),"
+  )
+}
+
+skills_item <- function(name, details) {
+  c(
+    "  (",
+    paste0("    name: ", to_typst_content(name), ","),
+    paste0("    details: ", to_typst_content(details), ","),
+    "  ),"
+  )
+}
+
+read_package_links <- function(bib_file) {
+  bib <- RefManageR::ReadBib(bib_file)
+
+  items <- lapply(bib, function(entry) {
+    key <- names(entry)
+    title <- as.character(entry[[key]]$title %||% "")
+    pkg <- trimws(sub(":.*$", "", title))
+    url <- as.character(entry[[key]]$url %||% "")
+
+    if (!nzchar(pkg) || !nzchar(url)) {
+      return(NULL)
+    }
+
+    list(name = pkg, url = url)
+  })
+
+  items <- Filter(Negate(is.null), items)
+  unique(items)
+}
+```
+
+```{r}
+#| label: data
+meta <- yaml::read_yaml(params$metadata_file)
+header <- yaml::read_yaml(params$header_file)$header
+experience <- yaml::read_yaml(params$experience_file)$experience
+education <- yaml::read_yaml(params$education_file)$education
+package_links <- read_package_links(params$bib_packages)
+
+skills <- list(
+  list(name = "R — Advanced", details = "package development, data analysis, statistical programming, data visualization, ETL/data integration, tidyverse, R Markdown, Quarto"),
+  list(name = "Other programming", details = "Python (PySpark), SQL, Git, Bash"),
+  list(name = "Clinical trials", details = "clinical data management programming, centralized monitoring, eCOA, data review, rater training and qualification"),
+  list(name = "Psychology", details = "behavioral statistics, research methods, cognitive psychology, learning psychology")
+)
+
+parse_month_year <- function(x) {
+  x <- trimws(as.character(x %||% ""))
+  if (!nzchar(x)) {
+    return(as.Date("1900-01-01"))
+  }
+
+  x_low <- tolower(x)
+  if (x_low %in% c("present", "current")) {
+    return(as.Date("9999-12-31"))
+  }
+
+  parts <- strsplit(x, "\\s+")[[1]]
+  if (length(parts) < 2) {
+    return(as.Date("1900-01-01"))
+  }
+
+  month_num <- match(parts[1], month.abb)
+  year_num <- suppressWarnings(as.integer(parts[2]))
+
+  if (is.na(month_num) || is.na(year_num)) {
+    return(as.Date("1900-01-01"))
+  }
+
+  as.Date(sprintf("%04d-%02d-01", year_num, month_num))
+}
+
+extract_end_date <- function(when) {
+  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
+  end_part <- if (length(bounds) >= 2) bounds[2] else bounds[1]
+  parse_month_year(end_part)
+}
+
+extract_start_date <- function(when) {
+  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
+  start_part <- bounds[1]
+  parse_month_year(start_part)
+}
+
+if (length(experience) > 0) {
+  end_dates <- vapply(experience, function(x) extract_end_date(x$when), as.Date("1970-01-01"))
+  start_dates <- vapply(experience, function(x) extract_start_date(x$when), as.Date("1970-01-01"))
+  ord <- order(end_dates, start_dates, decreasing = TRUE)
+  experience <- experience[ord]
+}
+
+experience <- head(experience, 3)
+```
+
+```{r}
+#| label: prep output
+out <- c(
+  "// Auto-generated from YAML sources. Do not edit manually.",
+  "#import \"typst-template.typ\": *",
+  "",
+  paste0("#let cv_given = ", typst_string(meta$given)),
+  paste0("#let cv_surname = ", typst_string(meta$surname)),
+  paste0("#let cv_location = ", typst_string(header$location)),
+  paste0("#let cv_phone = ", typst_string(header$phone)),
+  paste0("#let cv_email = ", typst_string(meta$email)),
+  paste0("#let cv_web = ", typst_string(meta$web)),
+  paste0("#let cv_github = ", typst_string(meta$github)),
+  paste0("#let cv_linkedin = ", typst_string(meta$linkedin)),
+  "",
+  "#let experience_data = ("
+)
+
+for (item in experience) {
+  out <- c(out, experience_item(item))
+}
+
+out <- c(out, ")", "", "#let education_data = (")
+
+for (i in seq_along(education)) {
+  item <- education[[i]]
+  if (startsWith(item$with, "Non")) {
+    next
+  }
+  out <- c(out, education_item(item))
+}
+
+out <- c(out, ")", "", "#let skills_data = (")
+for (s in skills) {
+  out <- c(out, skills_item(s$name, s$details))
+}
+
+package_parts <- vapply(
+  package_links,
+  function(x) paste0("[", x$name, "](", x$url, ")"),
+  NA_character_
+)
+packages_line <- paste(package_parts, collapse = " | ")
+
+out <- c(
+  out,
+  ")",
+  "",
+  paste0("#let packages_line = ", to_typst_content(packages_line)),
+  "",
+  "#render_compact_resume(",
+  "  cv_given,",
+  "  cv_surname,",
+  "  cv_location,",
+  "  cv_phone,",
+  "  cv_email,",
+  "  cv_web,",
+  "  cv_github,",
+  "  cv_linkedin,",
+  "  experience_data,",
+  "  education_data,",
+  "  skills_data,",
+  "  packages_line,",
+  ")"
+)
+```
+
+```{r}
+#| label: output
+#| results: asis
+cat("```{=typst}\n", paste(out, collapse = "\n"), "\n```\n", sep = "")
+```

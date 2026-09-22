@@ -3,6 +3,10 @@ experience:
     when: Sep 2026 - Present
     with: Principal, Data Platform
     where: New Haven, CT (Remote)
+    highlight: |
+      Created and implemented development standards for Data Engineers and Data Scientists
+      Architected and implemented a CI/CD process for **Databricks** testing through **GitHub** actions and **Databricks** alerts
+      Established scalable engineering workflows for analytics delivery and platform reliability
     why: |
       Created and implemented development standards for Data Engineers and Data Scientists
       Provided supervision and training for Data Scientists, Data Engineers, and Data Visualization resources
@@ -12,8 +16,12 @@ experience:
     when: Oct 2024 - Sep 2026
     with: Senior Data Scientist
     where: New Haven, CT (Remote)
+    highlight: |
+      Refactored legacy data ingestion processes into **Databricks** centered, **PySpark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
+      Developed configuration schemas and validation process centered around **git** to allow broader team input into processes while maintaining data quality
+      Refactored Statistical Monitoring program in **R** reducing runtimes by ~50% and improving development scaling and unit test coverage
     why: |
-      Refactored legacy data ingestion processes into **Databricks** centered, **pyspark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
+      Refactored legacy data ingestion processes into **Databricks** centered, **PySpark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
       Developed configuration schemas and validation process centered around **git** to allow broader team input into processes while maintaining data quality
       Developed logging and alerting systems in **Databricks** and **SQL** alerts for potential data quality issues to streamline responses to outside team members
       Maintained and improved Statistical Monitoring program in **R** for outcome anomaly detection for Clinical Trials
@@ -25,6 +33,10 @@ experience:
     when: Jun 2021 - Oct 2024
     with: Data Scientist
     where: New Haven, CT (Remote)
+    highlight: |
+      Independently developed internal **R packages** to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
+      Refactored Data Engineering **PySpark** code into a **python** package for data transformations within **Azure Databricks** and **DeltaTable** management
+      Developed and managed a robust daily and weekly reporting system with **R tidyverse** scripts for the monitoring of a high-profile international Alzheimer's Disease trial
     # job description
     how: |
       Collaborates with Data Engineering to define data structures and requirements for Azure Databricks infrastructure and reporting.
@@ -63,7 +75,7 @@ experience:
       Reviewed and reported on statistical testing in **R** such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
       Trained and onboarded data analyst
 
-  - what: Signant Health (formerly Bracket and CRF Health)
+  - what: Signant Health # formerly Bracket and CRF Health
     when: Jan 2019 - Nov 2019
     with: Clinical Data Scientist
     where: Wayne, PA
@@ -78,7 +90,7 @@ experience:
       Created **R** scripts for processing clinical trial outcome data for risk-based statistical quality monitoring  
       Provided analytic support for internal and external research projects, including conference poster preparation
 
-  - what: Signant Health (Bracket)
+  - what: Signant Health # Bracket
     when: Jan 2018 - Dec 2018
     with: Clinical Data Specialist
     where: Wayne, PA
@@ -92,7 +104,7 @@ experience:
       Reviewed audio data from ADAS-Cog, MMSE, and ADCS-ADL administrations; provided feedback on standard administration and scoring, and submitted score change reviews for clinical trial sites
 
 
-  - what: Signant Health (Bracket)
+  - what: Signant Health # Bracket
     when: May 2016 - Dec 2017
     with: Clinical Associate
     where: Wayne, PA
@@ -107,7 +119,7 @@ experience:
       Developed new **Excel** trackers for central review tracking for individual central reviewers; compiled reports and presented information for central reviewer management
 
 
-  - what: Signant Health (Bracket)
+  - what: Signant Health # Bracket
     when: Aug 2015 - May 2016
     with: Clinical Assistant
     where: Wayne, PA
@@ -119,7 +131,7 @@ experience:
       Created and maintained study trackers and teleconference schedules in **Excel**  
 
 
-  - what: Learning Assistance \& Resource Center
+  - what: Learning Assistance & Resource Center
     # 224 Lawrence Center, West Chester, PA 19383
     when: Aug 2014 - May 2015
     with: Writing Tutor
