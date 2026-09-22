@@ -223,11 +223,11 @@
 #let head(
   body,
   size: 10pt,
-  weight: 200,
+  weight: 300,
   fill: luma(45%),
 ) = {
   text(
-    font: "Noto Sans",
+    font: "Roboto",
     size: size,
     lang: "en",
     weight: weight,
@@ -236,14 +236,16 @@
 }
 
 #set text(
-  font: "Noto Sans",
+  font: "Roboto",
   size: 9pt,
   lang: "en",
+  weight: 300,
 )
 
 #set par(justify: false, leading: 0.50em)
 #set list(tight: true, marker: [•])
 
+// there's a v0.6.2 but I don't feel like writing something to keep this updated
 #import "@preview/fontawesome:0.5.0": fa-icon
 
 #show link: set text(fill: hyperlink_text_colour)
@@ -257,7 +259,7 @@
 
 #let section_icon(title) = {
   if title == "Experience" {
-    fa-icon("briefcase")
+    fa-icon("briefcase", weight: 400)
   } else if title == "Education" {
     fa-icon("graduation-cap")
   } else if title == "Selected Awards" {
@@ -385,8 +387,11 @@
   ]
 ]
 
-#let header(name, location, phone, email, web, github, linkedin) = [
-  #head(size: 16.5pt, weight: 100)[#strong[#name]]
+#let header(given, surname, location, phone, email, web, github, linkedin) = [
+  #text[
+    #head(size: 16.5pt)[#given]
+    #head(size: 16.5pt, weight: 700, fill: primary_colour)[#h(0.2em) #surname]
+  ]
   #v(0.10em)
   #set text(size: 9pt)
   #text(fill: hyperlink_text_colour)[#fa-icon("house")]
@@ -441,7 +446,8 @@
 ]
 
 #let render_compact_cv(
-  name,
+  given,
+  surname,
   location,
   phone,
   email,
@@ -455,7 +461,7 @@
   poster_groups_data,
   packages,
 ) = [
-  #header(name, location, phone, email, web, github, linkedin)
+  #header(given, surname, location, phone, email, web, github, linkedin)
 
   #section("Experience")[
     #render_experience(experience_data)
@@ -501,7 +507,8 @@
 // Auto-generated from YAML sources. Do not edit manually.
 #import "typst-template.typ": *
 
-#let cv_name = "Jordan Mark Barbone"
+#let cv_given = "Jordan Mark"
+#let cv_surname = "Barbone"
 #let cv_location = "Philadelphia, PA USA"
 #let cv_phone = "+1 202 656 2528"
 #let cv_email = "jmbarbone@gmail.com"
@@ -772,7 +779,8 @@
 ]
 
 #render_compact_cv(
-  cv_name,
+  cv_given,
+  cv_surname,
   cv_location,
   cv_phone,
   cv_email,
