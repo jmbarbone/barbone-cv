@@ -8,7 +8,7 @@ pandoc::pandoc_activate("3.4")
 ca <- command_args()
 ca$add_argument(
   "outputs",
-  default = c("resume", "cv"),
+  default = c("resume", "cv", "compact-cv"),
   info = "Outputs to render"
 )
 
@@ -38,6 +38,15 @@ for (output in args$outputs) {
       })
 
       fs::file_move("cv/Barbone-CV.pdf", "Barbone-CV.pdf")
+    },
+    "compact-cv" = {
+      with_cleanup("cv", {
+        quarto::quarto_render("cv/compact-cv.qmd")
+      })
+
+      if (fs::file_exists("cv/Barbone-Compact-CV.pdf")) {
+        fs::file_move("cv/Barbone-Compact-CV.pdf", "Barbone-Compact-CV.pdf")
+      }
     }
   )
 }

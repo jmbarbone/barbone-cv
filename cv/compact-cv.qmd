@@ -1,0 +1,340 @@
+---
+format:
+  typst:
+    keep-typ: true
+    output-file: Barbone-Compact-CV.pdf
+    template-partials:
+      - typst-template.typ
+execute:
+  echo: false
+params:
+  metadata_file: "../_metadata.yaml"
+  header_file: "../data/compact_cv_header.yaml"
+  experience_file: "../data/experience.yaml"
+  education_file: "../data/education.yaml"
+  awards_file: "../data/awards.yaml"
+  csl_file: "../csl/apa-cv.csl"
+  bib_publications: "../bib/publications.bib"
+  bib_thesis: "../bib/thesis.bib"
+  bib_posters_cogstate: "../bib/posters_cogstate.bib"
+  bib_posters_cog: "../bib/posters_cog.bib"
+  bib_posters_madrigal: "../bib/posters_madrigal.bib"
+  bib_posters_signant: "../bib/posters_signant.bib"
+  bib_posters_wcupa: "../bib/posters_wcupa.bib"
+  bib_packages: "../bib/packages.bib"
+---
+
+```{r}
+typst_string <- function(x) {
+  jsonlite::toJSON(as.character(x %||% ""), auto_unbox = TRUE)
+}
+
+linkify_urls <- function(x) {
+  x <- as.character(x %||% "")
+
+  # DOI URLs -> concise DOI labels
+  x <- gsub(
+    "(?<!\\()\\bhttps?://(?:dx\\.)?doi\\.org/(?:doi/)?([A-Za-z0-9._;()/:+-]+)",
+    "[doi:\\1](https://doi.org/\\1)",
+    x,
+    perl = TRUE
+  )
+
+  # Other bare URLs -> standard markdown links
+  gsub(
+    "(?<!\\()\\b(https?://[A-Za-z0-9./?=&_%#:+~-]*[A-Za-z0-9/_#])",
+    "[\\1](\\1)",
+    x,
+    perl = TRUE
+  )
+}
+
+pandoc_md_to_typst <- function(x) {
+  x <- linkify_urls(as.character(x %||% ""))
+  in_file <- tempfile(fileext = ".md")
+  out_file <- tempfile(fileext = ".typ")
+
+  writeLines(x, in_file)
+  rmarkdown::pandoc_convert(
+    input = in_file,
+    to = "typst",
+    output = out_file,
+    options = c("--wrap=none")
+  )
+
+  paste(readLines(out_file, warn = FALSE), collapse = "\n")
+}
+
+bullet_items <- function(text) {
+  if (is.null(text)) {
+    return(character())
+  }
+
+  lines <- strsplit(as.character(text), "\\n", fixed = FALSE)[[1]]
+  lines <- trimws(lines)
+  lines[nzchar(lines)]
+}
+
+to_typst_content <- function(x) {
+  paste0("[", pandoc_md_to_typst(x), "]")
+}
+
+emit_group_items <- function(title, items) {
+  items <- as.character(items)
+  items <- items[nzchar(trimws(items))]
+
+  out <- c(
+    "  (",
+    paste0("    title: ", to_typst_content(title), ","),
+    "    body: ["
+  )
+
+  for (it in items) {
+    out <- c(out, paste0("      - ", pandoc_md_to_typst(it)))
+  }
+
+  c(out, "    ],", "  ),")
+}
+
+emit_named_groups <- function(groups) {
+  out <- c("(")
+
+  for (g in groups) {
+    out <- c(out, emit_group_items(g$title, g$items))
+  }
+
+  out <- c(out, ")")
+  paste(out, collapse = "\n")
+}
+
+experience_group_item <- function(company, items) {
+  # list is newest-first; use first non-empty location as most recent location
+  locations <- vapply(
+    items,
+    \(x) as.character(x$where %||% ""),
+    NA_character_
+  )
+  nz <- which(nzchar(trimws(locations)))
+  recent_location <- if (length(nz) > 0) locations[nz[1]] else ""
+
+  out <- c(
+    "  (",
+    paste0("    org: ", to_typst_content(company), ","),
+    paste0("    location: ", to_typst_content(recent_location), ","),
+    "    roles: ("
+  )
+
+  for (item in items) {
+    bullets <- bullet_items(item$why)
+
+    out <- c(
+      out,
+      "      (",
+      paste0("        role: ", to_typst_content(item$with), ","),
+      paste0("        dates: ", to_typst_content(item$when), ","),
+      "        bullets: ("
+    )
+
+    for (b in bullets) {
+      out <- c(out, paste0("          ", to_typst_content(b), ","))
+    }
+
+    out <- c(out, "        ),", "      ),")
+  }
+
+  c(out, "    ),", "  ),")
+}
+
+education_item <- function(item) {
+  bullets <- bullet_items(item$why)
+
+  out <- c(
+    "  (",
+    paste0("    org: ", to_typst_content(item$what), ","),
+    paste0("    credential: ", to_typst_content(item$with), ","),
+    paste0("    location: ", to_typst_content(item$where), ","),
+    paste0("    dates: ", to_typst_content(item$when), ","),
+    "    bullets: ("
+  )
+
+  for (b in bullets) {
+    out <- c(out, paste0("      ", to_typst_content(b), ","))
+  }
+
+  c(out, "    ),", "  ),")
+}
+
+format_refs_apa <- function(bib_files, csl_file = params$csl_file) {
+  bib_files <- normalizePath(bib_files, mustWork = TRUE)
+  csl_file <- normalizePath(csl_file, mustWork = TRUE)
+
+  in_file <- tempfile(fileext = ".md")
+  out_file <- tempfile(fileext = ".html")
+
+  yaml_block <- c(
+    "---",
+    paste0("csl: ", csl_file),
+    "bibliography:",
+    paste0("  - ", bib_files),
+    "nocite: '@*'",
+    "---",
+    "",
+    "::: {#refs}",
+    ":::"
+  )
+
+  writeLines(yaml_block, in_file)
+
+  rmarkdown::pandoc_convert(
+    input = in_file,
+    to = "html",
+    output = out_file,
+    options = c("--citeproc", "--wrap=none")
+  )
+
+  html <- xml2::read_html(out_file)
+  nodes <- xml2::xml_find_all(
+    html,
+    "//div[@id='refs']/*[contains(@class, 'csl-entry')]"
+  )
+
+  refs <- trimws(xml2::xml_text(nodes))
+  bold_me(refs[nzchar(refs)])
+}
+
+
+bold_me <- function(x) {
+  gsub("Barbone, J. M.", "**Barbone, J. M.**", x, fixed = TRUE)
+}
+```
+
+```{r}
+meta <- yaml::read_yaml(params$metadata_file)
+header <- yaml::read_yaml(params$header_file)$header
+experience <- yaml::read_yaml(params$experience_file)$experience
+education <- yaml::read_yaml(params$education_file)$education
+awards <- yaml::read_yaml(params$awards_file)$awards
+
+paper_publications_bib <- params$bib_publications
+paper_thesis_bib <- params$bib_thesis
+
+poster_cogstate_bib <- params$bib_posters_cogstate
+poster_cog_bib <- params$bib_posters_cog
+poster_madrigal_bib <- params$bib_posters_madrigal
+poster_signant_bib <- params$bib_posters_signant
+poster_wcupa_bib <- params$bib_posters_wcupa
+
+package_bib_files <- params$bib_packages
+
+papers_publications <- format_refs_apa(paper_publications_bib)
+papers_thesis <- format_refs_apa(paper_thesis_bib)
+posters_cogstate <- format_refs_apa(poster_cogstate_bib)
+posters_cog <- format_refs_apa(poster_cog_bib)
+posters_madrigal <- format_refs_apa(poster_madrigal_bib)
+posters_signant <- format_refs_apa(poster_signant_bib)
+posters_wcupa <- format_refs_apa(poster_wcupa_bib)
+packages <- format_refs_apa(package_bib_files)
+```
+
+```{r}
+out <- c(
+  "// Auto-generated from YAML sources. Do not edit manually.",
+  "#import \"typst-template.typ\": *",
+  "",
+  paste0("#let cv_name = ", typst_string(meta$author)),
+  paste0("#let cv_location = ", typst_string(header$location)),
+  paste0("#let cv_phone = ", typst_string(header$phone)),
+  paste0("#let cv_email = ", typst_string(meta$email)),
+  paste0("#let cv_web = ", typst_string(meta$web)),
+  paste0("#let cv_github = ", typst_string(meta$github)),
+  paste0("#let cv_linkedin = ", typst_string(meta$linkedin)),
+  "",
+  "#let experience_data = ("
+)
+
+experience_by_company <- split(
+  experience,
+  vapply(experience, \(x) x$what %||% "", NA_character_)
+)
+
+for (company in names(experience_by_company)) {
+  items <- experience_by_company[[company]]
+  out <- c(out, experience_group_item(company, items))
+}
+
+out <- c(out, ")", "", "#let education_data = (")
+
+for (i in seq_along(education)) {
+  item <- education[[i]]
+  out <- c(out, education_item(item))
+}
+
+out <- c(out, ")", "", "#let awards_items = [")
+for (a in awards) {
+  out <- c(
+    out,
+    paste0(
+      "- ",
+      pandoc_md_to_typst(paste0("**", a$what, "** (", a$when, ") — ", a$with))
+    )
+  )
+}
+
+out <- c(out, "]", "")
+
+paper_groups <- list(
+  list(title = "Peer Reviewed Publications", items = papers_publications),
+  list(title = "Master's Thesis", items = papers_thesis)
+)
+out <- c(
+  out,
+  paste0("#let paper_groups_data = ", emit_named_groups(paper_groups)),
+  ""
+)
+
+poster_groups <- list(
+  list(title = "Cogstate - Digital cognition", items = posters_cogstate),
+  list(title = "Cogstate - Cognitive outcomes", items = posters_cog),
+  list(title = "Madrigal - Liver disease", items = posters_madrigal),
+  list(
+    title = "Signant Health (Bracket) - eCOA data quality",
+    items = posters_signant
+  ),
+  list(title = "WCUPA - Asthma and music cognitive", items = posters_wcupa)
+)
+out <- c(
+  out,
+  paste0("#let poster_groups_data = ", emit_named_groups(poster_groups))
+)
+
+out <- c(out, "", "#let packages_items = [")
+for (pkg in packages) {
+  out <- c(out, paste0("- ", pandoc_md_to_typst(pkg)))
+}
+out <- c(out, "]")
+
+out <- c(
+  out,
+  "",
+  "#render_compact_cv(",
+  "  cv_name,",
+  "  cv_location,",
+  "  cv_phone,",
+  "  cv_email,",
+  "  cv_web,",
+  "  cv_github,",
+  "  cv_linkedin,",
+  "  experience_data,",
+  "  education_data,",
+  "  awards_items,",
+  "  paper_groups_data,",
+  "  poster_groups_data,",
+  "  packages_items,",
+  ")"
+)
+```
+
+```{r}
+#| results: asis
+cat("```{=typst}\n", paste(out, collapse = "\n"), "\n```\n", sep = "")
+```
