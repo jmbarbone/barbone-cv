@@ -65,6 +65,12 @@
     fa-icon("briefcase", weight: 400)
   } else if title == "Education" {
     fa-icon("graduation-cap")
+  } else if title == "Skills" {
+    fa-icon("screwdriver-wrench")
+  } else if title == "Courses" {
+    fa-icon("book-open")
+  } else if title == "Extracurriculars" {
+    fa-icon("people-group")
   } else if title == "Selected Awards" {
     fa-icon("trophy")
   } else if title == "Papers" {
@@ -122,20 +128,20 @@
 #let education_entry(role, org, location, dates, body) = [
   #block(breakable: false)[
     #table(
-      columns: (1fr, auto),
-      column-gutter: 0.8em,
-      row-gutter: 0.4em,
+      columns: (3fr, 2fr),
+      column-gutter: 0.9em,
+      row-gutter: 0.25em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#stub[#org]], 
+      [#stub[#org]],
       [#stub[#fa-icon("location-dot") #h(0.2em) #location]],
       [#bold[#role]],
       [#semi[#fa-icon("calendar-days") #h(0.2em) #dates]],
     )
-    #v(0.1em)
+    #v(0.08em)
     #body
-    #v(0.3em)
+    #v(0.22em)
   ]
 ]
 
@@ -167,12 +173,12 @@
 
 #let role_entry(role, dates, body) = [
   #block(
-    sticky: false,
+    sticky: true,
     breakable: false,
   )[
     #table(
-      columns: (1fr, auto),
-      column-gutter: 0.7em,
+      columns: (3fr, 2fr),
+      column-gutter: 0.8em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
@@ -181,11 +187,13 @@
     )
   ]
   #block[
-    #v(0.1em)
+    #v(0.08em)
     #body
-    #v(0.3em)
+    #v(0.22em)
   ]
 ]
+
+#let sep_dot = [#h(0.28em)#text(fill: colors.secondary)[•]#h(0.28em)]
 
 #let header(
   given,
@@ -198,28 +206,28 @@
   linkedin,
 ) = [
   #text[
-    #text(size: 16.5pt, weight: 200)[#given]
+    #text(size: 18pt, weight: 200)[#given]
     #h(0.2em)
-    #text(size: 16.5pt, fill: colors.primary, weight: 900)[#surname]
+    #text(size: 18pt, fill: colors.primary, weight: 900)[#surname]
   ]
   #v(0.10em)
   #set text(size: 9pt)
   #text(fill: colors.hyperlink)[#fa-icon("house")]
   #h(0.20em)
   #location
-  #h(0.20em)
+  #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("phone")]
   #h(0.20em)
   #link("tel:" + phone)[#phone]
-  #h(0.20em)
+  #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("envelope")]
   #h(0.20em)
   #link("mailto:" + email)[#email]
   #linebreak()
   #contact_link("link", web, web)
-  #h(0.20em)
+  #sep_dot
   #contact_link("github", "github.com/" + github, "https://github.com/" + github)
-  #h(0.20em)
+  #sep_dot
   #contact_link("linkedin", "linkedin.com/in/" + linkedin, "https://www.linkedin.com/in/" + linkedin)
 ]
 
@@ -249,6 +257,22 @@
   ]
 ]
 
+#let render_skills(skills_data) = [
+  #for item in skills_data [
+    #table(
+      columns: (1fr, 3fr),
+      column-gutter: 0.8em,
+      row-gutter: 0.15em,
+      inset: 0pt,
+      stroke: none,
+      align: (left, left),
+      [#stub[#item.name]],
+      [#item.details],
+    )
+    #v(0.08em)
+  ]
+]
+
 #let render_reference_groups(groups_data) = [
   #for group in groups_data [
     #ref_group(group.title)[#group.body]
@@ -266,6 +290,9 @@
   linkedin,
   experience_data,
   education_data,
+  skills_data,
+  courses,
+  extracurriculars,
   awards,
   paper_groups_data,
   poster_groups_data,
@@ -281,8 +308,24 @@
     #render_education(education_data)
   ]
 
+  #section("Skills", sticky: true)[
+    #block(breakable: false)[#render_skills(skills_data)]
+  ]
+
   #section("Selected Awards", sticky: true)[
     #block(breakable: false)[#awards]
+  ]
+
+  #section("Courses", sticky: true)[
+    #block(breakable: false)[#courses]
+  ]
+
+  #section("Extracurriculars", sticky: true)[
+    #block(breakable: false)[#extracurriculars]
+  ]
+
+  #section("R Packages", sticky: true)[
+    #block(breakable: false)[#packages]
   ]
 
   #section("Papers", sticky: true)[
@@ -293,7 +336,4 @@
     #render_reference_groups(poster_groups_data)
   ]
 
-  #section("R Packages", sticky: true)[
-    #block(breakable: false)[#packages]
-  ]
 ]

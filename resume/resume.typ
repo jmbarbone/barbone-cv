@@ -229,7 +229,7 @@
 
 #set text(
   font: "Libertinus Serif",
-  size: 9pt,
+  size: 10pt,
   lang: "en",
   weight: 300,
 )
@@ -254,7 +254,7 @@
 ]
 
 #let section(title, body, sticky: false) = [
-  #v(0.62em)
+  #v(0.32em)
   #block(sticky: sticky)[
     #text(weight: 700)[#upper(title)]
     #v(-1em)
@@ -317,12 +317,12 @@
 ) = [
   #set align(center)
   #text[
-    #text(size: 15pt, fill: colors.grey)[#given]
+    #text(size: 18pt, fill: colors.grey)[#given]
     #h(0.2em)
-    #text(size: 15pt, weight: 700)[#surname]
+    #text(size: 18pt, weight: 700)[#surname]
   ]
   #v(0.08em)
-  #set text(size: 8.5pt)
+  #set text(size: 8pt)
   #location #h(0.35em) · #h(0.35em) #link("tel:" + phone)[#phone] #h(0.35em) · #h(0.35em) #link("mailto:" + email)[#email]
   #linebreak()
   #contact_link(web, web)
@@ -354,13 +354,18 @@
 
 #let render_skills(skills_data) = [
   #for item in skills_data [
-    #text[
-      #text(fill: colors.grey)[#item.name]
-      #item.details
-      #v(-0.38em)
-    ]
+    #table(
+      columns: (1fr, 6fr),
+      column-gutter: 0.8em,
+      row-gutter: 0.15em,
+      inset: 0pt,
+      stroke: none,
+      align: (left, left),
+      [#semi[#item.name]],
+      [#item.details],
+    )
+    #v(0.08em)
   ]
-  #v(0.38em)
 ]
 
 #let render_compact_resume(
@@ -401,7 +406,7 @@
 
 #set page(
   paper: "us-letter",
-  margin: (x: 1.25in, y: 1.25in),
+  margin: (x: 0.75in,y: 0.75in,),
   numbering: "1",
   columns: 1,
 )
@@ -469,6 +474,12 @@
   ),
   (
     org: [West Chester University of Pennsylvania],
+    credential: [Non-degree Graduate Student],
+    location: [West Chester, PA],
+    dates: [Aug 2016 - Jun 2017],
+  ),
+  (
+    org: [West Chester University of Pennsylvania],
     credential: [Bachelor of Arts],
     location: [West Chester, PA],
     dates: [Aug 2011 - May 2015],
@@ -477,20 +488,28 @@
 
 #let skills_data = (
   (
-    name: [R --- Advanced],
-    details: [package development, data analysis, statistical programming, data visualization, ETL/data integration, tidyverse, R Markdown, Quarto],
+    name: [R],
+    details: [statistical programming, package development, Shiny app development, tidyverse pipelines, Quarto/R Markdown reporting, and trial monitoring analytics],
   ),
   (
-    name: [Other programming],
-    details: [Python (PySpark), SQL, Git, Bash],
+    name: [Python],
+    details: [PySpark data engineering, Databricks jobs, reusable package-based transformations, API and file ingestion workflows, and data automation],
   ),
   (
-    name: [Clinical trials],
-    details: [clinical data management programming, centralized monitoring, eCOA, data review, rater training and qualification],
+    name: [SQL],
+    details: [query development for analytics and dashboards, data quality checks, and alert-oriented monitoring workflows],
   ),
   (
-    name: [Psychology],
-    details: [behavioral statistics, research methods, cognitive psychology, learning psychology],
+    name: [Data Platforms],
+    details: [Databricks, Delta Lake patterns, CI/CD with GitHub Actions, configuration-driven processing, and operational logging/alerting],
+  ),
+  (
+    name: [Clinical Research Analytics],
+    details: [clinical trial data review, centralized/risk-based monitoring, cognitive outcomes support, and rater-focused analytics and reporting],
+  ),
+  (
+    name: [Collaboration & Workflow],
+    details: [Git-based collaboration, standards development, cross-functional data/science partnership, and reproducible analysis practices],
   ),
 )
 

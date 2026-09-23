@@ -9,3 +9,4 @@ cover-letters/
 *_ignore*
 
 /.quarto/
+data/header.yaml

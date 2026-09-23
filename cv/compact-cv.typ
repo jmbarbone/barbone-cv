@@ -275,6 +275,12 @@
     fa-icon("briefcase", weight: 400)
   } else if title == "Education" {
     fa-icon("graduation-cap")
+  } else if title == "Skills" {
+    fa-icon("screwdriver-wrench")
+  } else if title == "Courses" {
+    fa-icon("book-open")
+  } else if title == "Extracurriculars" {
+    fa-icon("people-group")
   } else if title == "Selected Awards" {
     fa-icon("trophy")
   } else if title == "Papers" {
@@ -332,20 +338,20 @@
 #let education_entry(role, org, location, dates, body) = [
   #block(breakable: false)[
     #table(
-      columns: (1fr, auto),
-      column-gutter: 0.8em,
-      row-gutter: 0.4em,
+      columns: (3fr, 2fr),
+      column-gutter: 0.9em,
+      row-gutter: 0.25em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#stub[#org]], 
+      [#stub[#org]],
       [#stub[#fa-icon("location-dot") #h(0.2em) #location]],
       [#bold[#role]],
       [#semi[#fa-icon("calendar-days") #h(0.2em) #dates]],
     )
-    #v(0.1em)
+    #v(0.08em)
     #body
-    #v(0.3em)
+    #v(0.22em)
   ]
 ]
 
@@ -377,12 +383,12 @@
 
 #let role_entry(role, dates, body) = [
   #block(
-    sticky: false,
+    sticky: true,
     breakable: false,
   )[
     #table(
-      columns: (1fr, auto),
-      column-gutter: 0.7em,
+      columns: (3fr, 2fr),
+      column-gutter: 0.8em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
@@ -391,11 +397,13 @@
     )
   ]
   #block[
-    #v(0.1em)
+    #v(0.08em)
     #body
-    #v(0.3em)
+    #v(0.22em)
   ]
 ]
+
+#let sep_dot = [#h(0.28em)#text(fill: colors.secondary)[•]#h(0.28em)]
 
 #let header(
   given,
@@ -408,28 +416,28 @@
   linkedin,
 ) = [
   #text[
-    #text(size: 16.5pt, weight: 200)[#given]
+    #text(size: 18pt, weight: 200)[#given]
     #h(0.2em)
-    #text(size: 16.5pt, fill: colors.primary, weight: 900)[#surname]
+    #text(size: 18pt, fill: colors.primary, weight: 900)[#surname]
   ]
   #v(0.10em)
   #set text(size: 9pt)
   #text(fill: colors.hyperlink)[#fa-icon("house")]
   #h(0.20em)
   #location
-  #h(0.20em)
+  #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("phone")]
   #h(0.20em)
   #link("tel:" + phone)[#phone]
-  #h(0.20em)
+  #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("envelope")]
   #h(0.20em)
   #link("mailto:" + email)[#email]
   #linebreak()
   #contact_link("link", web, web)
-  #h(0.20em)
+  #sep_dot
   #contact_link("github", "github.com/" + github, "https://github.com/" + github)
-  #h(0.20em)
+  #sep_dot
   #contact_link("linkedin", "linkedin.com/in/" + linkedin, "https://www.linkedin.com/in/" + linkedin)
 ]
 
@@ -459,6 +467,22 @@
   ]
 ]
 
+#let render_skills(skills_data) = [
+  #for item in skills_data [
+    #table(
+      columns: (1fr, 3fr),
+      column-gutter: 0.8em,
+      row-gutter: 0.15em,
+      inset: 0pt,
+      stroke: none,
+      align: (left, left),
+      [#stub[#item.name]],
+      [#item.details],
+    )
+    #v(0.08em)
+  ]
+]
+
 #let render_reference_groups(groups_data) = [
   #for group in groups_data [
     #ref_group(group.title)[#group.body]
@@ -476,6 +500,9 @@
   linkedin,
   experience_data,
   education_data,
+  skills_data,
+  courses,
+  extracurriculars,
   awards,
   paper_groups_data,
   poster_groups_data,
@@ -491,8 +518,24 @@
     #render_education(education_data)
   ]
 
+  #section("Skills", sticky: true)[
+    #block(breakable: false)[#render_skills(skills_data)]
+  ]
+
   #section("Selected Awards", sticky: true)[
     #block(breakable: false)[#awards]
+  ]
+
+  #section("Courses", sticky: true)[
+    #block(breakable: false)[#courses]
+  ]
+
+  #section("Extracurriculars", sticky: true)[
+    #block(breakable: false)[#extracurriculars]
+  ]
+
+  #section("R Packages", sticky: true)[
+    #block(breakable: false)[#packages]
   ]
 
   #section("Papers", sticky: true)[
@@ -503,9 +546,6 @@
     #render_reference_groups(poster_groups_data)
   ]
 
-  #section("R Packages", sticky: true)[
-    #block(breakable: false)[#packages]
-  ]
 ]
 #let brand-color = (:)
 #let brand-color-background = (:)
@@ -513,7 +553,7 @@
 
 #set page(
   paper: "us-letter",
-  margin: (x: 1.25in, y: 1.25in),
+  margin: (x: 0.5in,y: 0.5in,),
   numbering: "1",
   columns: 1,
 )
@@ -693,6 +733,60 @@
   ),
 )
 
+#let skills_data = (
+  (
+    name: [R],
+    details: [statistical programming, package development, Shiny app development, tidyverse pipelines, Quarto/R Markdown reporting, and trial monitoring analytics],
+  ),
+  (
+    name: [Python],
+    details: [PySpark data engineering, Databricks jobs, reusable package-based transformations, API and file ingestion workflows, and data automation],
+  ),
+  (
+    name: [SQL],
+    details: [query development for analytics and dashboards, data quality checks, and alert-oriented monitoring workflows],
+  ),
+  (
+    name: [Data Platforms],
+    details: [Databricks, Delta Lake patterns, CI/CD with GitHub Actions, configuration-driven processing, and operational logging/alerting],
+  ),
+  (
+    name: [Clinical Research Analytics],
+    details: [clinical trial data review, centralized/risk-based monitoring, cognitive outcomes support, and rater-focused analytics and reporting],
+  ),
+  (
+    name: [Collaboration & Workflow],
+    details: [Git-based collaboration, standards development, cross-functional data/science partnership, and reproducible analysis practices],
+  ),
+)
+
+#let courses_items = [
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/b95fa8556c521b7aef3e27a695e162eb588622f1")[Data Scientist with R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/f5c18fded8efd5ce7dc57f91d14cde3166f6439b")[Statistician with R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/09b64b5b5242159381d75837ed90198454e9fc58")[R Programmer Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/3041f1bfc05674c2e957c479fddbb8f55573db45")[Data Analyst with R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/327633aae130fc18fd36a34a476d535cefcf930d")[R Programming] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/525fabe528901a0bbb048608d5c84e9c553e1805")[Importing & Cleaning Data with R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/57ecb920dd927f26cbf2d25caa0f689f131653b3")[Machine Learning Fundamentals in R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/4a64acc738cc6dcf6e19e5e7f9955c7a6de410a0")[Statistical Fundamentals with R Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/67629e7267c73b14e0dbd964a4b9d35f0957bdf0")[Statistical Fundamentals with R Track (Old Track)] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/d7e95156f4dd81d658d48dfbbc1b8792d7164d7d")[Python Programming Track] --- DataCamp
+- #link("https://www.datacamp.com/statement-of-accomplishment/track/c5ee6f9f354942e37ae6d84115227d6b98ba5f78")[SQL Fundamentals Track] --- DataCamp
+- #link("https://github.com/jmbarbone/barbone-cv/blob/master/docs/EPG194_Certificate%20of%20Completion.pdf")[SAS Programming 1: Essentials] --- SAS
+- #link("https://github.com/jmbarbone/barbone-cv/blob/master/docs/ESP4RV_Certificate%20of%20Completion.pdf")[SAS Programming for R Users] --- SAS
+]
+
+#let extracurriculars_items = [
+- #strong[Chapter Graduate Liaison], Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania (Dec 2017 - May 2019) --- West Chester, PA
+- #strong[Graduate Member], Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania (Aug 2017 - Dec 2017) --- West Chester, PA
+- #strong[Peer Mentor], West Chester University of Pennsylvania (Jan 2015 - May 2015) --- West Chester, PA
+- #strong[Chapter Secretary], Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania (May 2014 - May 2015) --- West Chester, PA
+- #strong[Club Publicity Chair], West Chester University of Pennsylvania (May 2014 - May 2015) --- West Chester, PA
+- #strong[Student Member], Student Life Committee, Psychology Department, West Chester University of Pennsylvania (Sep 2013 - May 2014) --- West Chester, PA
+- #strong[Undergraduate Member], Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania (Mar 2013 - May 2014) --- West Chester, PA
+- #strong[Undergraduate Member], West Chester University of Pennsylvania (Aug 2012 - May 2014) --- West Chester, PA
+]
+
 #let awards_items = [
 - #strong[Cogstate Values Award] (Dec 2022) --- Cogstate
 - #strong[Employee Recognition Award] (Nov 2021) --- Cogstate
@@ -803,6 +897,9 @@
   cv_linkedin,
   experience_data,
   education_data,
+  skills_data,
+  courses_items,
+  extracurriculars_items,
   awards_items,
   paper_groups_data,
   poster_groups_data,

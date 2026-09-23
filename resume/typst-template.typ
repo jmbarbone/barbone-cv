@@ -19,7 +19,7 @@
 
 #set text(
   font: "Libertinus Serif",
-  size: 9pt,
+  size: 10pt,
   lang: "en",
   weight: 300,
 )
@@ -44,7 +44,7 @@
 ]
 
 #let section(title, body, sticky: false) = [
-  #v(0.62em)
+  #v(0.32em)
   #block(sticky: sticky)[
     #text(weight: 700)[#upper(title)]
     #v(-1em)
@@ -107,12 +107,12 @@
 ) = [
   #set align(center)
   #text[
-    #text(size: 15pt, fill: colors.grey)[#given]
+    #text(size: 18pt, fill: colors.grey)[#given]
     #h(0.2em)
-    #text(size: 15pt, weight: 700)[#surname]
+    #text(size: 18pt, weight: 700)[#surname]
   ]
   #v(0.08em)
-  #set text(size: 8.5pt)
+  #set text(size: 8pt)
   #location #h(0.35em) · #h(0.35em) #link("tel:" + phone)[#phone] #h(0.35em) · #h(0.35em) #link("mailto:" + email)[#email]
   #linebreak()
   #contact_link(web, web)
@@ -144,13 +144,18 @@
 
 #let render_skills(skills_data) = [
   #for item in skills_data [
-    #text[
-      #text(fill: colors.grey)[#item.name]
-      #item.details
-      #v(-0.38em)
-    ]
+    #table(
+      columns: (1fr, 6fr),
+      column-gutter: 0.8em,
+      row-gutter: 0.15em,
+      inset: 0pt,
+      stroke: none,
+      align: (left, left),
+      [#semi[#item.name]],
+      [#item.details],
+    )
+    #v(0.08em)
   ]
-  #v(0.38em)
 ]
 
 #let render_compact_resume(

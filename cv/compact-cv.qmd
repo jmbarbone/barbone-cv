@@ -3,15 +3,23 @@ format:
   typst:
     keep-typ: true
     output-file: Barbone-Compact-CV.pdf
+    papersize: us-letter
+    margin: 
+      x: "0.5in"
+      y: "0.5in"
+    footer: true
+    numbering: true
     template-partials:
       - typst-template.typ
 execute:
   echo: false
 params:
   metadata_file: "../_metadata.yaml"
-  header_file: "../data/compact_cv_header.yaml"
   experience_file: "../data/experience.yaml"
   education_file: "../data/education.yaml"
+  skills_file: "../data/skills.yaml"
+  courses_file: "../data/courses.yaml"
+  extracurriculars_file: "../data/extracurriculars.yaml"
   awards_file: "../data/awards.yaml"
   csl_file: "../csl/apa-cv.csl"
   bib_publications: "../bib/publications.bib"
@@ -112,7 +120,7 @@ experience_group_item <- function(company, items) {
   # list is newest-first; use first non-empty location as most recent location
   locations <- vapply(
     items,
-    \(x) as.character(x$where %||% ""),
+    \(x) as.character(x$location %||% ""),
     NA_character_
   )
   nz <- which(nzchar(trimws(locations)))
@@ -126,13 +134,13 @@ experience_group_item <- function(company, items) {
   )
 
   for (item in items) {
-    bullets <- bullet_items(item$why)
+    bullets <- bullet_items(item$accomplishments)
 
     out <- c(
       out,
       "      (",
-      paste0("        role: ", to_typst_content(item$with), ","),
-      paste0("        dates: ", to_typst_content(item$when), ","),
+      paste0("        role: ", to_typst_content(item$position), ","),
+      paste0("        dates: ", to_typst_content(item$period), ","),
       "        bullets: ("
     )
 
@@ -147,14 +155,14 @@ experience_group_item <- function(company, items) {
 }
 
 education_item <- function(item) {
-  bullets <- bullet_items(item$why)
+  bullets <- bullet_items(item$details)
 
   out <- c(
     "  (",
-    paste0("    org: ", to_typst_content(item$what), ","),
-    paste0("    credential: ", to_typst_content(item$with), ","),
-    paste0("    location: ", to_typst_content(item$where), ","),
-    paste0("    dates: ", to_typst_content(item$when), ","),
+    paste0("    org: ", to_typst_content(item$institution), ","),
+    paste0("    credential: ", to_typst_content(item$degree), ","),
+    paste0("    location: ", to_typst_content(item$location), ","),
+    paste0("    dates: ", to_typst_content(item$period), ","),
     "    bullets: ("
   )
 
@@ -163,6 +171,15 @@ education_item <- function(item) {
   }
 
   c(out, "    ),", "  ),")
+}
+
+skills_item <- function(item) {
+  c(
+    "  (",
+    paste0("    name: ", to_typst_content(item$name), ","),
+    paste0("    details: ", to_typst_content(item$details), ","),
+    "  ),"
+  )
 }
 
 format_refs_apa <- function(bib_files, csl_file = params$csl_file) {
@@ -212,10 +229,12 @@ bold_me <- function(x) {
 ```{r}
 #| label: data
 meta <- yaml::read_yaml(params$metadata_file)
-header <- yaml::read_yaml(params$header_file)$header
-experience <- yaml::read_yaml(params$experience_file)$experience
-education <- yaml::read_yaml(params$education_file)$education
-awards <- yaml::read_yaml(params$awards_file)$awards
+experience <- yaml::read_yaml(params$experience_file)
+education <- yaml::read_yaml(params$education_file)
+skills <- yaml::read_yaml(params$skills_file)
+courses <- yaml::read_yaml(params$courses_file)
+extracurriculars <- yaml::read_yaml(params$extracurriculars_file)
+awards <- yaml::read_yaml(params$awards_file)
 
 parse_month_year <- function(x) {
   x <- trimws(as.character(x %||% ""))
@@ -256,8 +275,8 @@ extract_start_date <- function(when) {
 }
 
 if (length(experience) > 0) {
-  end_dates <- vapply(experience, function(x) extract_end_date(x$when), as.Date("1970-01-01"))
-  start_dates <- vapply(experience, function(x) extract_start_date(x$when), as.Date("1970-01-01"))
+  end_dates <- vapply(experience, function(x) extract_end_date(x$period), as.Date("1970-01-01"))
+  start_dates <- vapply(experience, function(x) extract_start_date(x$period), as.Date("1970-01-01"))
   ord <- order(end_dates, start_dates, decreasing = TRUE)
   experience <- experience[ord]
 }
@@ -291,8 +310,8 @@ out <- c(
   "",
   paste0("#let cv_given = ", typst_string(meta$given)),
   paste0("#let cv_surname = ", typst_string(meta$surname)),
-  paste0("#let cv_location = ", typst_string(header$location)),
-  paste0("#let cv_phone = ", typst_string(header$phone)),
+  paste0("#let cv_location = ", typst_string(meta$location)),
+  paste0("#let cv_phone = ", typst_string(meta$phone)),
   paste0("#let cv_email = ", typst_string(meta$email)),
   paste0("#let cv_web = ", typst_string(meta$web)),
   paste0("#let cv_github = ", typst_string(meta$github)),
@@ -303,7 +322,7 @@ out <- c(
 
 experience_by_company <- split(
   experience,
-  vapply(experience, \(x) x$what %||% "", NA_character_)
+  vapply(experience, \(x) x$company %||% "", NA_character_)
 )
 
 for (company in names(experience_by_company)) {
@@ -318,13 +337,44 @@ for (i in seq_along(education)) {
   out <- c(out, education_item(item))
 }
 
-out <- c(out, ")", "", "#let awards_items = [")
+out <- c(out, ")", "", "#let skills_data = (")
+for (s in skills) {
+  out <- c(out, skills_item(s))
+}
+
+out <- c(out, ")", "", "#let courses_items = [")
+for (course in courses) {
+  out <- c(
+    out,
+    paste0(
+      "- ",
+      pandoc_md_to_typst(
+        paste0("[", course$course, "](", course$link, ") — ", course$entity)
+      )
+    )
+  )
+}
+
+out <- c(out, "]", "", "#let extracurriculars_items = [")
+for (x in extracurriculars) {
+  out <- c(
+    out,
+    paste0(
+      "- ",
+      pandoc_md_to_typst(
+        paste0("**", x$with, "**, ", x$what, " (", x$when, ") — ", x$where)
+      )
+    )
+  )
+}
+
+out <- c(out, "]", "", "#let awards_items = [")
 for (a in awards) {
   out <- c(
     out,
     paste0(
       "- ",
-      pandoc_md_to_typst(paste0("**", a$what, "** (", a$when, ") — ", a$with))
+      pandoc_md_to_typst(paste0("**", a$award, "** (", a$date, ") — ", a$organization))
     )
   )
 }
@@ -376,6 +426,9 @@ out <- c(
   "  cv_linkedin,",
   "  experience_data,",
   "  education_data,",
+  "  skills_data,",
+  "  courses_items,",
+  "  extracurriculars_items,",
   "  awards_items,",
   "  paper_groups_data,",
   "  poster_groups_data,",
