@@ -8,7 +8,7 @@ pandoc::pandoc_activate("3.4")
 ca <- command_args()
 ca$add_argument(
   "outputs",
-  default = c("resume", "cv", "compact-cv"),
+  default = c("resume", "cv"),
   info = "Outputs to render"
 )
 
@@ -17,37 +17,17 @@ args <- ca$parse()
 for (output in args$outputs) {
   switch(
     output,
-    resume = {
-      with_cleanup("resume", {
-        bookdown::render_book(
-          input = "resume/index.Rmd",
-          output_format = "vitae::moderncv",
-          config_file = "resume/_bookdown.yaml"
-        )
-      })
-
-      fs::file_move("resume/Barbone-Resume.pdf", "Barbone-Resume.pdf")
-    },
-    cv = {
-      with_cleanup("cv", {
-        bookdown::render_book(
-          input = "cv/index.Rmd",
-          output_format = "vitae::awesomecv",
-          config_file = "cv/_bookdown.yaml"
-        )
-      })
-
-      fs::file_move("cv/Barbone-CV.pdf", "Barbone-CV.pdf")
-    },
-    "compact-cv" = {
-      with_cleanup("cv", {
-        quarto::quarto_render("cv/compact-cv.qmd")
-      })
-
-      if (fs::file_exists("cv/Barbone-Compact-CV.pdf")) {
-        fs::file_move("cv/Barbone-Compact-CV.pdf", "Barbone-Compact-CV.pdf")
-      }
-    }
+    resume = quarto::quarto_render(
+      "resume/resume.qmd",
+      output_file = "Barbone-Resume.pdf",
+      execute_dir = "resume"
+    ),
+    cv = quarto::quarto_render(
+      "cv/compact-cv.qmd",
+      output_file = "Barbone-CV.pdf",
+      execute_dir = "cv"
+    ),
+    stop("Unknown output: ", output)
   )
 }
 
