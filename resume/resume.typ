@@ -216,8 +216,7 @@
 // #set par(spacing: 1em)
 
 #let colors = (
-  primary: luma(20%),
-  secondary: luma(45%),
+  grey: luma(25%),
   hyperlink: rgb("#1d4ed8"),
 )
 
@@ -228,27 +227,15 @@
   footer: none,
 )
 
-#let head(
-  body,
-  size: 9pt,
-  weight: 300,
-  fill: luma(45%),
-) = {
-  text(
-    font: "Libertinus Serif",
-    size: size,
-    lang: "en",
-    weight: weight,
-    fill: fill,
-  )[#body]
-}
-
 #set text(
   font: "Libertinus Serif",
   size: 9pt,
   lang: "en",
   weight: 300,
 )
+
+#let semi(body) = text(fill: colors.grey)[#body]
+#let head(body) = text(weight: 700)[#emph[#body]]
 
 #set par(justify: false, leading: 0.50em)
 #set list(tight: true, marker: [•])
@@ -269,7 +256,7 @@
 #let section(title, body, sticky: false) = [
   #v(0.62em)
   #block(sticky: sticky)[
-    #head(weight: 700, fill: colors.primary)[#upper(title)]
+    #text(weight: 700)[#upper(title)]
     #v(-1em)
     #line(length: 100%, stroke: 0.45pt + luma(45%))
   ]
@@ -286,10 +273,10 @@
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#head()[#org]], 
-      [#head()[#h(0.2em) #location]],
-      [#text(weight: 700)[#emph[#role]]],
-      [#text()[#h(0.2em) #dates]],
+      [#semi[#org]], 
+      [#semi[#location]],
+      [#head[#role]],
+      [#dates],
     )
   ]
 ]
@@ -302,28 +289,37 @@
     #table(
       columns: (1fr, auto),
       column-gutter: 0.7em,
-      row-gutter: 0.2em,
+      row-gutter: 0.4em,
       inset: 0pt,
       stroke: none,
       align: (left, right),
-      [#head()[#org]],
-      [#text(fill: luma(45%))[#location]],
-      [#head(weight: 700, fill: colors.primary)[#emph[#role]]],
-      [#text(fill: colors.primary)[#dates]],
+      [#semi[#org]],
+      [#semi[#location]],
+      [#head[#role]],
+      [#dates],
     )
   ]
   #block[
-    #v(-0.22em)
+    #v(-0.4em)
     #body
-    // #v(0.22em)
   ]
 ]
 
-#let header(given, surname, location, phone, email, web, github, linkedin) = [
+#let header(
+  given,
+  surname,
+  location,
+  phone,
+  email,
+  web,
+  github,
+  linkedin,
+) = [
   #set align(center)
   #text[
-    #head(size: 15pt)[#given]
-    #head(size: 15pt, weight: 700, fill: colors.primary)[#h(0.2em) #surname]
+    #text(size: 15pt, fill: colors.grey)[#given]
+    #h(0.2em)
+    #text(size: 15pt, weight: 700)[#surname]
   ]
   #v(0.08em)
   #set text(size: 8.5pt)
@@ -359,8 +355,8 @@
 #let render_skills(skills_data) = [
   #for item in skills_data [
     #text[
-      #head(size: 8pt)[#item.name]
-      #text(size: 8pt)[#item.details]
+      #text(fill: colors.grey)[#item.name]
+      #item.details
       #v(-0.38em)
     ]
   ]

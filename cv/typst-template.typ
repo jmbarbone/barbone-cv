@@ -39,7 +39,7 @@
 }
 
 #let bold(body, size: 10pt) = {
-  text(size: size, weight: 600, fill: colors.primary)[#body]
+  text(size: size, weight: 700, fill: colors.primary)[#body]
 }
 
 #show link: it => text(
