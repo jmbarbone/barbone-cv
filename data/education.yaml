@@ -1,26 +1,25 @@
-education:
-  - what: West Chester University of Pennsylvania
-    when: Aug 2017 - May 2019
-    with: Master of Arts
-    where: West Chester, PA
-    why: |
-      General Psychology, Advisor: Geeta Shivde, Ph.D.
-      Thesis: The effects of participant-selected background music on executive function task performance
-      GPA: 4.00
+- institution: West Chester University of Pennsylvania
+  period: Aug 2017 - May 2019
+  degree: Master of Arts
+  location: West Chester, PA
+  details: |
+    General Psychology, Advisor: Geeta Shivde, Ph.D.
+    Thesis: The effects of participant-selected background music on executive function task performance
+    GPA: 4.00
 
-  - what: West Chester University of Pennsylvania
-    when: Aug 2016 - Jun 2017
-    with: Non-degree Graduate Student
-    where: West Chester, PA
-    why: |
-      Classes in Statistics, Research Methods, and Psychometrics
-      GPA: 4.00
+- institution: West Chester University of Pennsylvania
+  period: Aug 2016 - Jun 2017
+  degree: Non-degree Graduate Student
+  location: West Chester, PA
+  details: |
+    Classes in Statistics, Research Methods, and Psychometrics
+    GPA: 4.00
 
-  - what: West Chester University of Pennsylvania
-    when: Aug 2011 - May 2015
-    with: Bachelor of Arts
-    where: West Chester, PA
-    why: |
-      Major in Psychology, Minor in Biology
-      Cumulative GPA: 3.470
-      Major GPA: 3.834
+- institution: West Chester University of Pennsylvania
+  period: Aug 2011 - May 2015
+  degree: Bachelor of Arts
+  location: West Chester, PA
+  details: |
+    Major in Psychology, Minor in Biology
+    Cumulative GPA: 3.470
+    Major GPA: 3.834
