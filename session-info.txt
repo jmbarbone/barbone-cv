@@ -8,7 +8,7 @@
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/New_York
- date     2026-09-22
+ date     2026-09-24
  pandoc   3.4 @ /home/jordan/.local/share/r-pandoc/3.4/ (via rmarkdown)
  quarto   1.9.36 @ /opt/quarto/bin/quarto
 

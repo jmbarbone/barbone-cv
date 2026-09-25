@@ -18,14 +18,12 @@ for (output in args$outputs) {
   switch(
     output,
     resume = quarto::quarto_render(
-      "resume/resume.qmd",
-      output_file = "Barbone-Resume.pdf",
-      execute_dir = "resume"
+      "resume.qmd",
+      output_file = "Barbone-Resume.pdf"
     ),
     cv = quarto::quarto_render(
-      "cv/compact-cv.qmd",
-      output_file = "Barbone-CV.pdf",
-      execute_dir = "cv"
+      "cv.qmd",
+      output_file = "Barbone-CV.pdf"
     ),
     stop("Unknown output: ", output)
   )

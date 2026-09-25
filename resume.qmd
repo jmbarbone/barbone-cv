@@ -1,21 +1,21 @@
 ---
 format:
   typst:
-    output-file: Barbone-Compact-Resume.pdf
+    output-file: Barbone-Resume.pdf
     papersize: us-letter
     margin: 
       x: "0.75in"
       y: "0.75in"
     footer: false
     numbering: false
-    keep-typ: true
+    keep-typ: false
     template-partials:
-      - typst-template.typ
+      - resume/typst-template.typ
 execute:
   echo: false 
 params:
-  metadata_file: "../_metadata.yaml"
-  bib_packages: "../bib/packages.bib"
+  metadata_file: "_metadata.yaml"
+  bib_packages: "bib/packages.bib"
 ---
 
 ```{r}
@@ -248,7 +248,7 @@ experience <- head(experience, 3)
 #| label: prep output
 out <- c(
   "// Auto-generated from YAML sources. Do not edit manually.",
-  "#import \"typst-template.typ\": *",
+  "#import \"resume/typst-template.typ\": *",
   "",
   paste0("#let cv_given = ", typst_string(meta$given)),
   paste0("#let cv_surname = ", typst_string(meta$surname)),

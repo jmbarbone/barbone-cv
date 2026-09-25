@@ -1,8 +1,8 @@
 ---
 format:
   typst:
-    keep-typ: true
-    output-file: Barbone-Compact-CV.pdf
+    keep-typ: false
+    output-file: Barbone-CV.pdf
     papersize: us-letter
     margin: 
       x: "0.5in"
@@ -10,20 +10,20 @@ format:
     footer: true
     numbering: true
     template-partials:
-      - typst-template.typ
+      - cv/typst-template.typ
 execute:
   echo: false
 params:
-  metadata_file: "../_metadata.yaml"
-  csl_file: "../csl/apa-cv.csl"
-  bib_publications: "../bib/publications.bib"
-  bib_thesis: "../bib/thesis.bib"
-  bib_posters_cogstate: "../bib/posters_cogstate.bib"
-  bib_posters_cog: "../bib/posters_cog.bib"
-  bib_posters_madrigal: "../bib/posters_madrigal.bib"
-  bib_posters_signant: "../bib/posters_signant.bib"
-  bib_posters_wcupa: "../bib/posters_wcupa.bib"
-  bib_packages: "../bib/packages.bib"
+  metadata_file: "_metadata.yaml"
+  csl_file: "csl/apa-cv.csl"
+  bib_publications: "bib/publications.bib"
+  bib_thesis: "bib/thesis.bib"
+  bib_posters_cogstate: "bib/posters_cogstate.bib"
+  bib_posters_cog: "bib/posters_cog.bib"
+  bib_posters_madrigal: "bib/posters_madrigal.bib"
+  bib_posters_signant: "bib/posters_signant.bib"
+  bib_posters_wcupa: "bib/posters_wcupa.bib"
+  bib_packages: "bib/packages.bib"
 ---
 
 ```{r}
@@ -301,7 +301,7 @@ packages <- format_refs_apa(package_bib_files)
 #| label: prep output
 out <- c(
   "// Auto-generated from YAML sources. Do not edit manually.",
-  "#import \"typst-template.typ\": *",
+  "#import \"cv/typst-template.typ\": *",
   "",
   paste0("#let cv_given = ", typst_string(meta$given)),
   paste0("#let cv_surname = ", typst_string(meta$surname)),
