@@ -15,12 +15,6 @@ execute:
   echo: false
 params:
   metadata_file: "../_metadata.yaml"
-  experience_file: "../data/experience.yaml"
-  education_file: "../data/education.yaml"
-  skills_file: "../data/skills.yaml"
-  courses_file: "../data/courses.yaml"
-  extracurriculars_file: "../data/extracurriculars.yaml"
-  awards_file: "../data/awards.yaml"
   csl_file: "../csl/apa-cv.csl"
   bib_publications: "../bib/publications.bib"
   bib_thesis: "../bib/thesis.bib"
@@ -229,12 +223,13 @@ bold_me <- function(x) {
 ```{r}
 #| label: data
 meta <- yaml::read_yaml(params$metadata_file)
-experience <- yaml::read_yaml(params$experience_file)
-education <- yaml::read_yaml(params$education_file)
-skills <- yaml::read_yaml(params$skills_file)
-courses <- yaml::read_yaml(params$courses_file)
-extracurriculars <- yaml::read_yaml(params$extracurriculars_file)
-awards <- yaml::read_yaml(params$awards_file)
+experience <- meta$experience
+education <- meta$education
+skills <- meta$skills
+courses <- meta$courses
+extracurriculars <- meta$extracurriculars
+awards <- meta$awards
+tutoring_subjects <- meta$tutoring
 
 parse_month_year <- function(x) {
   x <- trimws(as.character(x %||% ""))
@@ -312,10 +307,13 @@ out <- c(
   paste0("#let cv_surname = ", typst_string(meta$surname)),
   paste0("#let cv_location = ", typst_string(meta$location)),
   paste0("#let cv_phone = ", typst_string(meta$phone)),
+  paste0("#let cv_phone_display = ", typst_string(meta$phone_display %||% meta$phone)),
   paste0("#let cv_email = ", typst_string(meta$email)),
   paste0("#let cv_web = ", typst_string(meta$web)),
   paste0("#let cv_github = ", typst_string(meta$github)),
   paste0("#let cv_linkedin = ", typst_string(meta$linkedin)),
+  paste0("#let cv_professional_title = ", typst_string(meta$professional_title)),
+  paste0("#let cv_summary_short = ", typst_string(meta$summary_short)),
   "",
   "#let experience_data = ("
 )
@@ -330,7 +328,21 @@ for (company in names(experience_by_company)) {
   out <- c(out, experience_group_item(company, items))
 }
 
-out <- c(out, ")", "", "#let education_data = (")
+out <- c(out, ")", "", "#let tutoring_items = [")
+
+for (t in tutoring_subjects) {
+  out <- c(
+    out,
+    paste0(
+      "- ",
+      pandoc_md_to_typst(
+        paste0("**", t$with, "**, ", t$what, " (", t$when, ") — ", t$where)
+      )
+    )
+  )
+}
+
+out <- c(out, "]", "", "#let education_data = (")
 
 for (i in seq_along(education)) {
   item <- education[[i]]
@@ -420,11 +432,15 @@ out <- c(
   "  cv_surname,",
   "  cv_location,",
   "  cv_phone,",
+  "  cv_phone_display,",
   "  cv_email,",
   "  cv_web,",
   "  cv_github,",
   "  cv_linkedin,",
+  "  cv_professional_title,",
+  "  cv_summary_short,",
   "  experience_data,",
+  "  tutoring_items,",
   "  education_data,",
   "  skills_data,",
   "  courses_items,",

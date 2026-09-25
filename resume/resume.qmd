@@ -15,9 +15,6 @@ execute:
   echo: false 
 params:
   metadata_file: "../_metadata.yaml"
-  experience_file: "../data/experience.yaml"
-  education_file: "../data/education.yaml"
-  skills_file: "../data/skills.yaml"
   bib_packages: "../bib/packages.bib"
 ---
 
@@ -194,9 +191,9 @@ read_package_links <- function(bib_file) {
 ```{r}
 #| label: data
 meta <- yaml::read_yaml(params$metadata_file)
-experience <- yaml::read_yaml(params$experience_file)
-education <- yaml::read_yaml(params$education_file)
-skills <- yaml::read_yaml(params$skills_file)
+experience <- meta$experience
+education <- meta$education
+skills <- meta$skills
 package_links <- read_package_links(params$bib_packages)
 
 parse_month_year <- function(x) {

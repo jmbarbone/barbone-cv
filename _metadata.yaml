@@ -5,7 +5,332 @@ web: https://jmbarbone.github.io/
 github: jmbarbone
 linkedin: jmbarbone
 location: Philadelphia, PA USA
-phone: "+1-202-656-2528"
-phone_display: "+1 (202) 656-2528"
-professional_title: "Principal, Data Platform"
-summary_short: "Data platform and statistical programming leader focused on clinical trials analytics and automation"
+phone: +1-202-656-2528
+phone_display: +1 (202) 656-2528
+professional_title: Principal, Data Platform
+summary_short: Data platform and statistical programming leader focused on clinical
+  trials analytics and automation
+awards:
+- award: Cogstate Values Award
+  date: Dec 2022
+  organization: Cogstate
+  details: In recognition of outstanding dedication and contributions for furthering
+    the Cogstate mission of improving brain health around the world.
+- award: Employee Recognition Award
+  date: Nov 2021
+  organization: Cogstate
+  details: 'Modeling one of Cogstate values through significant achievement: Lead
+    with Science'
+- award: WCUPA Psychology Service Award
+  date: Apr 2015
+  organization: Psychology Department, West Chester University of Pennsylvania
+  location: West Chester, PA
+  details: Dedicated service to the Psychology Department through positions in undergraduate
+    club, a student-faculty committee, and the honor society
+- award: Psychology Research Achievement Award
+  date: Apr 2015
+  organization: Psychology Department, West Chester University of Pennsylvania
+  location: West Chester, PA
+  details: Involvement in research activities, poster presentations, and work on conducting
+    and reporting on a meta-analysis for publication
+- award: CRLA Certified Tutor Level II
+  date: Apr 2015
+  organization: Learning Assistance and Resource Center, West Chester University of
+    Pennsylvania
+  location: West Chester, PA
+  details: Successfully completed standardized CRLA training for tutors
+- award: Dean's List
+  date: Dec 2014
+  organization: College of Arts and Sciences, West Chester University of Pennsylvania
+  location: West Chester, PA
+  details: Completed 12 or more graded hours in an academic semester and achieve a
+    semester GPA of 3.670 or better
+- award: CRLA Certified Tutor Level I
+  date: Dec 2014
+  organization: Learning Assistance and Resource Center, West Chester University of
+    Pennsylvania
+  location: West Chester, PA
+  details: Successfully completed standardized CRLA training for tutors
+- award: Dean's List
+  date: May 2013
+  organization: College of Arts and Sciences, West Chester University of Pennsylvania
+  location: West Chester, PA
+  details: Completed 12 or more graded hours in an academic semester and achieve a
+    semester GPA of 3.670 or better
+courses:
+- course: Data Scientist with R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/b95fa8556c521b7aef3e27a695e162eb588622f1
+- course: Statistician with R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/f5c18fded8efd5ce7dc57f91d14cde3166f6439b
+- course: R Programmer Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/09b64b5b5242159381d75837ed90198454e9fc58
+- course: Data Analyst with R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/3041f1bfc05674c2e957c479fddbb8f55573db45
+- course: R Programming
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/327633aae130fc18fd36a34a476d535cefcf930d
+- course: Importing & Cleaning Data with R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/525fabe528901a0bbb048608d5c84e9c553e1805
+- course: Machine Learning Fundamentals in R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/57ecb920dd927f26cbf2d25caa0f689f131653b3
+- course: Statistical Fundamentals with R Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/4a64acc738cc6dcf6e19e5e7f9955c7a6de410a0
+- course: Statistical Fundamentals with R Track (Old Track)
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/67629e7267c73b14e0dbd964a4b9d35f0957bdf0
+- course: Python Programming Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/d7e95156f4dd81d658d48dfbbc1b8792d7164d7d
+- course: SQL Fundamentals Track
+  entity: DataCamp
+  link: https://www.datacamp.com/statement-of-accomplishment/track/c5ee6f9f354942e37ae6d84115227d6b98ba5f78
+- course: 'SAS Programming 1: Essentials'
+  entity: SAS
+  link: https://github.com/jmbarbone/barbone-cv/blob/master/docs/EPG194_Certificate
+    of Completion.pdf
+- course: SAS Programming for R Users
+  entity: SAS
+  link: https://github.com/jmbarbone/barbone-cv/blob/master/docs/ESP4RV_Certificate
+    of Completion.pdf
+education:
+- institution: West Chester University of Pennsylvania
+  period: Aug 2017 - May 2019
+  degree: Master of Arts
+  location: West Chester, PA
+  details: |
+    General Psychology, Advisor: Geeta Shivde, Ph.D.
+    Thesis: The effects of participant-selected background music on executive function task performance
+    GPA: 4.00
+- institution: West Chester University of Pennsylvania
+  period: Aug 2016 - Jun 2017
+  degree: Non-degree Graduate Student
+  location: West Chester, PA
+  details: |
+    Classes in Statistics, Research Methods, and Psychometrics
+    GPA: 4.00
+- institution: West Chester University of Pennsylvania
+  period: Aug 2011 - May 2015
+  degree: Bachelor of Arts
+  location: West Chester, PA
+  details: |-
+    Major in Psychology, Minor in Biology
+    Cumulative GPA: 3.470
+    Major GPA: 3.834
+experience:
+- company: Cogstate
+  period: Sep 2026 - Present
+  position: Principal, Data Platform
+  location: New Haven, CT (Remote)
+  highlights: |
+    Created and implemented development standards for Data Engineers and Data Scientists
+    Architected and implemented a CI/CD process for **Databricks** testing through **GitHub** actions and **Databricks** alerts
+    Established scalable engineering workflows for analytics delivery and platform reliability
+  accomplishments: |
+    Created and implemented development standards for Data Engineers and Data Scientists
+    Provided supervision and training for Data Scientists, Data Engineers, and Data Visualization resources
+    Architected and implemented a CI/CD process for **Databricks** testing through **GitHub** actions and **Databricks** alerts
+- company: Cogstate
+  period: Oct 2024 - Sep 2026
+  position: Senior Data Scientist
+  location: New Haven, CT (Remote)
+  highlights: |
+    Refactored legacy data ingestion processes into **Databricks** centered, **PySpark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
+    Developed configuration schemas and validation process centered around **git** to allow broader team input into processes while maintaining data quality
+    Refactored Statistical Monitoring program in **R** reducing runtimes by ~50% and improving development scaling and unit test coverage
+  accomplishments: |
+    Refactored legacy data ingestion processes into **Databricks** centered, **PySpark** coded scheduled jobs with ~70% reduction of time and ~50% reduction in cost; ingestions managing **REST API** responses, and **xlsx**/**csv** files in **SharePoint** with insert, update, and delete history preservation
+    Developed configuration schemas and validation process centered around **git** to allow broader team input into processes while maintaining data quality
+    Developed logging and alerting systems in **Databricks** and **SQL** alerts for potential data quality issues to streamline responses to outside team members
+    Maintained and improved Statistical Monitoring program in **R** for outcome anomaly detection for Clinical Trials
+    Developed **SQL** queries for Tableau dashboards
+    Refactored Statistical Monitoring program in **R** reducing runtimes by ~50% and improving development scaling and unit test coverage
+    Provided supervision and input for Data Scientist, Data Engineer, and Data Visualization resources
+- company: Cogstate
+  period: Jun 2021 - Oct 2024
+  position: Data Scientist
+  location: New Haven, CT (Remote)
+  highlights: |
+    Independently developed internal **R packages** to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
+    Refactored Data Engineering **PySpark** code into a **python** package for data transformations within **Azure Databricks** and **DeltaTable** management
+    Developed and managed a robust daily and weekly reporting system with **R tidyverse** scripts for the monitoring of a high-profile international Alzheimer's Disease trial
+  duties: |
+    Collaborates with Data Engineering to define data structures and requirements for Azure Databricks infrastructure and reporting.
+    Develops data transformations and utilities using PySpark for backend processing
+    Supports clinical trial data monitoring, rater training, and cognitive testing applications
+    Maintains databases, data models, reporting systems, dashboards, and performance metrics
+    Works with internal and external teams to address data-related processes and scientific questions
+    Creates and writes analytic reports for clinical studies and research
+    Drives research and publications, focusing on trial outcomes, rater training, and methodology
+    Manages data curation, aggregation, and reporting systems
+    Analyzes cognitive outcome measures and tests, supporting scientific analysis and reporting
+    Develops solutions for customer-specific data needs and monitors cognitive data performance
+    Contributes to process, technology, and infrastructure development for scientific services
+    Maintains in-depth knowledge of Cogstate's data systems.
+  accomplishments: |
+    Independently developed internal **R packages** to advance programming, visualization, normative data management, central monitoring, data access, and general utilities
+    Designed and development **R shiny** applications for displaying central monitoring activity and performing interactive analyses
+    Refactored Data Engineering **PySpark** code into a **python** package for data transformations within **Azure Databricks** and **DeltaTable** management
+    Refactored legacy **SQL** code to seamlessly integrate **PySpark** functionalities and enforce best coding practices
+    Designed and implemented an efficient process for managing and updating and tracking normative data, collaborating closely with Science and Product Management teams
+    Authored comprehensive standards and protocols for **Jira** workflows and **git** management, ensuring consistency and efficiency
+    Developed and managed a robust daily and weekly reporting system with **R tidyverse** scripts for the monitoring of a high-profile international Alzheimer's Disease trial
+    Analyzed and interpreted requirements from Science and Data Management to drive strategic advancements within our Data Lakehouse
+    Developed, reported, and presented analyses with **R tidyverse** scripts for custom data queries related to both ongoing and concluded clinical, providing actionable insights for rater training and central monitoring
+    Developed a **python** data extraction, reformatting, and storage processes for academic research studies, greatly enhancing accessibility for end-users
+    Contributed to the creation of poster materials for industry conferences and presentations, showcasing research, developments, and services
+- company: Madrigal Pharmaceuticals
+  period: Dec 2019 - Jun 2021
+  position: Principal Data Analyst
+  location: Conshohocken, PA
+  accomplishments: |
+    Developed internal **R packages** with **tidyverse** features for the creation of daily metric and reports
+    Aggregated and organized data sources in STDM, ADaM, TFLS, and pre-finalized formats; compiled source data from multiple vendor data bases and reports; reconciled differences between databases using **R tidyverse** suite
+    Analyzed efficacy, safety, and exploratory data for: ongoing phase 3 studies in NASH and NAFLD; ad hoc analyses for phase 2; biomarker and patient reported outcomes with **R**
+    Reviewed and reported on statistical testing in **R** such as: ANCOVA, LS-Means, ROC, Kruskal-Wallis, Wilcoxon rank sum, t-test, correlations (Pearson product, Spearman rho, Kendall's tau)
+    Trained and onboarded data analyst
+- company: Signant Health
+  period: Jan 2019 - Nov 2019
+  position: Clinical Data Scientist
+  location: Wayne, PA
+  duties: |
+    Interacted with and analyzes CNS, psychiatry, and neurology clinical trial data quality and outcomes information for clinical insights
+    Developed and implemented new data products and deliverables for blinded, statistical data monitoring and review; maintained and enhanced current data products; advised new analytic and machine learning initiatives; identified data sources and aggregation processes; defined and updated processes for deliverables; point of contact for analytic deliverables; presented information using data visualization techniques
+    Reviewed and developed analyses with SME for detection of errors for study endpoints; collaborated with review of analytic findings
+    Trained and supervised of Data Scientists; developed and provided training for new and current processes, programming, and technologies/software; lead, organized team meetings and status updates; wrote and reviewed new process documentation.
+    Assisted Program Managers and Project Delivery Managers for process implementation for data products and deliverables for blinded, statistical data monitoring and review; provided consultation for programming and development for Clinical Data Management; liaised between Data Services and Clinical Science teams; provided analytic and research support for Clinical Science
+  accomplishments: "Developed analytic **R** scripts using **tidyverse** features
+    for clinical trial operational and data management monitoring.  \nCreated **R**
+    scripts for processing clinical trial outcome data for risk-based statistical
+    quality monitoring  \nProvided analytic support for internal and external research
+    projects, including conference poster preparation\n"
+- company: Signant Health
+  period: Jan 2018 - Dec 2018
+  position: Clinical Data Specialist
+  location: Wayne, PA
+  duties: |
+    Interacted with and analyzes CNS, psychiatry, neurology clinical trial data quality and outcomes information for clinical insights; collaborated with other Bracket stakeholders and teams to execute and provide ongoing analysis related to study deliverables or internal needs
+    Developed training material development and QC; performed data review, eCOA user acceptance testing; study staff contact, sponsor contact, contact with outside experts, report writing.
+    Maintained, classified clinical information/materials; reviewed scale administration/scoring; provided clinical feedback, remediation for raters
+  accomplishments: |
+    Analyzed central monitoring data for clinical trials using **R** scripts
+    Provided analytic support for internal and external research projects, including conference poster preparation
+    Reviewed audio data from ADAS-Cog, MMSE, and ADCS-ADL administrations; provided feedback on standard administration and scoring, and submitted score change reviews for clinical trial sites
+- company: Signant Health
+  period: May 2016 - Dec 2017
+  position: Clinical Associate
+  location: Wayne, PA
+  duties: |
+    Participated in applicable aspects of clinical content development and delivery, including training material development and QC, data review, eCOA user acceptance testing, study staff contact, sponsor contact, contact with outside experts, and report writing
+    Maintained, classified clinical information/materials for CNS, psychiatry, neurology clinical trials
+    Provided data review for Bracket's Endpoint Reliability programs; clinical analysis on study endpoint data for administration and scoring calibration to standard training principles; and provided remediation as needed to recalibrate to study standards.
+  accomplishments: "Reviewed clinical trial raters' qualifications and recommended
+    standardized training programs. \nDeveloped a training manual in **Microsoft Word**
+    for the standardized administration of ADAS-Cog and MMSE within clinical trials,
+    along with additional training presentations in **Microsoft PowerPoint**, ensuring
+    alignment with company standards  \nReviewed audio data from ADAS-Cog, MMSE, and
+    ADCS-ADL administrations; provided feedback on standard administration and scoring,
+    and submitted score change reviews for clinical trial sites  \nDeveloped new **Excel**
+    trackers for central review tracking for individual central reviewers; compiled
+    reports and presented information for central reviewer management\n"
+- company: Signant Health
+  period: Aug 2015 - May 2016
+  position: Clinical Assistant
+  location: Wayne, PA
+  duties: |
+    Developed object specific video material, clinical content for training and qualification programs for study staff in clinical trials; addressed and reviewed data quality issues; clinical scheduling; ensured compliance with quality assurance, participate in reporting, analysis activities and research activities (e.g., collection and dissemination of literature and/or data); prepared reports of clinical activities.
+  accomplishments: "Reviewed clinical trial raters' qualifications and recommended
+    standardized training programs  \nScheduled re-training appointments for clinical
+    trial raters in collaboration with central quality reviewers  \nCreated and maintained
+    study trackers and teleconference schedules in **Excel**  \n"
+- company: Learning Assistance & Resource Center
+  period: Aug 2014 - May 2015
+  position: Writing Tutor
+  location: West Chester University of Pennsylvania, West Chester, PA
+  accomplishments: |-
+    **Tutored** students in one-on-one or small group sessions to enhance writing skills and promote independent, active learning
+    Monitored the effectiveness of the Academic Development Program and tracked student progress by maintaining daily activity logs, using **Bloom's Taxonomy**, and preparing biweekly student reports and semester evaluations
+extracurriculars:
+- what: Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania
+  when: Dec 2017 - May 2019
+  with: Chapter Graduate Liaison
+  where: West Chester, PA
+- what: Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania
+  when: Aug 2017 - Dec 2017
+  with: Graduate Member
+  where: West Chester, PA
+- what: West Chester University of Pennsylvania
+  when: Jan 2015 - May 2015
+  with: Peer Mentor
+  where: West Chester, PA
+- what: Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania
+  when: May 2014 - May 2015
+  with: Chapter Secretary
+  where: West Chester, PA
+- what: West Chester University of Pennsylvania
+  when: May 2014 - May 2015
+  with: Club Publicity Chair
+  where: West Chester, PA
+- what: Student Life Committee, Psychology Department, West Chester University of
+    Pennsylvania
+  when: Sep 2013 - May 2014
+  with: Student Member
+  where: West Chester, PA
+- what: Psi Chi Chapter, Psychology Department, West Chester University of Pennsylvania
+  when: Mar 2013 - May 2014
+  with: Undergraduate Member
+  where: West Chester, PA
+- what: West Chester University of Pennsylvania
+  when: Aug 2012 - May 2014
+  with: Undergraduate Member
+  where: West Chester, PA
+skills:
+- name: R
+  details: statistical programming, package development, Shiny app development, tidyverse
+    pipelines, Quarto/R Markdown reporting, and trial monitoring analytics
+- name: Python
+  details: PySpark data engineering, Databricks jobs, reusable package-based transformations,
+    API and file ingestion workflows, and data automation
+- name: SQL
+  details: query development for analytics and dashboards, data quality checks, and
+    alert-oriented monitoring workflows
+- name: Data Platforms
+  details: Databricks, Delta Lake patterns, CI/CD with GitHub Actions, configuration-driven
+    processing, and operational logging/alerting
+- name: Clinical Research Analytics
+  details: clinical trial data review, centralized/risk-based monitoring, cognitive
+    outcomes support, and rater-focused analytics and reporting
+- name: Collaboration & Workflow
+  details: Git-based collaboration, standards development, cross-functional data/science
+    partnership, and reproducible analysis practices
+tutoring:
+- what: Learning Assistance and Resource Center, West Chester University of Pennsylvania
+  when: Aug 2014 - May 2015
+  with: Effective Writing
+  where: West Chester, PA
+- what: Psi Chi, Psychology Department, West Chester University of Pennsylvania
+  when: Aug 2014 - May 2015
+  with: Psychology of Learning
+  where: West Chester, PA
+- what: Psychology Department, West Chester University of Pennsylvania
+  when: Aug 2014 - Dec 2014
+  with: Introduction to Biopsychology
+  where: West Chester, PA
+- what: Psychology Department, West Chester University of Pennsylvania
+  when: Aug 2014 - Dec 2014
+  with: Biopsychology of Motivation & Emotion
+  where: West Chester, PA
+- what: West Chester University of Pennsylvania
+  when: Aug 2014 - May 2015
+  with: Behavioral Statistics
+  where: West Chester, PA
+- what: West Chester University of Pennsylvania
+  when: Aug 2014 - May 2015
+  with: Research Methods in Psychology
+  where: West Chester, PA
