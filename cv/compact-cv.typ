@@ -273,6 +273,8 @@
 #let section_icon(title) = {
   if title == "Experience" {
     fa-icon("briefcase", weight: 400)
+  } else if title == "Tutoring" {
+    fa-icon("chalkboard-user")
   } else if title == "Education" {
     fa-icon("graduation-cap")
   } else if title == "Skills" {
@@ -410,15 +412,22 @@
   surname,
   location,
   phone,
+  phone_display,
   email,
   web,
   github,
   linkedin,
+  professional_title,
+  summary_short,
 ) = [
   #text[
     #text(size: 18pt, weight: 200)[#given]
     #h(0.2em)
     #text(size: 18pt, fill: colors.primary, weight: 900)[#surname]
+  ]
+  #if professional_title != "" [
+    #v(0.02em)
+    #text(size: 10pt, fill: colors.secondary, weight: 500)[#professional_title]
   ]
   #v(0.10em)
   #set text(size: 9pt)
@@ -428,7 +437,7 @@
   #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("phone")]
   #h(0.20em)
-  #link("tel:" + phone)[#phone]
+  #link("tel:" + phone)[#phone_display]
   #sep_dot
   #text(fill: colors.hyperlink)[#fa-icon("envelope")]
   #h(0.20em)
@@ -439,6 +448,10 @@
   #contact_link("github", "github.com/" + github, "https://github.com/" + github)
   #sep_dot
   #contact_link("linkedin", "linkedin.com/in/" + linkedin, "https://www.linkedin.com/in/" + linkedin)
+  #if summary_short != "" [
+    #v(0.16em)
+    #text(size: 9pt, style: "italic")[#summary_short]
+  ]
 ]
 
 #let render_bullets(items) = [
@@ -494,11 +507,15 @@
   surname,
   location,
   phone,
+  phone_display,
   email,
   web,
   github,
   linkedin,
+  professional_title,
+  summary_short,
   experience_data,
+  tutoring,
   education_data,
   skills_data,
   courses,
@@ -508,7 +525,19 @@
   poster_groups_data,
   packages,
 ) = [
-  #header(given, surname, location, phone, email, web, github, linkedin)
+  #header(
+    given,
+    surname,
+    location,
+    phone,
+    phone_display,
+    email,
+    web,
+    github,
+    linkedin,
+    professional_title,
+    summary_short,
+  )
 
   #section("Experience")[
     #render_experience(experience_data)
@@ -530,6 +559,10 @@
     #block(breakable: false)[#courses]
   ]
 
+  #section("Tutoring", sticky: true)[
+    #block(breakable: false)[#tutoring]
+  ]
+
   #section("Extracurriculars", sticky: true)[
     #block(breakable: false)[#extracurriculars]
   ]
@@ -545,7 +578,6 @@
   #section("Posters", sticky: true)[
     #render_reference_groups(poster_groups_data)
   ]
-
 ]
 #let brand-color = (:)
 #let brand-color-background = (:)
@@ -571,10 +603,13 @@
 #let cv_surname = "Barbone"
 #let cv_location = "Philadelphia, PA USA"
 #let cv_phone = "+1-202-656-2528"
+#let cv_phone_display = "+1 (202) 656-2528"
 #let cv_email = "jmbarbone@gmail.com"
 #let cv_web = "https://jmbarbone.github.io/"
 #let cv_github = "jmbarbone"
 #let cv_linkedin = "jmbarbone"
+#let cv_professional_title = "Principal, Data Platform"
+#let cv_summary_short = "Data platform and statistical programming leader focused on clinical trials analytics and automation"
 
 #let experience_data = (
   (
@@ -697,6 +732,15 @@
     ),
   ),
 )
+
+#let tutoring_items = [
+- #strong[Effective Writing], Learning Assistance and Resource Center, West Chester University of Pennsylvania (Aug 2014 - May 2015) --- West Chester, PA
+- #strong[Psychology of Learning], Psi Chi, Psychology Department, West Chester University of Pennsylvania (Aug 2014 - May 2015) --- West Chester, PA
+- #strong[Introduction to Biopsychology], Psychology Department, West Chester University of Pennsylvania (Aug 2014 - Dec 2014) --- West Chester, PA
+- #strong[Biopsychology of Motivation & Emotion], Psychology Department, West Chester University of Pennsylvania (Aug 2014 - Dec 2014) --- West Chester, PA
+- #strong[Behavioral Statistics], West Chester University of Pennsylvania (Aug 2014 - May 2015) --- West Chester, PA
+- #strong[Research Methods in Psychology], West Chester University of Pennsylvania (Aug 2014 - May 2015) --- West Chester, PA
+]
 
 #let education_data = (
   (
@@ -891,11 +935,15 @@
   cv_surname,
   cv_location,
   cv_phone,
+  cv_phone_display,
   cv_email,
   cv_web,
   cv_github,
   cv_linkedin,
+  cv_professional_title,
+  cv_summary_short,
   experience_data,
+  tutoring_items,
   education_data,
   skills_data,
   courses_items,
