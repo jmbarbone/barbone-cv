@@ -31,24 +31,18 @@
 )
 
 #let semi(body) = {
-  text(size: 9pt, weight: 300, fill: colors.secondary)[#body]
+  text(fill: colors.secondary)[#body]
 }
 
 #let stub(body) = {
-  text(size: 10pt, weight: 300, fill: colors.secondary)[#body]
+  text(size: 10pt, fill: colors.secondary)[#body]
 }
 
 #let bold(body, size: 10pt) = {
   text(size: size, weight: 700, fill: colors.primary)[#body]
 }
 
-#show link: it => text(
-  font: "Roboto",
-  size: 9pt,
-  lang: "en",
-  weight: 300,
-  fill: colors.hyperlink,
-)[#underline[#it]]
+#show link: it => text(fill: colors.hyperlink)[#underline[#it]]
 
 #show heading: it => block(sticky: true, it)
 
