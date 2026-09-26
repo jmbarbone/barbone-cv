@@ -1,4 +1,5 @@
 ---
+engine: knitr
 format:
   typst:
     keep-typ: false
@@ -14,16 +15,16 @@ format:
 execute:
   echo: false
 params:
-  metadata_file: "_metadata.yaml"
-  csl_file: "csl/apa-cv.csl"
-  bib_publications: "bib/publications.bib"
-  bib_thesis: "bib/thesis.bib"
-  bib_posters_cogstate: "bib/posters_cogstate.bib"
-  bib_posters_cog: "bib/posters_cog.bib"
-  bib_posters_madrigal: "bib/posters_madrigal.bib"
-  bib_posters_signant: "bib/posters_signant.bib"
-  bib_posters_wcupa: "bib/posters_wcupa.bib"
-  bib_packages: "bib/packages.bib"
+  metadata_file: _metadata.yaml
+  csl_file: csl/apa-cv.csl
+  bib_publications: bib/publications.bib
+  bib_thesis: bib/thesis.bib
+  bib_posters_cogstate: bib/posters_cogstate.bib
+  bib_posters_cog: bib/posters_cog.bib
+  bib_posters_madrigal: bib/posters_madrigal.bib
+  bib_posters_signant: bib/posters_signant.bib
+  bib_posters_wcupa: bib/posters_wcupa.bib
+  bib_packages: bib/packages.bib
 ---
 
 ```{r}
@@ -270,10 +271,9 @@ extract_start_date <- function(when) {
 }
 
 if (length(experience) > 0) {
-  end_dates <- vapply(experience, function(x) extract_end_date(x$period), as.Date("1970-01-01"))
-  start_dates <- vapply(experience, function(x) extract_start_date(x$period), as.Date("1970-01-01"))
-  ord <- order(end_dates, start_dates, decreasing = TRUE)
-  experience <- experience[ord]
+  end_dates <- vapply(experience, \(x) extract_end_date(x$period), as.Date("1970-01-01"))
+  start_dates <- vapply(experience, \(x) extract_start_date(x$period), as.Date("1970-01-01"))
+  experience <- experience[order(end_dates, start_dates, decreasing = TRUE)]
 }
 
 paper_publications_bib <- params$bib_publications
@@ -328,21 +328,22 @@ for (company in names(experience_by_company)) {
   out <- c(out, experience_group_item(company, items))
 }
 
-out <- c(out, ")", "", "#let tutoring_items = [")
+out <- c(out, ")", "", "#let tutoring_items = (")
 
 for (t in tutoring_subjects) {
   out <- c(
     out,
     paste0(
-      "- ",
-      pandoc_md_to_typst(
+      "  ",
+      to_typst_content(
         paste0("**", t$with, "**, ", t$what, " (", t$when, ") — ", t$where)
-      )
+      ),
+      ","
     )
   )
 }
 
-out <- c(out, "]", "", "#let education_data = (")
+out <- c(out, ")", "", "#let education_data = (")
 
 for (i in seq_along(education)) {
   item <- education[[i]]
@@ -354,44 +355,47 @@ for (s in skills) {
   out <- c(out, skills_item(s))
 }
 
-out <- c(out, ")", "", "#let courses_items = [")
+out <- c(out, ")", "", "#let courses_items = (")
 for (course in courses) {
   out <- c(
     out,
     paste0(
-      "- ",
-      pandoc_md_to_typst(
+      "  ",
+      to_typst_content(
         paste0("[", course$course, "](", course$link, ") — ", course$entity)
-      )
+      ),
+      ","
     )
   )
 }
 
-out <- c(out, "]", "", "#let extracurriculars_items = [")
+out <- c(out, ")", "", "#let extracurriculars_items = (")
 for (x in extracurriculars) {
   out <- c(
     out,
     paste0(
-      "- ",
-      pandoc_md_to_typst(
+      "  ",
+      to_typst_content(
         paste0("**", x$with, "**, ", x$what, " (", x$when, ") — ", x$where)
-      )
+      ),
+      ","
     )
   )
 }
 
-out <- c(out, "]", "", "#let awards_items = [")
+out <- c(out, ")", "", "#let awards_items = (")
 for (a in awards) {
   out <- c(
     out,
     paste0(
-      "- ",
-      pandoc_md_to_typst(paste0("**", a$award, "** (", a$date, ") — ", a$organization))
+      "  ",
+      to_typst_content(paste0("**", a$award, "** (", a$date, ") — ", a$organization)),
+      ","
     )
   )
 }
 
-out <- c(out, "]", "")
+out <- c(out, ")", "")
 
 paper_groups <- list(
   list(title = "Peer Reviewed Publications", items = papers_publications),
@@ -418,11 +422,11 @@ out <- c(
   paste0("#let poster_groups_data = ", emit_named_groups(poster_groups))
 )
 
-out <- c(out, "", "#let packages_items = [")
+out <- c(out, "", "#let packages_items = (")
 for (pkg in packages) {
-  out <- c(out, paste0("- ", pandoc_md_to_typst(pkg)))
+  out <- c(out, paste0("  ", to_typst_content(pkg), ","))
 }
-out <- c(out, "]")
+out <- c(out, ")")
 
 out <- c(
   out,
