@@ -17,14 +17,8 @@ args <- ca$parse()
 for (output in args$outputs) {
   switch(
     output,
-    resume = quarto::quarto_render(
-      "resume.qmd",
-      output_file = "Barbone-Resume.pdf"
-    ),
-    cv = quarto::quarto_render(
-      "cv.qmd",
-      output_file = "Barbone-CV.pdf"
-    ),
+    resume = quarto::quarto_render("resume.qmd"),
+    cv = quarto::quarto_render("cv.qmd"),
     stop("Unknown output: ", output)
   )
 }
