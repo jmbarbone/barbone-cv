@@ -209,10 +209,10 @@
     #h(0.2em)
     #text(size: 18pt, fill: colors.primary, weight: 900)[#surname]
   ]
-  #if professional_title != "" [
-    #v(0.02em)
-    #text(size: 10pt, fill: colors.secondary, weight: 500)[#professional_title]
-  ]
+  // #if professional_title != "" [
+  //   #v(0.02em)
+  //   #text(size: 10pt, fill: colors.secondary, weight: 500)[#professional_title]
+  // ]
   #v(0.10em)
   #set text(size: 9pt)
   #text(fill: colors.hyperlink)[#fa-icon("house")]
@@ -336,23 +336,23 @@
   ]
 
   #section("Selected Awards", sticky: true)[
-    #block(breakable: false)[#awards]
+    #block(breakable: false)[#render_bullets(awards)]
   ]
 
   #section("Courses", sticky: true)[
-    #block(breakable: false)[#courses]
+    #block(breakable: false)[#render_bullets(courses)]
   ]
 
   #section("Tutoring", sticky: true)[
-    #block(breakable: false)[#tutoring]
+    #block(breakable: false)[#render_bullets(tutoring)]
   ]
 
   #section("Extracurriculars", sticky: true)[
-    #block(breakable: false)[#extracurriculars]
+    #block(breakable: false)[#render_bullets(extracurriculars)]
   ]
 
   #section("R Packages", sticky: true)[
-    #block(breakable: false)[#packages]
+    #block(breakable: false)[#render_bullets(packages)]
   ]
 
   #section("Papers", sticky: true)[
