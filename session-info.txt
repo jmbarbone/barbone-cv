@@ -8,15 +8,14 @@
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/New_York
- date     2026-09-24
+ date     2026-09-26
  pandoc   3.4 @ /home/jordan/.local/share/r-pandoc/3.4/ (via rmarkdown)
  quarto   1.9.36 @ /opt/quarto/bin/quarto
 
 ─ Packages ───────────────────────────────────────────────────────────────────
  !  package      * version    date (UTC) lib source
-    backports      1.5.1      2026-04-03 [1] CRAN (R 4.6.0)
  R  barboneCV    * 0.0.0.9000 <NA>       [?] <NA>
-    bibtex         0.5.2      2026-02-03 [1] CRAN (R 4.6.1)
+    bibtex         0.5.3      2026-09-22 [1] CRAN (R 4.6.1)
     bookdown     * 0.48       2026-08-28 [1] CRAN (R 4.6.1)
  P  cachem         1.1.0      2024-05-16 [?] CRAN (R 4.6.0)
  P  cli            3.6.6      2026-04-09 [?] CRAN (R 4.6.0)
