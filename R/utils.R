@@ -1,16 +1,19 @@
-
 with_cleanup <- function(dir, code) {
   old <- fs::dir_ls(dir, recurse = TRUE)
   on.exit({
     new <- fs::dir_ls(dir, recurse = TRUE)
     new <- setdiff(new, old)
     # ignore the CV and Resume files
-    new <- grep("Barbone-(CV|Resume)\\.(pdf|log|md|tex|Rmd)$", new, invert = TRUE, value = TRUE)
+    new <- grep(
+      "Barbone-(CV|Resume)\\.(pdf|log|md|tex|Rmd)$",
+      new,
+      invert = TRUE,
+      value = TRUE
+    )
     if (length(new)) {
       cat("Deleting new files", paste("\n-", new, collapse = ", "), "\n")
       fs::file_delete(new)
     }
-
   })
 
   force(code)
@@ -31,7 +34,7 @@ adjust_author_names <- function(names) {
 }
 
 read_yaml <- function(x) {
-    x |>
+  x |>
     yaml::read_yaml() |>
     purrr::pluck(1) |>
     purrr::map(tibble::as_tibble) |>
