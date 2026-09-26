@@ -318,10 +318,8 @@ out <- c(
   "#let experience_data = ("
 )
 
-experience_by_company <- split(
-  experience,
-  vapply(experience, \(x) x$company %||% "", NA_character_)
-)
+companies <- vapply(experience, \(i) i$company, NA_character_)
+experience_by_company <- split(experience, factor(companies, unique(companies)))
 
 for (company in names(experience_by_company)) {
   items <- experience_by_company[[company]]
