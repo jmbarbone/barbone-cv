@@ -14,8 +14,8 @@ format:
 execute:
   echo: false 
 params:
-  metadata_file: "_metadata.yaml"
-  bib_packages: "bib/packages.bib"
+  metadata_file: _metadata.yaml
+  bib_packages: bib/packages.bib
 ---
 
 ```{r}
