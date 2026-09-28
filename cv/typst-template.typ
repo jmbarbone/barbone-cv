@@ -244,6 +244,38 @@
   ]
 ]
 
+#let render_awards(awards) = [
+  #for item in awards [
+    - #strong(item.title) (#item.date) — #item.organization
+      #if item.details != "" [
+        #linebreak()
+        #item.details
+      ]
+  ]
+]
+
+#let render_courses(courses) = [
+  #for item in courses [
+    - #if item.link != "" [
+        #link(item.link)[#item.name]
+      ] else [
+        #item.name
+      ] — #item.provider
+  ]
+]
+
+#let render_tutoring(tutoring) = [
+  #for item in tutoring [
+    - #strong(item.role), #item.subject (#item.dates) — #item.location
+  ]
+]
+
+#let render_extracurriculars(extracurriculars) = [
+  #for item in extracurriculars [
+    - #strong(item.role), #item.org (#item.dates) — #item.location
+  ]
+]
+
 #let render_experience(experience_data) = [
   #for group in experience_data [
     #company_group(group.org, group.location)[
@@ -336,19 +368,19 @@
   ]
 
   #section("Selected Awards", sticky: true)[
-    #block(breakable: false)[#render_bullets(awards)]
+    #block(breakable: false)[#render_awards(awards)]
   ]
 
   #section("Courses", sticky: true)[
-    #block(breakable: false)[#render_bullets(courses)]
+    #block(breakable: false)[#render_courses(courses)]
   ]
 
   #section("Tutoring", sticky: true)[
-    #block(breakable: false)[#render_bullets(tutoring)]
+    #block(breakable: false)[#render_tutoring(tutoring)]
   ]
 
   #section("Extracurriculars", sticky: true)[
-    #block(breakable: false)[#render_bullets(extracurriculars)]
+    #block(breakable: false)[#render_extracurriculars(extracurriculars)]
   ]
 
   #section("R Packages", sticky: true)[

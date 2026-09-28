@@ -331,13 +331,12 @@ out <- c(out, ")", "", "#let tutoring_items = (")
 for (t in tutoring_subjects) {
   out <- c(
     out,
-    paste0(
-      "  ",
-      to_typst_content(
-        paste0("**", t$with, "**, ", t$what, " (", t$when, ") — ", t$where)
-      ),
-      ","
-    )
+    "  (",
+    paste0("    role: ", to_typst_content(t$with), ","),
+    paste0("    subject: ", to_typst_content(t$what), ","),
+    paste0("    dates: ", to_typst_content(t$when), ","),
+    paste0("    location: ", to_typst_content(t$where), ","),
+    "  ),"
   )
 }
 
@@ -357,13 +356,11 @@ out <- c(out, ")", "", "#let courses_items = (")
 for (course in courses) {
   out <- c(
     out,
-    paste0(
-      "  ",
-      to_typst_content(
-        paste0("[", course$course, "](", course$link, ") — ", course$entity)
-      ),
-      ","
-    )
+    "  (",
+    paste0("    name: ", to_typst_content(course$course), ","),
+    paste0("    provider: ", to_typst_content(course$entity), ","),
+    paste0("    link: ", typst_string(course$link %||% ""), ","),
+    "  ),"
   )
 }
 
@@ -371,13 +368,12 @@ out <- c(out, ")", "", "#let extracurriculars_items = (")
 for (x in extracurriculars) {
   out <- c(
     out,
-    paste0(
-      "  ",
-      to_typst_content(
-        paste0("**", x$with, "**, ", x$what, " (", x$when, ") — ", x$where)
-      ),
-      ","
-    )
+    "  (",
+    paste0("    role: ", to_typst_content(x$with), ","),
+    paste0("    org: ", to_typst_content(x$what), ","),
+    paste0("    dates: ", to_typst_content(x$when), ","),
+    paste0("    location: ", to_typst_content(x$where), ","),
+    "  ),"
   )
 }
 
@@ -385,11 +381,12 @@ out <- c(out, ")", "", "#let awards_items = (")
 for (a in awards) {
   out <- c(
     out,
-    paste0(
-      "  ",
-      to_typst_content(paste0("**", a$award, "** (", a$date, ") — ", a$organization)),
-      ","
-    )
+    "  (",
+    paste0("    title: ", to_typst_content(a$award), ","),
+    paste0("    date: ", to_typst_content(a$date), ","),
+    paste0("    organization: ", to_typst_content(a$organization), ","),
+    paste0("    details: ", to_typst_content(a$details %||% ""), ","),
+    "  ),"
   )
 }
 
