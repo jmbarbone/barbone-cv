@@ -158,6 +158,13 @@
   ]
 ]
 
+#let render_packages(packages_data) = [
+  #for (idx, item) in packages_data.enumerate() [
+    #if idx > 0 [#h(0.35em) · #h(0.35em)]
+    #link(item.url)[#item.name]
+  ]
+]
+
 #let render_compact_resume(
   given,
   surname,
@@ -167,10 +174,10 @@
   web,
   github,
   linkedin,
-  experience_data,
   education_data,
+  experience_data,
   skills_data,
-  packages_line,
+  packages_data,
 ) = [
   #header(given, surname, location, phone, email, web, github, linkedin)
 
@@ -187,6 +194,6 @@
   ]
 
   #section("R Packages")[
-    #packages_line
+    #render_packages(packages_data)
   ]
 ]

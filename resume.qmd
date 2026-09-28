@@ -270,6 +270,9 @@ out <- c(out, ")", "", "#let education_data = (")
 
 for (i in seq_along(education)) {
   item <- education[[i]]
+  if (startsWith(item$degree, "Non")) {
+    next
+  }
   out <- c(out, education_item(item))
 }
 
@@ -278,18 +281,20 @@ for (s in skills) {
   out <- c(out, skills_item(s$name, s$details))
 }
 
-package_parts <- vapply(
-  package_links,
-  function(x) paste0("[", x$name, "](", x$url, ")"),
-  NA_character_
-)
-packages_line <- paste(package_parts, collapse = " | ")
+out <- c(out, ")", "", "#let packages_data = (")
+for (pkg in package_links) {
+  out <- c(
+    out,
+    "  (",
+    paste0("    name: ", to_typst_content(pkg$name), ","),
+    paste0("    url: ", typst_string(pkg$url), ","),
+    "  ),"
+  )
+}
 
 out <- c(
   out,
   ")",
-  "",
-  paste0("#let packages_line = ", to_typst_content(packages_line)),
   "",
   "#render_compact_resume(",
   "  cv_given,",
@@ -300,10 +305,10 @@ out <- c(
   "  cv_web,",
   "  cv_github,",
   "  cv_linkedin,",
-  "  experience_data,",
   "  education_data,",
+  "  experience_data,",
   "  skills_data,",
-  "  packages_line,",
+  "  packages_data,",
   ")"
 )
 ```
