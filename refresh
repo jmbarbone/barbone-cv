@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+R --no-save <<EOF
+pak::pak(c("devtools", "pak", "knitr", "RefManageR", "fs", "here"))
+devtools::load_all()
+update_cv_library()
+EOF
+
+curl -fsSL \
+  https://raw.githubusercontent.com/citation-style-language/styles/master/apa-cv.csl \
+  -o csl/apa-cv.csl
+

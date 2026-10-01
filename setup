@@ -1,23 +1,10 @@
 #!/usr/bin/env bash
 
-sudo apt update && sudo apt upgrade -y
-sudo apt install texlive-full -y
+set -euo pipefail
 
 R --no-save <<EOF
-pak::pak(c("pandoc", "tinytex"))
+pak::pak(c("pandoc", "devtools"))
 pandoc::pandoc_install("3.4", force = TRUE)
-if (tinytex::is_tinytex()) {
-  tinytex::reinstall_tinytex(version = "latest", force = TRUE)
-} else { 
-  tinytex::install_tinytex(version = "latest", force = TRUE)
-}
-
-pak::pak()
-
 devtools::load_all()
-update_cv_library()
 EOF
 
-curl -Z \
-  https://raw.githubusercontent.com/citation-style-language/styles/master/apa-cv.csl \
-  -o csl/apa-cv.csl
