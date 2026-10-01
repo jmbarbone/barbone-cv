@@ -1,13 +1,80 @@
-# Jordan Barbone's Curriculum Vitae
+# Jordan Mark Barbone's Curriculum Vitae & Resume
 
-I keep a running list of Bibtext references in a separate [GitHub repository](github.com/jmbarbone/bib-references) which I read from using a [custom `read_bib()` function from my person package](https://github.com/jmbarbone/jordan/blob/master/R/read-bib.R) and then filter all the references for my name and save off different types.
+This repository holds processing for both a Curriculum Vitae (CV) and Resume.
+The CV lists all experience, posters, publications, packages, etc, etc.
+It's meant to be a long list.
+The Resume is kept tight as a single page.
 
-This lets me maintain a single master bib text file with all references I'll ever need and manage through [JabRef](https://www.jabref.org/).
-The files are saved off with [RefManageR](https://github.com/ropensci/RefManageR) which required me to make some changes to the author names as I prefer `Surname1, Given1 Middle1 and Surname2, Given2` format rather than `Given1 Middle1 Surname1 and Given2 Surname2`
+## References
+
+I keep a running list of Bibtext references in a separate [GitHub repository](github.com/jmbarbone/bib-references).
+I read this in and then filter for my references.
+Those references are broken out into separate sections in my CV.
 
 ## Instructions
 
+Three scripts are used:
 
 ```sh
+./setup
+./refresh
 ./render
+```
+
+- `./setup` only needs to be called for a new project
+- `./refresh` can be used intermittenly to update packages
+- `./render` is used to generate the outputs
+
+## Metadata schema
+
+A single `_metadata.yaml` field holds the fun informative text.
+These text are used in both the CV and Resume.
+These are written in **markdown**, which is then translated into the outputs.
+
+Canonical fields in [_metadata.yaml](_metadata.yaml) are:
+
+```yaml
+education:
+  - org
+  - credential
+  - dates
+  - location
+  - details
+
+experience:
+  - org
+  - role
+  - dates
+  - location
+  - highlights
+  - duties
+  - accomplishments
+
+courses:
+  - subject
+  - org
+  - link
+
+awards:
+  - credential
+  - org
+  - dates
+  - location
+  - details
+
+tutoring:
+  - org
+  - subject
+  - dates
+  - location
+
+extracurriculars:
+  - org
+  - role
+  - dates
+  - location
+
+skills:
+  - name
+  - details
 ```
