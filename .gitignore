@@ -11,3 +11,5 @@ cover-letters/
 /.quarto/
 data/header.yaml
 setup
+
+**/*.quarto_ipynb
