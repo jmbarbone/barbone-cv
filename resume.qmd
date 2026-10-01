@@ -1,0 +1,169 @@
+---
+engine: knitr
+format:
+  typst:
+    output-file: Barbone-Resume.pdf
+    papersize: us-letter
+    margin: 
+      x: "0.75in"
+      y: "0.75in"
+    footer: false
+    numbering: false
+    keep-typ: false
+    template-partials:
+      - resume/typst-template.typ
+execute:
+  echo: false 
+params:
+  metadata_file: _metadata.yaml
+  bib_packages: bib/packages.bib
+---
+
+```{r}
+#| label: setup
+devtools::load_all(quiet = TRUE)
+```
+
+```{r}
+#| label: functions
+experience_item <- function(item) {
+  bullets <- bullet_items_condensed(
+    item$highlights,
+    item$accomplishments,
+    max_bullets = 3
+  )
+
+  c(
+    "  (",
+    sprintf("    org: %s,", to_typst_content(entry_org(item))),
+    sprintf("    location: %s,", to_typst_content(entry_location(item))),
+    sprintf("    role: %s,", to_typst_content(entry_role(item))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
+    "    bullets: (",
+    typst_bullet_lines(bullets),
+    "    ),",
+    "  ),"
+  )
+}
+
+education_item <- function(item) {
+  c(
+    "  (",
+    sprintf("    org: %s,", to_typst_content(entry_org(item))),
+    sprintf("    credential: %s,", to_typst_content(entry_credential(item))),
+    sprintf("    location: %s,", to_typst_content(entry_location(item))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
+    "  ),"
+  )
+}
+
+skills_item <- function(name, details) {
+  c(
+    "  (",
+    sprintf("    name: %s,", to_typst_content(name)),
+    sprintf("    details: %s,", to_typst_content(details)),
+    "  ),"
+  )
+}
+```
+
+```{r}
+#| label: data
+meta <- yaml::read_yaml(params$metadata_file)
+```
+
+```{=typst}
+#import "resume/typst-template.typ": *
+```
+
+```{r}
+#| label: meta
+#| results: asis
+emit_typst_chunk(
+  "// Auto-generated from YAML sources. Do not edit manually.",
+  sprintf("#let cv_given = %s", typst_string(meta$given)),
+  sprintf("#let cv_surname = %s", typst_string(meta$surname)),
+  sprintf("#let cv_location = %s", typst_string(meta$location)),
+  sprintf("#let cv_phone = %s", typst_string(meta$phone)),
+  sprintf("#let cv_email = %s", typst_string(meta$email)),
+  sprintf("#let cv_web = %s", typst_string(meta$web)),
+  sprintf("#let cv_github = %s", typst_string(meta$github)),
+  sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin)),
+)
+```
+
+```{r}
+#| label: experience
+#| results: asis
+experience <- sort_experience(meta$experience)
+experience <- head(experience, 3)
+emit_typst_chunk(
+  "#let experience_data = (",
+  lapply(experience, experience_item),
+  ")",
+)
+```
+
+```{r}
+#| label: education
+#| results: asis
+education <- Filter(
+  \(item) !startsWith(entry_credential(item), "Non"),
+  meta$education
+)
+
+emit_typst_chunk(
+  "#let education_data = (",
+  lapply(education, education_item),
+  ")",
+)
+```
+
+```{r}
+#| label: skills
+#| results: asis
+emit_typst_chunk(
+  "#let skills_data = (",
+  vapply(meta$skills, \(s) skills_item(s$name, s$details), character(4)),
+  ")",
+)
+```
+
+```{r}
+#| label: packages
+#| results: asis
+package_links <- read_package_links(params$bib_packages)
+emit_typst_chunk(
+  "#let packages_data = (",
+  vapply(
+    package_links,
+    function(pkg) {
+      c(
+        "  (",
+        sprintf("    name: %s,", to_typst_content(pkg$name)),
+        sprintf("    url: %s,", typst_string(pkg$url)),
+        "  ),"
+      )
+    },
+    character(4)
+  ),
+  ")",
+)
+```
+
+```{=typst}
+#render(
+  cv_given,
+  cv_surname,
+  cv_location,
+  cv_phone,
+  cv_email,
+  cv_web,
+  cv_github,
+  cv_linkedin,
+  education_data,
+  experience_data,
+  skills_data,
+  packages_data,
+)
+```

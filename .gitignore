@@ -9,3 +9,7 @@ cover-letters/
 *_ignore*
 
 /.quarto/
+data/header.yaml
+setup
+
+**/*.quarto_ipynb

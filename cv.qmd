@@ -1,0 +1,341 @@
+---
+engine: knitr
+format:
+  typst:
+    keep-typ: false
+    output-file: Barbone-CV.pdf
+    papersize: us-letter
+    margin: 
+      x: "0.5in"
+      y: "0.5in"
+    footer: true
+    numbering: true
+    template-partials:
+      - cv/typst-template.typ
+execute:
+  echo: false
+params:
+  metadata_file: _metadata.yaml
+  csl_file: csl/apa-cv.csl
+  bib_publications: bib/publications.bib
+  bib_thesis: bib/thesis.bib
+  bib_posters_cogstate: bib/posters_cogstate.bib
+  bib_posters_cog: bib/posters_cog.bib
+  bib_posters_madrigal: bib/posters_madrigal.bib
+  bib_posters_signant: bib/posters_signant.bib
+  bib_posters_wcupa: bib/posters_wcupa.bib
+  bib_packages: bib/packages.bib
+---
+
+```{r}
+#| label: setup
+devtools::load_all(quiet = TRUE)
+```
+
+```{r}
+#| label: functions
+experience_group_item <- function(company, items) {
+  # list is newest-first; use first non-empty location as most recent location
+  locations <- vapply(
+    items,
+    \(x) entry_location(x),
+    NA_character_
+  )
+  nz <- which(nzchar(trimws(locations)))
+  recent_location <- if (length(nz) > 0) locations[nz[1]] else ""
+
+  roles <- lapply(items, function(item) {
+    bullets <- bullet_items(item$accomplishments)
+    c(
+      "      (",
+      sprintf("        role: %s,", to_typst_content(entry_role(item))),
+      sprintf("        dates: %s,", to_typst_content(entry_dates(item))),
+      "        bullets: (",
+      typst_bullet_lines(bullets, indent = "          "),
+      "        ),",
+      "      ),"
+    )
+  })
+
+  c(
+    "  (",
+    sprintf("    org: %s,", to_typst_content(company)),
+    sprintf("    location: %s,", to_typst_content(recent_location)),
+    "    roles: (",
+    roles,
+    "    ),",
+    "  ),"
+  )
+}
+
+education_item <- function(item) {
+  bullets <- bullet_items(item$details)
+  c(
+    "  (",
+    sprintf("    org: %s,", to_typst_content(entry_org(item))),
+    sprintf("    credential: %s,", to_typst_content(entry_credential(item))),
+    sprintf("    location: %s,", to_typst_content(entry_location(item))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
+    "    bullets: (",
+    typst_bullet_lines(bullets),
+    "    ),",
+    "  ),"
+  )
+}
+
+skills_item <- function(item) {
+  c(
+    "  (",
+    sprintf("    name: %s,", to_typst_content(item$name)),
+    sprintf("    details: %s,", to_typst_content(item$details)),
+    "  ),"
+  )
+}
+```
+
+```{r}
+#| label: data
+meta <- yaml::read_yaml(params$metadata_file)
+```
+
+```{=typst}
+#import "cv/typst-template.typ": *
+```
+
+```{r}
+#| label: meta
+#| results: asis
+emit_typst_chunk(
+  "// Auto-generated from YAML sources. Do not edit manually.",
+  sprintf("#let cv_given = %s", typst_string(meta$given)),
+  sprintf("#let cv_surname = %s", typst_string(meta$surname)),
+  sprintf("#let cv_location = %s", typst_string(meta$location)),
+  sprintf("#let cv_phone = %s", typst_string(meta$phone)),
+  sprintf(
+    "#let cv_phone_display = %s",
+    typst_string(meta$phone_display %||% meta$phone)
+  ),
+  sprintf("#let cv_email = %s", typst_string(meta$email)),
+  sprintf("#let cv_web = %s", typst_string(meta$web)),
+  sprintf("#let cv_github = %s", typst_string(meta$github)),
+  sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin)),
+  sprintf(
+    "#let cv_professional_title = %s",
+    typst_string(meta$professional_title)
+  ),
+  sprintf("#let cv_summary_short = %s", typst_string(meta$summary_short)),
+)
+```
+
+```{r}
+#| label: experience
+#| results: asis
+experience <- sort_experience(meta$experience)
+
+companies <- vapply(experience, \(i) entry_org(i), NA_character_)
+experience_by_company <- split(experience, factor(companies, unique(companies)))
+
+experience_lines <- Map(
+  experience_group_item,
+  names(experience_by_company),
+  unname(experience_by_company)
+)
+emit_typst_chunk(
+  "#let experience_data = (",
+  experience_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: education
+#| results: asis
+education_lines <- lapply(meta$education, education_item)
+emit_typst_chunk(
+  "#let education_data = (",
+  education_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: skills
+#| results: asis
+emit_typst_chunk(
+  "#let skills_data = (",
+  lapply(meta$skills, skills_item),
+  ")",
+)
+```
+
+```{r}
+#| label: courses
+#| results: asis
+courses_lines <- lapply(meta$courses, function(course) {
+  c(
+    "  (",
+    sprintf("    name: %s,", to_typst_content(entry_subject(course))),
+    sprintf("    provider: %s,", to_typst_content(entry_org(course))),
+    sprintf("    link: %s,", typst_string(course$link %||% "")),
+    "  ),"
+  )
+})
+emit_typst_chunk(
+  "#let courses_items = (",
+  courses_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: tutoring
+#| results: asis
+tutoring_lines <- lapply(meta$tutoring, function(t) {
+  c(
+    "  (",
+    sprintf("    role: %s,", to_typst_content(entry_role(t))),
+    sprintf("    subject: %s,", to_typst_content(entry_subject(t))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(t))),
+    sprintf("    location: %s,", to_typst_content(entry_location(t))),
+    "  ),"
+  )
+})
+
+emit_typst_chunk(
+  "#let tutoring_items = (",
+  tutoring_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: extracurriculars
+#| results: asis
+extracurriculars_lines <- lapply(meta$extracurriculars, function(x) {
+  c(
+    "  (",
+    sprintf("    role: %s,", to_typst_content(entry_role(x))),
+    sprintf("    org: %s,", to_typst_content(entry_org(x))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(x))),
+    sprintf("    location: %s,", to_typst_content(entry_location(x))),
+    "  ),"
+  )
+})
+
+emit_typst_chunk(
+  "#let extracurriculars_items = (",
+  extracurriculars_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: awards
+#| results: asis
+awards_lines <- lapply(meta$awards, function(a) {
+  c(
+    "  (",
+    sprintf("    title: %s,", to_typst_content(entry_credential(a))),
+    sprintf("    date: %s,", to_typst_content(entry_dates(a))),
+    sprintf("    organization: %s,", to_typst_content(entry_org(a))),
+    sprintf("    details: %s,", to_typst_content(a$details %||% "")),
+    "  ),"
+  )
+})
+
+emit_typst_chunk(
+  "#let awards_items = (",
+  awards_lines,
+  ")",
+)
+```
+
+```{r}
+#| label: papers
+#| results: asis
+paper_groups <- list(
+  list(
+    title = "Peer Reviewed Publications",
+    items = format_refs_apa(params$bib_publications, params$csl_file)
+  ),
+  list(
+    title = "Master's Thesis",
+    items = format_refs_apa(params$bib_thesis, params$csl_file)
+  )
+)
+emit_typst_chunk(
+  sprintf("#let paper_groups_data = %s", emit_named_groups(paper_groups))
+)
+```
+
+```{r}
+#| label: posters
+#| results: asis
+poster_groups <- list(
+  list(
+    title = "Cogstate - Digital cognition",
+    items = format_refs_apa(params$bib_posters_cogstate, params$csl_file)
+  ),
+  list(
+    title = "Cogstate - Cognitive outcomes",
+    items = format_refs_apa(params$bib_posters_cog, params$csl_file)
+  ),
+  list(
+    title = "Madrigal - Liver disease",
+    items = format_refs_apa(params$bib_posters_madrigal, params$csl_file)
+  ),
+  list(
+    title = "Signant Health (Bracket) - eCOA data quality",
+    items = format_refs_apa(params$bib_posters_signant, params$csl_file)
+  ),
+  list(
+    title = "WCUPA - Asthma and music cognitive",
+    items = format_refs_apa(params$bib_posters_wcupa, params$csl_file)
+  )
+)
+
+emit_typst_chunk(
+  sprintf(
+    "#let poster_groups_data = %s",
+    emit_named_groups(poster_groups)
+  )
+)
+```
+
+```{r}
+#| label: packages
+#| results: asis
+packages <- format_refs_apa(params$bib_packages, params$csl_file)
+
+emit_typst_chunk(
+  "#let packages_items = (",
+  sprintf("  %s,", to_typst_content(packages)),
+  ")",
+)
+```
+
+```{=typst}
+#render(
+  cv_given,
+  cv_surname,
+  cv_location,
+  cv_phone,
+  cv_phone_display,
+  cv_email,
+  cv_web,
+  cv_github,
+  cv_linkedin,
+  cv_professional_title,
+  cv_summary_short,
+  experience_data,
+  tutoring_items,
+  education_data,
+  skills_data,
+  courses_items,
+  extracurriculars_items,
+  awards_items,
+  paper_groups_data,
+  poster_groups_data,
+  packages_items,
+)
+```

@@ -1,7 +1,0 @@
-book_filename: "resume/Barbone-Resume"
-rmd_files:
-  - "resume/index.Rmd"
-  # - "sections/skills.Rmd"
-  - "sections/experience.Rmd"
-  - "sections/education.Rmd"
-delete_merged_file: true
