@@ -18,7 +18,7 @@ update_cv_library <- function() {
     )
 
   lib <- Sys.getenv("R_LIB_CV", "~/R/cv-library")
-  fs::dir_create(lib, ", ")
+  fs::dir_create(lib)
 
   pak::pak(packages, lib = lib, ask = FALSE)
 
