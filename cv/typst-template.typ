@@ -318,7 +318,7 @@
   ]
 ]
 
-#let render_compact_cv(
+#let render(
   given,
   surname,
   location,

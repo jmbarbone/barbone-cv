@@ -165,7 +165,7 @@
   ]
 ]
 
-#let render_compact_resume(
+#let render(
   given,
   surname,
   location,

@@ -152,7 +152,7 @@ emit_typst_chunk(
 ```
 
 ```{=typst}
-#render_compact_resume(
+#render(
   cv_given,
   cv_surname,
   cv_location,
