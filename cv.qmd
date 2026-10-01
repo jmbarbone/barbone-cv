@@ -28,94 +28,14 @@ params:
 ---
 
 ```{r}
-#| labels: functions
-typst_string <- function(x) {
-  jsonlite::toJSON(as.character(x %||% ""), auto_unbox = TRUE)
-}
-
-linkify_urls <- function(x) {
-  x <- as.character(x %||% "")
-
-  # DOI URLs -> concise DOI labels
-  x <- gsub(
-    "(?<!\\()\\bhttps?://(?:dx\\.)?doi\\.org/(?:doi/)?([A-Za-z0-9._;()/:+-]+)",
-    "[doi:\\1](https://doi.org/\\1)",
-    x,
-    perl = TRUE
-  )
-
-  # Other bare URLs -> standard markdown links
-  gsub(
-    "(?<!\\()\\b(https?://[A-Za-z0-9./?=&_%#:+~-]*[A-Za-z0-9/_#])",
-    "[\\1](\\1)",
-    x,
-    perl = TRUE
-  )
-}
-
-pandoc_md_to_typst <- function(x) {
-  x <- linkify_urls(as.character(x %||% ""))
-  in_file <- tempfile(fileext = ".md")
-  out_file <- tempfile(fileext = ".typ")
-
-  writeLines(x, in_file)
-  rmarkdown::pandoc_convert(
-    input = in_file,
-    to = "typst",
-    output = out_file,
-    options = c("--wrap=none")
-  )
-
-  paste(readLines(out_file, warn = FALSE), collapse = "\n")
-}
-
-bullet_items <- function(text) {
-  if (is.null(text)) {
-    return(character())
-  }
-
-  lines <- strsplit(as.character(text), "\\n", fixed = FALSE)[[1]]
-  lines <- trimws(lines)
-  lines[nzchar(lines)]
-}
-
-to_typst_content <- function(x) {
-  paste0("[", pandoc_md_to_typst(x), "]")
-}
-
-emit_group_items <- function(title, items) {
-  items <- as.character(items)
-  items <- items[nzchar(trimws(items))]
-
-  out <- c(
-    "  (",
-    paste0("    title: ", to_typst_content(title), ","),
-    "    body: ["
-  )
-
-  for (it in items) {
-    out <- c(out, paste0("      - ", pandoc_md_to_typst(it)))
-  }
-
-  c(out, "    ],", "  ),")
-}
-
-emit_named_groups <- function(groups) {
-  out <- c("(")
-
-  for (g in groups) {
-    out <- c(out, emit_group_items(g$title, g$items))
-  }
-
-  out <- c(out, ")")
-  paste(out, collapse = "\n")
-}
+#| label: fn
+devtools::load_all(quiet = TRUE)
 
 experience_group_item <- function(company, items) {
   # list is newest-first; use first non-empty location as most recent location
   locations <- vapply(
     items,
-    \(x) as.character(x$location %||% ""),
+    \(x) entry_location(x),
     NA_character_
   )
   nz <- which(nzchar(trimws(locations)))
@@ -123,8 +43,8 @@ experience_group_item <- function(company, items) {
 
   out <- c(
     "  (",
-    paste0("    org: ", to_typst_content(company), ","),
-    paste0("    location: ", to_typst_content(recent_location), ","),
+    sprintf("    org: %s,", to_typst_content(company)),
+    sprintf("    location: %s,", to_typst_content(recent_location)),
     "    roles: ("
   )
 
@@ -134,8 +54,8 @@ experience_group_item <- function(company, items) {
     out <- c(
       out,
       "      (",
-      paste0("        role: ", to_typst_content(item$position), ","),
-      paste0("        dates: ", to_typst_content(item$period), ","),
+      sprintf("        role: %s,", to_typst_content(entry_role(item))),
+      sprintf("        dates: %s,", to_typst_content(entry_dates(item))),
       "        bullets: ("
     )
 
@@ -154,10 +74,10 @@ education_item <- function(item) {
 
   out <- c(
     "  (",
-    paste0("    org: ", to_typst_content(item$institution), ","),
-    paste0("    credential: ", to_typst_content(item$degree), ","),
-    paste0("    location: ", to_typst_content(item$location), ","),
-    paste0("    dates: ", to_typst_content(item$period), ","),
+    sprintf("    org: %s,", to_typst_content(entry_org(item))),
+    sprintf("    credential: %s,", to_typst_content(entry_credential(item))),
+    sprintf("    location: %s,", to_typst_content(entry_location(item))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
     "    bullets: ("
   )
 
@@ -171,289 +91,254 @@ education_item <- function(item) {
 skills_item <- function(item) {
   c(
     "  (",
-    paste0("    name: ", to_typst_content(item$name), ","),
-    paste0("    details: ", to_typst_content(item$details), ","),
+    sprintf("    name: %s,", to_typst_content(item$name)),
+    sprintf("    details: %s,", to_typst_content(item$details)),
     "  ),"
   )
-}
-
-format_refs_apa <- function(bib_files, csl_file = params$csl_file) {
-  bib_files <- normalizePath(bib_files, mustWork = TRUE)
-  csl_file <- normalizePath(csl_file, mustWork = TRUE)
-
-  in_file <- tempfile(fileext = ".md")
-  out_file <- tempfile(fileext = ".html")
-
-  yaml_block <- c(
-    "---",
-    paste0("csl: ", csl_file),
-    "bibliography:",
-    paste0("  - ", bib_files),
-    "nocite: '@*'",
-    "---",
-    "",
-    "::: {#refs}",
-    ":::"
-  )
-
-  writeLines(yaml_block, in_file)
-
-  rmarkdown::pandoc_convert(
-    input = in_file,
-    to = "html",
-    output = out_file,
-    options = c("--citeproc", "--wrap=none")
-  )
-
-  html <- xml2::read_html(out_file)
-  nodes <- xml2::xml_find_all(
-    html,
-    "//div[@id='refs']/*[contains(@class, 'csl-entry')]"
-  )
-
-  refs <- trimws(xml2::xml_text(nodes))
-  bold_me(refs[nzchar(refs)])
-}
-
-
-bold_me <- function(x) {
-  gsub("Barbone, J. M.", "**Barbone, J. M.**", x, fixed = TRUE)
 }
 ```
 
 ```{r}
 #| label: data
 meta <- yaml::read_yaml(params$metadata_file)
-experience <- meta$experience
-education <- meta$education
-skills <- meta$skills
-courses <- meta$courses
-extracurriculars <- meta$extracurriculars
-awards <- meta$awards
-tutoring_subjects <- meta$tutoring
+```
 
-parse_month_year <- function(x) {
-  x <- trimws(as.character(x %||% ""))
-  if (!nzchar(x)) {
-    return(as.Date("1900-01-01"))
-  }
-
-  x_low <- tolower(x)
-  if (x_low %in% c("present", "current")) {
-    return(as.Date("9999-12-31"))
-  }
-
-  parts <- strsplit(x, "\\s+")[[1]]
-  if (length(parts) < 2) {
-    return(as.Date("1900-01-01"))
-  }
-
-  month_num <- match(parts[1], month.abb)
-  year_num <- suppressWarnings(as.integer(parts[2]))
-
-  if (is.na(month_num) || is.na(year_num)) {
-    return(as.Date("1900-01-01"))
-  }
-
-  as.Date(sprintf("%04d-%02d-01", year_num, month_num))
-}
-
-extract_end_date <- function(when) {
-  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
-  end_part <- if (length(bounds) >= 2) bounds[2] else bounds[1]
-  parse_month_year(end_part)
-}
-
-extract_start_date <- function(when) {
-  bounds <- strsplit(as.character(when %||% ""), "\\s*-\\s*")[[1]]
-  start_part <- bounds[1]
-  parse_month_year(start_part)
-}
-
-if (length(experience) > 0) {
-  end_dates <- vapply(experience, \(x) extract_end_date(x$period), as.Date("1970-01-01"))
-  start_dates <- vapply(experience, \(x) extract_start_date(x$period), as.Date("1970-01-01"))
-  experience <- experience[order(end_dates, start_dates, decreasing = TRUE)]
-}
-
-paper_publications_bib <- params$bib_publications
-paper_thesis_bib <- params$bib_thesis
-
-poster_cogstate_bib <- params$bib_posters_cogstate
-poster_cog_bib <- params$bib_posters_cog
-poster_madrigal_bib <- params$bib_posters_madrigal
-poster_signant_bib <- params$bib_posters_signant
-poster_wcupa_bib <- params$bib_posters_wcupa
-
-package_bib_files <- params$bib_packages
-
-papers_publications <- format_refs_apa(paper_publications_bib)
-papers_thesis <- format_refs_apa(paper_thesis_bib)
-posters_cogstate <- format_refs_apa(poster_cogstate_bib)
-posters_cog <- format_refs_apa(poster_cog_bib)
-posters_madrigal <- format_refs_apa(poster_madrigal_bib)
-posters_signant <- format_refs_apa(poster_signant_bib)
-posters_wcupa <- format_refs_apa(poster_wcupa_bib)
-packages <- format_refs_apa(package_bib_files)
+```{=typst}
+#import "cv/typst-template.typ": *
 ```
 
 ```{r}
-#| label: prep output
-out <- c(
+#| label: meta
+#| results: asis
+meta_lines <- c(
   "// Auto-generated from YAML sources. Do not edit manually.",
-  "#import \"cv/typst-template.typ\": *",
-  "",
-  paste0("#let cv_given = ", typst_string(meta$given)),
-  paste0("#let cv_surname = ", typst_string(meta$surname)),
-  paste0("#let cv_location = ", typst_string(meta$location)),
-  paste0("#let cv_phone = ", typst_string(meta$phone)),
-  paste0("#let cv_phone_display = ", typst_string(meta$phone_display %||% meta$phone)),
-  paste0("#let cv_email = ", typst_string(meta$email)),
-  paste0("#let cv_web = ", typst_string(meta$web)),
-  paste0("#let cv_github = ", typst_string(meta$github)),
-  paste0("#let cv_linkedin = ", typst_string(meta$linkedin)),
-  paste0("#let cv_professional_title = ", typst_string(meta$professional_title)),
-  paste0("#let cv_summary_short = ", typst_string(meta$summary_short)),
-  "",
-  "#let experience_data = ("
+  sprintf("#let cv_given = %s", typst_string(meta$given)),
+  sprintf("#let cv_surname = %s", typst_string(meta$surname)),
+  sprintf("#let cv_location = %s", typst_string(meta$location)),
+  sprintf("#let cv_phone = %s", typst_string(meta$phone)),
+  sprintf(
+    "#let cv_phone_display = %s",
+    typst_string(meta$phone_display %||% meta$phone)
+  ),
+  sprintf("#let cv_email = %s", typst_string(meta$email)),
+  sprintf("#let cv_web = %s", typst_string(meta$web)),
+  sprintf("#let cv_github = %s", typst_string(meta$github)),
+  sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin)),
+  sprintf(
+    "#let cv_professional_title = %s",
+    typst_string(meta$professional_title)
+  ),
+  sprintf("#let cv_summary_short = %s", typst_string(meta$summary_short))
 )
+emit_typst_chunk(meta_lines)
+```
 
-companies <- vapply(experience, \(i) i$company, NA_character_)
+```{r}
+#| label: experience
+#| results: asis
+experience <- sort_experience(meta$experience)
+experience_lines <- c("#let experience_data = (")
+
+companies <- vapply(experience, \(i) entry_org(i), NA_character_)
 experience_by_company <- split(experience, factor(companies, unique(companies)))
 
 for (company in names(experience_by_company)) {
   items <- experience_by_company[[company]]
-  out <- c(out, experience_group_item(company, items))
+  experience_lines <- c(experience_lines, experience_group_item(company, items))
 }
-
-out <- c(out, ")", "", "#let tutoring_items = (")
-
-for (t in tutoring_subjects) {
-  out <- c(
-    out,
-    "  (",
-    paste0("    role: ", to_typst_content(t$with), ","),
-    paste0("    subject: ", to_typst_content(t$what), ","),
-    paste0("    dates: ", to_typst_content(t$when), ","),
-    paste0("    location: ", to_typst_content(t$where), ","),
-    "  ),"
-  )
-}
-
-out <- c(out, ")", "", "#let education_data = (")
-
-for (i in seq_along(education)) {
-  item <- education[[i]]
-  out <- c(out, education_item(item))
-}
-
-out <- c(out, ")", "", "#let skills_data = (")
-for (s in skills) {
-  out <- c(out, skills_item(s))
-}
-
-out <- c(out, ")", "", "#let courses_items = (")
-for (course in courses) {
-  out <- c(
-    out,
-    "  (",
-    paste0("    name: ", to_typst_content(course$course), ","),
-    paste0("    provider: ", to_typst_content(course$entity), ","),
-    paste0("    link: ", typst_string(course$link %||% ""), ","),
-    "  ),"
-  )
-}
-
-out <- c(out, ")", "", "#let extracurriculars_items = (")
-for (x in extracurriculars) {
-  out <- c(
-    out,
-    "  (",
-    paste0("    role: ", to_typst_content(x$with), ","),
-    paste0("    org: ", to_typst_content(x$what), ","),
-    paste0("    dates: ", to_typst_content(x$when), ","),
-    paste0("    location: ", to_typst_content(x$where), ","),
-    "  ),"
-  )
-}
-
-out <- c(out, ")", "", "#let awards_items = (")
-for (a in awards) {
-  out <- c(
-    out,
-    "  (",
-    paste0("    title: ", to_typst_content(a$award), ","),
-    paste0("    date: ", to_typst_content(a$date), ","),
-    paste0("    organization: ", to_typst_content(a$organization), ","),
-    paste0("    details: ", to_typst_content(a$details %||% ""), ","),
-    "  ),"
-  )
-}
-
-out <- c(out, ")", "")
-
-paper_groups <- list(
-  list(title = "Peer Reviewed Publications", items = papers_publications),
-  list(title = "Master's Thesis", items = papers_thesis)
-)
-out <- c(
-  out,
-  paste0("#let paper_groups_data = ", emit_named_groups(paper_groups)),
-  ""
-)
-
-poster_groups <- list(
-  list(title = "Cogstate - Digital cognition", items = posters_cogstate),
-  list(title = "Cogstate - Cognitive outcomes", items = posters_cog),
-  list(title = "Madrigal - Liver disease", items = posters_madrigal),
-  list(
-    title = "Signant Health (Bracket) - eCOA data quality",
-    items = posters_signant
-  ),
-  list(title = "WCUPA - Asthma and music cognitive", items = posters_wcupa)
-)
-out <- c(
-  out,
-  paste0("#let poster_groups_data = ", emit_named_groups(poster_groups))
-)
-
-out <- c(out, "", "#let packages_items = (")
-for (pkg in packages) {
-  out <- c(out, paste0("  ", to_typst_content(pkg), ","))
-}
-out <- c(out, ")")
-
-out <- c(
-  out,
-  "",
-  "#render_compact_cv(",
-  "  cv_given,",
-  "  cv_surname,",
-  "  cv_location,",
-  "  cv_phone,",
-  "  cv_phone_display,",
-  "  cv_email,",
-  "  cv_web,",
-  "  cv_github,",
-  "  cv_linkedin,",
-  "  cv_professional_title,",
-  "  cv_summary_short,",
-  "  experience_data,",
-  "  tutoring_items,",
-  "  education_data,",
-  "  skills_data,",
-  "  courses_items,",
-  "  extracurriculars_items,",
-  "  awards_items,",
-  "  paper_groups_data,",
-  "  poster_groups_data,",
-  "  packages_items,",
-  ")"
-)
+experience_lines <- c(experience_lines, ")")
+emit_typst_chunk(experience_lines)
 ```
 
 ```{r}
-#| label: output
+#| label: education
 #| results: asis
-cat("```{=typst}\n", paste(out, collapse = "\n"), "\n```\n", sep = "")
+education_lines <- c("#let education_data = (")
+
+for (i in seq_along(meta$education)) {
+  item <- meta$education[[i]]
+  education_lines <- c(education_lines, education_item(item))
+}
+education_lines <- c(education_lines, ")")
+emit_typst_chunk(education_lines)
+```
+
+```{r}
+#| label: skills
+#| results: asis
+skills_lines <- c("#let skills_data = (")
+for (s in meta$skills) {
+  skills_lines <- c(skills_lines, skills_item(s))
+}
+skills_lines <- c(skills_lines, ")")
+emit_typst_chunk(skills_lines)
+```
+
+```{r}
+#| label: courses
+#| results: asis
+courses_lines <- c("#let courses_items = (")
+for (course in meta$courses) {
+  courses_lines <- c(
+    courses_lines,
+    "  (",
+    sprintf("    name: %s,", to_typst_content(entry_subject(course))),
+    sprintf("    provider: %s,", to_typst_content(entry_org(course))),
+    sprintf("    link: %s,", typst_string(course$link %||% "")),
+    "  ),"
+  )
+}
+courses_lines <- c(courses_lines, ")")
+emit_typst_chunk(courses_lines)
+```
+
+```{r}
+#| label: tutoring
+#| results: asis
+tutoring_lines <- c("#let tutoring_items = (")
+for (t in meta$tutoring) {
+  tutoring_lines <- c(
+    tutoring_lines,
+    "  (",
+    sprintf("    role: %s,", to_typst_content(entry_role(t))),
+    sprintf("    subject: %s,", to_typst_content(entry_subject(t))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(t))),
+    sprintf("    location: %s,", to_typst_content(entry_location(t))),
+    "  ),"
+  )
+}
+tutoring_lines <- c(tutoring_lines, ")")
+emit_typst_chunk(tutoring_lines)
+```
+
+```{r}
+#| label: extracurriculars
+#| results: asis
+extracurriculars_lines <- c("#let extracurriculars_items = (")
+for (x in meta$extracurriculars) {
+  extracurriculars_lines <- c(
+    extracurriculars_lines,
+    "  (",
+    sprintf("    role: %s,", to_typst_content(entry_role(x))),
+    sprintf("    org: %s,", to_typst_content(entry_org(x))),
+    sprintf("    dates: %s,", to_typst_content(entry_dates(x))),
+    sprintf("    location: %s,", to_typst_content(entry_location(x))),
+    "  ),"
+  )
+}
+extracurriculars_lines <- c(extracurriculars_lines, ")")
+emit_typst_chunk(extracurriculars_lines)
+```
+
+```{r}
+#| label: awards
+#| results: asis
+awards_lines <- c("#let awards_items = (")
+for (a in meta$awards) {
+  awards_lines <- c(
+    awards_lines,
+    "  (",
+    sprintf("    title: %s,", to_typst_content(entry_credential(a))),
+    sprintf("    date: %s,", to_typst_content(entry_dates(a))),
+    sprintf("    organization: %s,", to_typst_content(entry_org(a))),
+    sprintf("    details: %s,", to_typst_content(a$details %||% "")),
+    "  ),"
+  )
+}
+awards_lines <- c(awards_lines, ")")
+emit_typst_chunk(awards_lines)
+```
+
+```{r}
+#| label: papers
+#| results: asis
+paper_groups <- list(
+  list(
+    title = "Peer Reviewed Publications",
+    items = format_refs_apa(params$bib_publications, params$csl_file)
+  ),
+  list(
+    title = "Master's Thesis",
+    items = format_refs_apa(params$bib_thesis, params$csl_file)
+  )
+)
+paper_groups_lines <- c(sprintf(
+  "#let paper_groups_data = %s",
+  emit_named_groups(paper_groups)
+))
+
+emit_typst_chunk(paper_groups_lines)
+```
+
+```{r}
+#| label: posters
+#| results: asis
+poster_groups <- list(
+  list(
+    title = "Cogstate - Digital cognition",
+    items = format_refs_apa(params$bib_posters_cogstate, params$csl_file)
+  ),
+  list(
+    title = "Cogstate - Cognitive outcomes",
+    items = format_refs_apa(params$bib_posters_cog, params$csl_file)
+  ),
+  list(
+    title = "Madrigal - Liver disease",
+    items = format_refs_apa(params$bib_posters_madrigal, params$csl_file)
+  ),
+  list(
+    title = "Signant Health (Bracket) - eCOA data quality",
+    items = format_refs_apa(params$bib_posters_signant, params$csl_file)
+  ),
+  list(
+    title = "WCUPA - Asthma and music cognitive",
+    items = format_refs_apa(params$bib_posters_wcupa, params$csl_file)
+  )
+)
+poster_groups_lines <- c(sprintf(
+  "#let poster_groups_data = %s",
+  emit_named_groups(poster_groups)
+))
+
+emit_typst_chunk(poster_groups_lines)
+```
+
+```{r}
+#| label: packages
+#| results: asis
+packages <- format_refs_apa(params$bib_packages, params$csl_file)
+
+packages_lines <- c("#let packages_items = (")
+for (pkg in packages) {
+  packages_lines <- c(packages_lines, sprintf("  %s,", to_typst_content(pkg)))
+}
+packages_lines <- c(packages_lines, ")")
+
+emit_typst_chunk(packages_lines)
+```
+
+```{=typst}
+#render_compact_cv(
+  cv_given,
+  cv_surname,
+  cv_location,
+  cv_phone,
+  cv_phone_display,
+  cv_email,
+  cv_web,
+  cv_github,
+  cv_linkedin,
+  cv_professional_title,
+  cv_summary_short,
+  experience_data,
+  tutoring_items,
+  education_data,
+  skills_data,
+  courses_items,
+  extracurriculars_items,
+  awards_items,
+  paper_groups_data,
+  poster_groups_data,
+  packages_items,
+)
 ```
