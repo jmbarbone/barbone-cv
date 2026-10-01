@@ -1,4 +1,5 @@
 ---
+engine: knitr
 format:
   typst:
     output-file: Barbone-Resume.pdf
@@ -69,17 +70,16 @@ skills_item <- function(name, details) {
 ```{r}
 #| label: data
 meta <- yaml::read_yaml(params$metadata_file)
-experience <- meta$experience
-education <- meta$education
-skills <- meta$skills
-package_links <- read_package_links(params$bib_packages)
-experience <- sort_experience(experience)
-experience <- head(experience, 3)
+```
+
+```{=typst}
+#import "resume/typst-template.typ": *
 ```
 
 ```{r}
-#| label: prep
-scalar_lines <- c(
+#| label: meta
+#| results: asis
+meta_lines <- c(
   "// Auto-generated from YAML sources. Do not edit manually.",
   sprintf("#let cv_given = %s", typst_string(meta$given)),
   sprintf("#let cv_surname = %s", typst_string(meta$surname)),
@@ -90,30 +90,53 @@ scalar_lines <- c(
   sprintf("#let cv_github = %s", typst_string(meta$github)),
   sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin))
 )
+emit_typst_chunk(meta_lines)
+```
+
+```{r}
+#| label: experience
+#| results: asis
+experience <- sort_experience(meta$experience)
+experience <- head(experience, 3)
 
 experience_lines <- c("#let experience_data = (")
-
 for (item in experience) {
   experience_lines <- c(experience_lines, experience_item(item))
 }
 experience_lines <- c(experience_lines, ")")
+emit_typst_chunk(experience_lines)
+```
 
+```{r}
+#| label: education
+#| results: asis
 education_lines <- c("#let education_data = (")
-
-for (i in seq_along(education)) {
-  item <- education[[i]]
+for (i in seq_along(meta$education)) {
+  item <- meta$education[[i]]
   if (startsWith(entry_credential(item), "Non")) {
     next
   }
   education_lines <- c(education_lines, education_item(item))
 }
 education_lines <- c(education_lines, ")")
+emit_typst_chunk(education_lines)
+```
 
+```{r}
+#| label: skills
+#| results: asis
 skills_lines <- c("#let skills_data = (")
-for (s in skills) {
+for (s in meta$skills) {
   skills_lines <- c(skills_lines, skills_item(s$name, s$details))
 }
 skills_lines <- c(skills_lines, ")")
+emit_typst_chunk(skills_lines)
+```
+
+```{r}
+#| label: packages
+#| results: asis
+package_links <- read_package_links(params$bib_packages)
 
 packages_lines <- c("#let packages_data = (")
 for (pkg in package_links) {
@@ -126,39 +149,6 @@ for (pkg in package_links) {
   )
 }
 packages_lines <- c(packages_lines, ")")
-```
-
-```{=typst}
-#import "resume/typst-template.typ": *
-```
-
-```{r}
-#| label: out_scalars
-#| results: asis
-emit_typst_chunk(scalar_lines)
-```
-
-```{r}
-#| label: out_experience
-#| results: asis
-emit_typst_chunk(experience_lines)
-```
-
-```{r}
-#| label: out_education
-#| results: asis
-emit_typst_chunk(education_lines)
-```
-
-```{r}
-#| label: out_skills
-#| results: asis
-emit_typst_chunk(skills_lines)
-```
-
-```{r}
-#| label: out_packages
-#| results: asis
 emit_typst_chunk(packages_lines)
 ```
 
