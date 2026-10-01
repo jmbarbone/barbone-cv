@@ -1,15 +1,13 @@
 # Jordan Mark Barbone's Curriculum Vitae & Resume
 
-This repository holds processing for both a Curriculum Vitae (CV) and Resume.
-The CV lists all experience, posters, publications, packages, etc, etc.
-It's meant to be a long list.
-The Resume is kept tight as a single page.
+This repository contains the source and rendering workflow for both a Curriculum Vitae (CV) and a resume.
+The CV is comprehensive and includes full experience, posters, publications, and packages.
+The resume is intentionally concise and targeted to a single page.
 
 ## References
 
-I keep a running list of Bibtext references in a separate [GitHub repository](github.com/jmbarbone/bib-references).
-I read this in and then filter for my references.
-Those references are broken out into separate sections in my CV.
+I maintain a running list of BibTeX references in a separate repository: [jmbarbone/bib-references](https://github.com/jmbarbone/bib-references).
+These references are read in, filtered to my work, and then split into CV sections.
 
 ## Instructions
 
@@ -21,15 +19,15 @@ Three scripts are used:
 ./render
 ```
 
-- `./setup` only needs to be called for a new project
-- `./refresh` can be used intermittenly to update packages
+- `./setup` performs basic installations (probably run once per new environment or machine)
+- `./refresh` can be used intermittently to update package content
 - `./render` is used to generate the outputs
+
 
 ## Metadata schema
 
-A single `_metadata.yaml` field holds the fun informative text.
-These text are used in both the CV and Resume.
-These are written in **markdown**, which is then translated into the outputs.
+A single [_metadata.yaml](_metadata.yaml) file stores the descriptive content used by both the CV and resume.
+The entries are written in **Markdown** and translated during rendering.
 
 Canonical fields in [_metadata.yaml](_metadata.yaml) are:
 

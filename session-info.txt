@@ -8,7 +8,7 @@
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/New_York
- date     2026-09-27
+ date     2026-09-30
  pandoc   3.4 @ /home/jordan/.local/share/r-pandoc/3.4/ (via rmarkdown)
  quarto   1.9.36 @ /opt/quarto/bin/quarto
 
@@ -29,7 +29,7 @@
  P  fastmap        1.2.0      2024-05-15 [?] CRAN (R 4.6.0)
     forcats      * 1.0.1      2025-09-25 [1] CRAN (R 4.6.0)
  P  fs             2.1.0      2026-04-18 [?] CRAN (R 4.6.0)
-    fuj            0.2.2      2025-04-23 [1] CRAN (R 4.6.1)
+    fuj            0.3.0      2026-09-28 [1] local
     generics       0.1.4      2025-05-09 [1] CRAN (R 4.6.0)
     ggplot2      * 4.0.3      2026-04-22 [1] CRAN (R 4.6.0)
  P  glue           1.8.1      2026-04-17 [?] CRAN (R 4.6.0)
@@ -38,7 +38,7 @@
     htmltools      0.5.9      2025-12-04 [1] CRAN (R 4.6.0)
     httr           1.4.9      2026-09-01 [1] CRAN (R 4.6.1)
     jsonlite       2.0.0      2025-03-27 [1] CRAN (R 4.6.0)
-    knitr        * 1.51       2026-09-21 [1] Github (yihui/knitr@26708d5)
+    knitr        * 1.52       2026-09-06 [1] CRAN (R 4.6.1)
     later          1.4.8      2026-03-05 [1] CRAN (R 4.6.0)
  P  lifecycle      1.0.5      2026-01-08 [?] CRAN (R 4.6.0)
     lubridate    * 1.9.5      2026-02-04 [1] CRAN (R 4.6.0)
