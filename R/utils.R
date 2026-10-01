@@ -91,6 +91,21 @@ bullet_items_condensed <- function(
   head(filtered, max_bullets)
 }
 
+typst_bullet_lines <- function(x, indent = "      ") {
+  lines <- as.character(x %||% character())
+  lines <- lines[nzchar(trimws(lines))]
+
+  if (length(lines) == 0) {
+    return(character())
+  }
+
+  vapply(
+    lines,
+    \(line) sprintf("%s%s,", indent, to_typst_content(line)),
+    NA_character_
+  )
+}
+
 field_value <- function(item, candidates, default = "") {
   for (nm in candidates) {
     val <- item[[nm]]
@@ -290,6 +305,9 @@ read_package_links <- function(bib_file) {
   unique(items)
 }
 
-emit_typst_chunk <- function(lines) {
+emit_typst_chunk <- function(...) {
+  lines <- rlang::list2(...)
+  lines <- unlist(lines, use.names = FALSE)
+  lines <- as.character(lines)
   cat(sprintf("```{=typst}\n%s\n```\n", paste(lines, collapse = "\n")))
 }

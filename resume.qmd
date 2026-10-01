@@ -20,9 +20,12 @@ params:
 ---
 
 ```{r}
-#| label: fn
+#| label: setup
 devtools::load_all(quiet = TRUE)
+```
 
+```{r}
+#| label: functions
 experience_item <- function(item) {
   bullets <- bullet_items_condensed(
     item$highlights,
@@ -30,20 +33,17 @@ experience_item <- function(item) {
     max_bullets = 3
   )
 
-  out <- c(
+  c(
     "  (",
     sprintf("    org: %s,", to_typst_content(entry_org(item))),
     sprintf("    location: %s,", to_typst_content(entry_location(item))),
     sprintf("    role: %s,", to_typst_content(entry_role(item))),
     sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
-    "    bullets: ("
+    "    bullets: (",
+    typst_bullet_lines(bullets),
+    "    ),",
+    "  ),"
   )
-
-  for (b in bullets) {
-    out <- c(out, sprintf("      %s,", to_typst_content(b)))
-  }
-
-  c(out, "    ),", "  ),")
 }
 
 education_item <- function(item) {
@@ -79,7 +79,7 @@ meta <- yaml::read_yaml(params$metadata_file)
 ```{r}
 #| label: meta
 #| results: asis
-meta_lines <- c(
+emit_typst_chunk(
   "// Auto-generated from YAML sources. Do not edit manually.",
   sprintf("#let cv_given = %s", typst_string(meta$given)),
   sprintf("#let cv_surname = %s", typst_string(meta$surname)),
@@ -88,9 +88,8 @@ meta_lines <- c(
   sprintf("#let cv_email = %s", typst_string(meta$email)),
   sprintf("#let cv_web = %s", typst_string(meta$web)),
   sprintf("#let cv_github = %s", typst_string(meta$github)),
-  sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin))
+  sprintf("#let cv_linkedin = %s", typst_string(meta$linkedin)),
 )
-emit_typst_chunk(meta_lines)
 ```
 
 ```{r}
@@ -98,58 +97,58 @@ emit_typst_chunk(meta_lines)
 #| results: asis
 experience <- sort_experience(meta$experience)
 experience <- head(experience, 3)
-
-experience_lines <- c("#let experience_data = (")
-for (item in experience) {
-  experience_lines <- c(experience_lines, experience_item(item))
-}
-experience_lines <- c(experience_lines, ")")
-emit_typst_chunk(experience_lines)
+emit_typst_chunk(
+  "#let experience_data = (",
+  lapply(experience, experience_item),
+  ")",
+)
 ```
 
 ```{r}
 #| label: education
 #| results: asis
-education_lines <- c("#let education_data = (")
-for (i in seq_along(meta$education)) {
-  item <- meta$education[[i]]
-  if (startsWith(entry_credential(item), "Non")) {
-    next
-  }
-  education_lines <- c(education_lines, education_item(item))
-}
-education_lines <- c(education_lines, ")")
-emit_typst_chunk(education_lines)
+education <- Filter(
+  \(item) !startsWith(entry_credential(item), "Non"),
+  meta$education
+)
+
+emit_typst_chunk(
+  "#let education_data = (",
+  lapply(education, education_item),
+  ")",
+)
 ```
 
 ```{r}
 #| label: skills
 #| results: asis
-skills_lines <- c("#let skills_data = (")
-for (s in meta$skills) {
-  skills_lines <- c(skills_lines, skills_item(s$name, s$details))
-}
-skills_lines <- c(skills_lines, ")")
-emit_typst_chunk(skills_lines)
+emit_typst_chunk(
+  "#let skills_data = (",
+  vapply(meta$skills, \(s) skills_item(s$name, s$details), character(4)),
+  ")",
+)
 ```
 
 ```{r}
 #| label: packages
 #| results: asis
 package_links <- read_package_links(params$bib_packages)
-
-packages_lines <- c("#let packages_data = (")
-for (pkg in package_links) {
-  packages_lines <- c(
-    packages_lines,
-    "  (",
-    sprintf("    name: %s,", to_typst_content(pkg$name)),
-    sprintf("    url: %s,", typst_string(pkg$url)),
-    "  ),"
-  )
-}
-packages_lines <- c(packages_lines, ")")
-emit_typst_chunk(packages_lines)
+emit_typst_chunk(
+  "#let packages_data = (",
+  vapply(
+    package_links,
+    function(pkg) {
+      c(
+        "  (",
+        sprintf("    name: %s,", to_typst_content(pkg$name)),
+        sprintf("    url: %s,", typst_string(pkg$url)),
+        "  ),"
+      )
+    },
+    character(4)
+  ),
+  ")",
+)
 ```
 
 ```{=typst}

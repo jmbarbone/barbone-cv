@@ -28,9 +28,12 @@ params:
 ---
 
 ```{r}
-#| label: fn
+#| label: setup
 devtools::load_all(quiet = TRUE)
+```
 
+```{r}
+#| label: functions
 experience_group_item <- function(company, items) {
   # list is newest-first; use first non-empty location as most recent location
   locations <- vapply(
@@ -41,51 +44,43 @@ experience_group_item <- function(company, items) {
   nz <- which(nzchar(trimws(locations)))
   recent_location <- if (length(nz) > 0) locations[nz[1]] else ""
 
-  out <- c(
-    "  (",
-    sprintf("    org: %s,", to_typst_content(company)),
-    sprintf("    location: %s,", to_typst_content(recent_location)),
-    "    roles: ("
-  )
-
-  for (item in items) {
+  roles <- lapply(items, function(item) {
     bullets <- bullet_items(item$accomplishments)
-
-    out <- c(
-      out,
+    c(
       "      (",
       sprintf("        role: %s,", to_typst_content(entry_role(item))),
       sprintf("        dates: %s,", to_typst_content(entry_dates(item))),
-      "        bullets: ("
+      "        bullets: (",
+      typst_bullet_lines(bullets, indent = "          "),
+      "        ),",
+      "      ),"
     )
+  })
 
-    for (b in bullets) {
-      out <- c(out, paste0("          ", to_typst_content(b), ","))
-    }
-
-    out <- c(out, "        ),", "      ),")
-  }
-
-  c(out, "    ),", "  ),")
+  c(
+    "  (",
+    sprintf("    org: %s,", to_typst_content(company)),
+    sprintf("    location: %s,", to_typst_content(recent_location)),
+    "    roles: (",
+    roles,
+    "    ),",
+    "  ),"
+  )
 }
 
 education_item <- function(item) {
   bullets <- bullet_items(item$details)
-
-  out <- c(
+  c(
     "  (",
     sprintf("    org: %s,", to_typst_content(entry_org(item))),
     sprintf("    credential: %s,", to_typst_content(entry_credential(item))),
     sprintf("    location: %s,", to_typst_content(entry_location(item))),
     sprintf("    dates: %s,", to_typst_content(entry_dates(item))),
-    "    bullets: ("
+    "    bullets: (",
+    typst_bullet_lines(bullets),
+    "    ),",
+    "  ),"
   )
-
-  for (b in bullets) {
-    out <- c(out, paste0("      ", to_typst_content(b), ","))
-  }
-
-  c(out, "    ),", "  ),")
 }
 
 skills_item <- function(item) {
@@ -110,7 +105,7 @@ meta <- yaml::read_yaml(params$metadata_file)
 ```{r}
 #| label: meta
 #| results: asis
-meta_lines <- c(
+emit_typst_chunk(
   "// Auto-generated from YAML sources. Do not edit manually.",
   sprintf("#let cv_given = %s", typst_string(meta$given)),
   sprintf("#let cv_surname = %s", typst_string(meta$surname)),
@@ -128,77 +123,75 @@ meta_lines <- c(
     "#let cv_professional_title = %s",
     typst_string(meta$professional_title)
   ),
-  sprintf("#let cv_summary_short = %s", typst_string(meta$summary_short))
+  sprintf("#let cv_summary_short = %s", typst_string(meta$summary_short)),
 )
-emit_typst_chunk(meta_lines)
 ```
 
 ```{r}
 #| label: experience
 #| results: asis
 experience <- sort_experience(meta$experience)
-experience_lines <- c("#let experience_data = (")
 
 companies <- vapply(experience, \(i) entry_org(i), NA_character_)
 experience_by_company <- split(experience, factor(companies, unique(companies)))
 
-for (company in names(experience_by_company)) {
-  items <- experience_by_company[[company]]
-  experience_lines <- c(experience_lines, experience_group_item(company, items))
-}
-experience_lines <- c(experience_lines, ")")
-emit_typst_chunk(experience_lines)
+experience_lines <- Map(
+  experience_group_item,
+  names(experience_by_company),
+  unname(experience_by_company)
+)
+emit_typst_chunk(
+  "#let experience_data = (",
+  experience_lines,
+  ")",
+)
 ```
 
 ```{r}
 #| label: education
 #| results: asis
-education_lines <- c("#let education_data = (")
-
-for (i in seq_along(meta$education)) {
-  item <- meta$education[[i]]
-  education_lines <- c(education_lines, education_item(item))
-}
-education_lines <- c(education_lines, ")")
-emit_typst_chunk(education_lines)
+education_lines <- lapply(meta$education, education_item)
+emit_typst_chunk(
+  "#let education_data = (",
+  education_lines,
+  ")",
+)
 ```
 
 ```{r}
 #| label: skills
 #| results: asis
-skills_lines <- c("#let skills_data = (")
-for (s in meta$skills) {
-  skills_lines <- c(skills_lines, skills_item(s))
-}
-skills_lines <- c(skills_lines, ")")
-emit_typst_chunk(skills_lines)
+emit_typst_chunk(
+  "#let skills_data = (",
+  lapply(meta$skills, skills_item),
+  ")",
+)
 ```
 
 ```{r}
 #| label: courses
 #| results: asis
-courses_lines <- c("#let courses_items = (")
-for (course in meta$courses) {
-  courses_lines <- c(
-    courses_lines,
+courses_lines <- lapply(meta$courses, function(course) {
+  c(
     "  (",
     sprintf("    name: %s,", to_typst_content(entry_subject(course))),
     sprintf("    provider: %s,", to_typst_content(entry_org(course))),
     sprintf("    link: %s,", typst_string(course$link %||% "")),
     "  ),"
   )
-}
-courses_lines <- c(courses_lines, ")")
-emit_typst_chunk(courses_lines)
+})
+emit_typst_chunk(
+  "#let courses_items = (",
+  courses_lines,
+  ")",
+)
 ```
 
 ```{r}
 #| label: tutoring
 #| results: asis
-tutoring_lines <- c("#let tutoring_items = (")
-for (t in meta$tutoring) {
-  tutoring_lines <- c(
-    tutoring_lines,
+tutoring_lines <- lapply(meta$tutoring, function(t) {
+  c(
     "  (",
     sprintf("    role: %s,", to_typst_content(entry_role(t))),
     sprintf("    subject: %s,", to_typst_content(entry_subject(t))),
@@ -206,18 +199,20 @@ for (t in meta$tutoring) {
     sprintf("    location: %s,", to_typst_content(entry_location(t))),
     "  ),"
   )
-}
-tutoring_lines <- c(tutoring_lines, ")")
-emit_typst_chunk(tutoring_lines)
+})
+
+emit_typst_chunk(
+  "#let tutoring_items = (",
+  tutoring_lines,
+  ")",
+)
 ```
 
 ```{r}
 #| label: extracurriculars
 #| results: asis
-extracurriculars_lines <- c("#let extracurriculars_items = (")
-for (x in meta$extracurriculars) {
-  extracurriculars_lines <- c(
-    extracurriculars_lines,
+extracurriculars_lines <- lapply(meta$extracurriculars, function(x) {
+  c(
     "  (",
     sprintf("    role: %s,", to_typst_content(entry_role(x))),
     sprintf("    org: %s,", to_typst_content(entry_org(x))),
@@ -225,18 +220,20 @@ for (x in meta$extracurriculars) {
     sprintf("    location: %s,", to_typst_content(entry_location(x))),
     "  ),"
   )
-}
-extracurriculars_lines <- c(extracurriculars_lines, ")")
-emit_typst_chunk(extracurriculars_lines)
+})
+
+emit_typst_chunk(
+  "#let extracurriculars_items = (",
+  extracurriculars_lines,
+  ")",
+)
 ```
 
 ```{r}
 #| label: awards
 #| results: asis
-awards_lines <- c("#let awards_items = (")
-for (a in meta$awards) {
-  awards_lines <- c(
-    awards_lines,
+awards_lines <- lapply(meta$awards, function(a) {
+  c(
     "  (",
     sprintf("    title: %s,", to_typst_content(entry_credential(a))),
     sprintf("    date: %s,", to_typst_content(entry_dates(a))),
@@ -244,9 +241,13 @@ for (a in meta$awards) {
     sprintf("    details: %s,", to_typst_content(a$details %||% "")),
     "  ),"
   )
-}
-awards_lines <- c(awards_lines, ")")
-emit_typst_chunk(awards_lines)
+})
+
+emit_typst_chunk(
+  "#let awards_items = (",
+  awards_lines,
+  ")",
+)
 ```
 
 ```{r}
@@ -262,12 +263,9 @@ paper_groups <- list(
     items = format_refs_apa(params$bib_thesis, params$csl_file)
   )
 )
-paper_groups_lines <- c(sprintf(
-  "#let paper_groups_data = %s",
-  emit_named_groups(paper_groups)
-))
-
-emit_typst_chunk(paper_groups_lines)
+emit_typst_chunk(
+  sprintf("#let paper_groups_data = %s", emit_named_groups(paper_groups))
+)
 ```
 
 ```{r}
@@ -295,12 +293,13 @@ poster_groups <- list(
     items = format_refs_apa(params$bib_posters_wcupa, params$csl_file)
   )
 )
-poster_groups_lines <- c(sprintf(
-  "#let poster_groups_data = %s",
-  emit_named_groups(poster_groups)
-))
 
-emit_typst_chunk(poster_groups_lines)
+emit_typst_chunk(
+  sprintf(
+    "#let poster_groups_data = %s",
+    emit_named_groups(poster_groups)
+  )
+)
 ```
 
 ```{r}
@@ -308,13 +307,11 @@ emit_typst_chunk(poster_groups_lines)
 #| results: asis
 packages <- format_refs_apa(params$bib_packages, params$csl_file)
 
-packages_lines <- c("#let packages_items = (")
-for (pkg in packages) {
-  packages_lines <- c(packages_lines, sprintf("  %s,", to_typst_content(pkg)))
-}
-packages_lines <- c(packages_lines, ")")
-
-emit_typst_chunk(packages_lines)
+emit_typst_chunk(
+  "#let packages_items = (",
+  sprintf("  %s,", to_typst_content(packages)),
+  ")",
+)
 ```
 
 ```{=typst}
