@@ -11,18 +11,16 @@ These references are read in, filtered to my work, and then split into CV sectio
 
 ## Instructions
 
-Three scripts are used:
+A `Makefile` is provided for the common workflows:
 
-```sh
-./setup
-./refresh
-./render
-```
-
-- `./setup` performs basic installations (probably run once per new environment or machine)
-- `./refresh` can be used intermittently to update package content
-- `./render` is used to generate the outputs
-
+- `make`/`make help` prints a short help message
+- `make all` runs `setup`, `refresh`, and `render` in sequence
+- `make setup` installs the core R/Pandoc dependencies
+- `make refresh` updates the package/reference data used by the documents and refreshes the CSL file
+- `make render` renders both outputs
+- `make cv` renders only the CV
+- `make resume` renders only the resume
+- `make clean` removes rendered PDFs and `sessioninfo.txt`
 
 ## Metadata schema
 
