@@ -1,4 +1,4 @@
-update_cv_library <- function() {
+update_packages_bib <- function() {
   i_am_author <- function(x) {
     its_me <- function(p) p$email == "jmbarbone@gmail.com" && "aut" %in% p$role
     any(vapply(x, its_me, NA))

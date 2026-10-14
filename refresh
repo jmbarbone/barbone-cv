@@ -5,7 +5,9 @@ set -euo pipefail
 R --no-save <<EOF
 pak::pak(c("devtools", "pak", "knitr", "RefManageR", "fs", "here"))
 devtools::load_all()
-update_cv_library()
+file.remove(list.files("bib", full.names = TRUE))
+update_packages_bib()
+update_references_bib()
 EOF
 
 curl -fsSL \

@@ -257,16 +257,18 @@
 #let render_courses(courses) = [
   #for item in courses [
     - #if item.link != "" [
-        #link(item.link)[#item.name]
+        #link(item.link)[#emph[#item.name]]
       ] else [
-        #item.name
+        #emph[#item.name]
       ] — #item.provider
   ]
 ]
 
 #let render_tutoring(tutoring) = [
   #for item in tutoring [
-    - #strong(item.role), #item.subject (#item.dates) — #item.location
+    - #if item.role != "" [
+        #strong(item.role),
+      ] #item.subject (#item.dates) — #item.location
   ]
 ]
 

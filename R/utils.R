@@ -211,18 +211,61 @@ sort_experience <- function(experience) {
   end_dates <- vapply(
     experience,
     \(x) extract_end_date(entry_dates(x)),
-    as.Date("1970-01-01")
+    NA_real_
   )
   start_dates <- vapply(
     experience,
     \(x) extract_start_date(entry_dates(x)),
-    as.Date("1970-01-01")
+    NA_real_
   )
   experience[order(end_dates, start_dates, decreasing = TRUE)]
 }
 
 bold_me <- function(x) {
   gsub("Barbone, J. M.", "**Barbone, J. M.**", x, fixed = TRUE)
+}
+
+format_package_ref_apa <- function(entry) {
+  title <- as.character(entry$title %||% "")[1]
+  author <- paste(as.character(entry$author %||% ""), collapse = ", ")
+  year <- as.character(entry$year %||% "n.d.")[1]
+  note <- as.character(entry$note %||% "")[1]
+  url <- as.character(entry$url %||% "")[1]
+
+  if (!nzchar(title) || !nzchar(author) || !nzchar(note)) {
+    return("")
+  }
+
+  version <- sub("^R package version\\s+", "", note)
+  if (!nzchar(version) || identical(version, note)) {
+    return("")
+  }
+
+  pkg_name <- trimws(sub(":.*$", "", title))
+  title_fmt <- if (nzchar(pkg_name)) {
+    sub(
+      paste0("^", gsub("([][{}()+*^$|\\?.])", "\\\\\\1", pkg_name)),
+      paste0("**", pkg_name, "**"),
+      title
+    )
+  } else {
+    title
+  }
+
+  out <- sprintf(
+    "%s. (%s). %s.",
+    author,
+    year,
+    title_fmt
+  )
+
+  if (nzchar(url)) {
+    out <- paste(out, url)
+  }
+
+  out <- sprintf("%s (R package version %s).", out, version)
+
+  out
 }
 
 format_refs_apa <- function(bib_files, csl_file) {
@@ -258,6 +301,35 @@ format_refs_apa <- function(bib_files, csl_file) {
     "//div[@id='refs']/*[contains(@class, 'csl-entry')]"
   )
   refs <- trimws(xml2::xml_text(nodes))
+
+  bib <- unlist(lapply(bib_files, RefManageR::ReadBib), recursive = FALSE)
+  manual_keys <- vapply(
+    bib,
+    \(entry) {
+      identical(as.character(attr(entry, "bibtype"))[1L] %||% "", "Manual")
+    },
+    NA
+  )
+
+  if (any(manual_keys)) {
+    package_refs <- vapply(
+      bib[manual_keys],
+      format_package_ref_apa,
+      FUN.VALUE = NA_character_,
+      USE.NAMES = FALSE
+    )
+
+    if (any(nzchar(package_refs))) {
+      notes <- vapply(
+        bib[manual_keys],
+        \(entry) as.character(entry$note %||% "")[1],
+        NA_character_
+      )
+      notes <- sub("R package version\\s+", "v ", notes)
+      refs <- sprintf("%s. (%s)", refs, notes)
+    }
+  }
+
   bold_me(refs[nzchar(refs)])
 }
 

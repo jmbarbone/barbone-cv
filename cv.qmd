@@ -20,7 +20,6 @@ params:
   bib_publications: bib/publications.bib
   bib_thesis: bib/thesis.bib
   bib_posters_cogstate: bib/posters_cogstate.bib
-  bib_posters_cog: bib/posters_cog.bib
   bib_posters_madrigal: bib/posters_madrigal.bib
   bib_posters_signant: bib/posters_signant.bib
   bib_posters_wcupa: bib/posters_wcupa.bib
@@ -273,12 +272,8 @@ emit_typst_chunk(
 #| results: asis
 poster_groups <- list(
   list(
-    title = "Cogstate - Digital cognition",
-    items = format_refs_apa(params$bib_posters_cogstate, params$csl_file)
-  ),
-  list(
     title = "Cogstate - Cognitive outcomes",
-    items = format_refs_apa(params$bib_posters_cog, params$csl_file)
+    items = format_refs_apa(params$bib_posters_cogstate, params$csl_file)
   ),
   list(
     title = "Madrigal - Liver disease",
@@ -309,7 +304,7 @@ packages <- format_refs_apa(params$bib_packages, params$csl_file)
 
 emit_typst_chunk(
   "#let packages_items = (",
-  sprintf("  %s,", to_typst_content(packages)),
+  vapply(packages, \(x) sprintf("  %s,", to_typst_content(x)), NA_character_),
   ")",
 )
 ```
