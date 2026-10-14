@@ -28,4 +28,4 @@ Imports:
     yaml (>= 2.3.10)
 Remotes:
     github::mitchelloharawild/vitae@v0.6.0,
-    github::yihui/knitr@v1.48
+    github::yihui/knitr@v1.51
